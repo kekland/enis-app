@@ -69,6 +69,7 @@ class IMKOSubjectWidget extends StatelessWidget {
               viewModel: new GradeWidgetViewModel(
                 grade: viewModel.calculateGrade(),
                 gradeColor: viewModel.calculateGradeColor(),
+                percentage: viewModel.calculateGradePercentage(),
               ),
             ),
           ),
@@ -84,9 +85,9 @@ class IMKOSubjectWidget extends StatelessWidget {
           new Row(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(left: 10.0, right: 5.0),
-                child: new AssessmentPercentWidget(
-                  new AssessmentPercentViewModel(
+                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                child: new AssessmentCurrentMaximumWidget(
+                  new AssessmentCurrentMaximumViewModel(
                     assessment: viewModel.formative,
                     description: 'FA',
                     isColored: false,
@@ -94,9 +95,9 @@ class IMKOSubjectWidget extends StatelessWidget {
                 ),
               ),
               new Padding(
-                padding: EdgeInsets.only(left: 5.0),
-                child: new AssessmentPercentWidget(
-                  new AssessmentPercentViewModel(
+                padding: EdgeInsets.only(left: 8.0),
+                child: new AssessmentCurrentMaximumWidget(
+                  new AssessmentCurrentMaximumViewModel(
                     assessment: viewModel.summative,
                     description: 'SA',
                     isColored: false,

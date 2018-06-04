@@ -9,26 +9,36 @@ class GradeWidgetViewModel {
 }
 
 class GradeWidget extends StatelessWidget {
-  GradeWidgetViewModel viewModel;
+  final GradeWidgetViewModel viewModel;
 
   GradeWidget({this.viewModel});
   @override
   Widget build(BuildContext context) {
     if (viewModel.percentage == 0.0) {
-      return new Container(
-        padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: viewModel.gradeColor,
-        ),
-        child: new Text(
-          viewModel.grade,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-            fontSize: 24.0,
+      return new Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+            width: 36.0,
+            height: 36.0,
+            decoration: BoxDecoration(
+              color: viewModel.gradeColor,
+              shape: BoxShape.circle,
+            ),
           ),
-        ),
+          CircularProgressIndicator(
+            value: 1.0,
+            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
+          ),
+          Text(
+            viewModel.grade,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              fontSize: 24.0,
+            ),
+          ),
+        ],
       );
     } else {
       return new Stack(
@@ -36,12 +46,13 @@ class GradeWidget extends StatelessWidget {
         children: [
           CircularProgressIndicator(
             value: viewModel.percentage,
+            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
           ),
           Text(
             viewModel.grade,
             style: TextStyle(
               fontWeight: FontWeight.w500,
-              color: Colors.white,
+              color: viewModel.gradeColor,
               fontSize: 24.0,
             ),
           ),

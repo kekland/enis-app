@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../classes/assessment.dart';
 
-class AssessmentPercentViewModel {
+class AssessmentCurrentMaximumViewModel {
   Assessment assessment;
   String description;
   bool isColored;
 
-  AssessmentPercentViewModel({this.assessment, this.description, this.isColored});
+  AssessmentCurrentMaximumViewModel({this.assessment, this.description, this.isColored});
 }
 
-class AssessmentPercentWidget extends StatelessWidget {
-  final AssessmentPercentViewModel viewModel;
+class AssessmentCurrentMaximumWidget extends StatelessWidget {
+  final AssessmentCurrentMaximumViewModel viewModel;
 
-  AssessmentPercentWidget(this.viewModel);
+  AssessmentCurrentMaximumWidget(this.viewModel);
   @override
   Widget build(BuildContext context) {
     Color mainTextColor = Colors.black87;
@@ -53,6 +53,68 @@ class AssessmentPercentWidget extends StatelessWidget {
             ),
             Text(
               viewModel.assessment.maximum.toString(),
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class AssessmentPercentViewModel {
+  double percentage;
+  String description;
+
+  AssessmentPercentViewModel({this.percentage, this.description});
+
+  String calculateDisplayablePercentageInt() {
+    return percentage.floor().toString();
+  }
+
+  String calculateDisplayablePercentageDecimal() {
+    String decimalPercentage = (percentage - percentage.floor()).toString().substring(1);
+    if (decimalPercentage.length > 3) {
+      decimalPercentage = decimalPercentage.substring(0, 3);
+    }
+    return decimalPercentage;
+  }
+}
+
+class AsssesmentPercentWidget extends StatelessWidget {
+  final AssessmentPercentViewModel viewModel;
+
+  AsssesmentPercentWidget(this.viewModel);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          viewModel.calculateDisplayablePercentageInt(),
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+            fontSize: 40.0,
+          ),
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              viewModel.calculateDisplayablePercentageDecimal(),
+              style: TextStyle(
+                color: Colors.black26,
+                fontSize: 12.0,
+              ),
+            ),
+            Text(
+              viewModel.description,
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 18.0,

@@ -33,7 +33,7 @@ class _TestPageState extends State<TestPage> {
         padding: EdgeInsets.all(8.0),
         child: new Column(
           children: <Widget>[
-            /*IMKOSubjectWidget(
+            IMKOSubjectWidget(
               viewModel: new IMKOSubjectViewModel(
                 subjectName: 'Russian Language',
                 formative: new Assessment(
@@ -41,7 +41,7 @@ class _TestPageState extends State<TestPage> {
                   maximum: 5,
                 ),
                 summative: new Assessment(
-                  current: 25,
+                  current: 32,
                   maximum: 40,
                 ),
               ),
@@ -71,8 +71,13 @@ class _TestPageState extends State<TestPage> {
                   maximum: 40,
                 ),
               ),
-            ),*/
-            new JKOSubjectWidget(),
+            ),
+            new JKOSubjectWidget(
+              viewModel: new JKOSubjectViewModel(
+                percentage: 0.8399,
+                subjectName: 'English',
+              ),
+            ),
           ],
         ),
       ),
