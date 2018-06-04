@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'animated_circular_progress.dart';
+
 class GradeWidgetViewModel {
   String grade;
   Color gradeColor;
@@ -44,9 +46,9 @@ class GradeWidget extends StatelessWidget {
       return new Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          CircularProgressIndicator(
+          new AnimatedCircularProgressWidget(
             value: viewModel.percentage,
-            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
+            color: viewModel.gradeColor,
           ),
           Text(
             viewModel.grade,
