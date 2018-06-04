@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'classes/assessment.dart';
-import 'widgets/imko_subject_widget.dart';
+import 'widgets/imko/imko_subject_widget.dart';
+import 'widgets/jko/jko_subject_widget.dart';
 
 void main() => runApp(new MyApp());
 
@@ -30,18 +31,49 @@ class _TestPageState extends State<TestPage> {
       appBar: AppBar(title: Text('eNIS')),
       body: new Padding(
         padding: EdgeInsets.all(8.0),
-        child: IMKOSubjectWidget(
-          viewModel: new IMKOSubjectViewModel(
-            subjectName: 'Kazakhstan in Modern World',
-            formative: new Assessment(
-              current: 9,
-              maximum: 10,
+        child: new Column(
+          children: <Widget>[
+            /*IMKOSubjectWidget(
+              viewModel: new IMKOSubjectViewModel(
+                subjectName: 'Russian Language',
+                formative: new Assessment(
+                  current: 3,
+                  maximum: 5,
+                ),
+                summative: new Assessment(
+                  current: 25,
+                  maximum: 40,
+                ),
+              ),
             ),
-            summative: new Assessment(
-              current: 40,
-              maximum: 40,
+            IMKOSubjectWidget(
+              viewModel: new IMKOSubjectViewModel(
+                subjectName: 'English',
+                formative: new Assessment(
+                  current: 5,
+                  maximum: 10,
+                ),
+                summative: new Assessment(
+                  current: 12,
+                  maximum: 24,
+                ),
+              ),
             ),
-          ),
+            IMKOSubjectWidget(
+              viewModel: new IMKOSubjectViewModel(
+                subjectName: 'Kazakhstan in Modern World',
+                formative: new Assessment(
+                  current: 9,
+                  maximum: 10,
+                ),
+                summative: new Assessment(
+                  current: 40,
+                  maximum: 40,
+                ),
+              ),
+            ),*/
+            new JKOSubjectWidget(),
+          ],
         ),
       ),
     );

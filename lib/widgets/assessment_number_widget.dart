@@ -47,7 +47,7 @@ class AssessmentPercentWidget extends StatelessWidget {
             Text(
               viewModel.description,
               style: TextStyle(
-                color: Colors.black45,
+                color: Colors.black26,
                 fontSize: 12.0,
               ),
             ),
