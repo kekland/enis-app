@@ -15,7 +15,19 @@ class AssessmentPercentWidget extends StatelessWidget {
   AssessmentPercentWidget(this.viewModel);
   @override
   Widget build(BuildContext context) {
-    Color mainTextColor = Colors.grey;
+    Color mainTextColor = Colors.black87;
+    if (viewModel.isColored) {
+      double percentage = viewModel.assessmentCurrent.toDouble() / viewModel.assessmentMaximum.toDouble();
+      if (percentage > 0.7) {
+        mainTextColor = Colors.green;
+      } else if (percentage > 0.5) {
+        mainTextColor = Colors.amber;
+      } else if (percentage > 0.3) {
+        mainTextColor = Colors.red;
+      } else {
+        mainTextColor = Colors.black87;
+      }
+    }
     return new Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -23,7 +35,7 @@ class AssessmentPercentWidget extends StatelessWidget {
           viewModel.assessmentCurrent.toString(),
           style: TextStyle(
             fontWeight: FontWeight.w500,
-            color: Colors.green,
+            color: mainTextColor,
             fontSize: 40.0,
           ),
         ),

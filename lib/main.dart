@@ -27,7 +27,10 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(title: Text('eNIS')),
-      body: IMKOSubjectWidget(),
+      body: new Padding(
+        padding: EdgeInsets.all(8.0),
+        child: IMKOSubjectWidget(),
+      ),
     );
   }
 }
