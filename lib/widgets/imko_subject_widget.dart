@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../classes/diary.dart';
+import '../classes/grade.dart';
 import 'assessment_number_widget.dart';
 import '../classes/assessment.dart';
 
@@ -7,6 +9,40 @@ class IMKOSubjectViewModel {
   String subjectName;
   Assessment formative;
   Assessment summative;
+
+  double calculateGradePercentage() {
+    double percentage;
+    if(summative.maximum == 0) {
+      percentage = formative.getPercentage() * 60.0;
+    }
+    else {
+      percentage = formative.getPercentage() * 18.0 + summative.getPercentage() * 42.0;
+    }
+    percentage /= 60.0;
+    return percentage;
+  }
+
+  String calculateGrade() {
+    double percentage = calculateGradePercentage();
+    return Grade.calculateGrade(percentage, Diary.imko);
+  }
+
+  Color calculateGradeColor() {
+    String numericGrade = Grade.toNumericalGrade(calculateGrade());
+    switch (numericGrade) {
+      case '5':
+        return Colors.green;
+      case '4':
+        return Colors.amber;
+      case '3':
+        return Colors.deepOrange;
+      case '2':
+        return Colors.red;
+      default:
+      return
+      default:
+    }
+  }
 
   IMKOSubjectViewModel({this.subjectName, this.formative, this.summative});
 }

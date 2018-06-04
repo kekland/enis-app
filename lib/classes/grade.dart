@@ -9,7 +9,7 @@ class Grade {
   static const String E = "E";
   static const String F = "F";
 
-  String toNumericalGrade(String grade) {
+  static String toNumericalGrade(String grade) {
     switch (grade) {
       case APlus:
         return '5+';
@@ -30,7 +30,7 @@ class Grade {
     }
   }
 
-  String calculateGrade(double percentage, Diary diary) {
+  static String calculateGrade(double percentage, Diary diary) {
     if (diary == Diary.imko) {
       if (percentage > 0.9)
         return APlus;
