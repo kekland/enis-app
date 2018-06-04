@@ -10,6 +10,7 @@ class IMKOSubjectViewModel {
   String subjectName;
   Assessment formative;
   Assessment summative;
+  int quarter;
 
   double calculateGradePercentage() {
     double percentage;
@@ -47,17 +48,34 @@ class IMKOSubjectViewModel {
     }
   }
 
-  IMKOSubjectViewModel({this.subjectName, this.formative, this.summative});
+  IMKOSubjectViewModel({this.subjectName, this.formative, this.summative, this.quarter});
 }
 
 class IMKOSubjectWidget extends StatelessWidget {
   final IMKOSubjectViewModel viewModel;
+  final bool tappable;
 
-  IMKOSubjectWidget({this.viewModel});
+  IMKOSubjectWidget({this.viewModel, this.tappable = true});
+
+  onCardTap(BuildContext ctx) {
+    Navigator.of(ctx).push(
+      new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return new Scaffold(
+            appBar: new AppBar(
+              title: Text(viewModel.subjectName),
+            ),
+            body: new Container(
+                padding: const EdgeInsets.all(8.0), alignment: Alignment.topLeft, child: new IMKOSubjectWidget(viewModel: viewModel, tappable: false)),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    Widget cardChild = new Container(
       padding: EdgeInsets.all(16.0),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +95,7 @@ class IMKOSubjectWidget extends StatelessWidget {
             child: Text(
               viewModel.subjectName,
               style: TextStyle(
-                color: Colors.black87,
+                color: Colors.black,
                 fontSize: 17.0,
               ),
             ),
@@ -109,5 +127,24 @@ class IMKOSubjectWidget extends StatelessWidget {
         ],
       ),
     );
+
+    if (tappable) {
+      return new Hero(
+        tag: 'imko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
+        child: new Card(
+          child: new InkWell(
+            onTap: () => onCardTap(context),
+            child: cardChild,
+          ),
+        ),
+      );
+    } else {
+      return new Hero(
+        tag: 'imko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
+        child: Card(
+          child: cardChild,
+        ),
+      );
+    }
   }
 }
