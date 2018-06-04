@@ -4,6 +4,7 @@ import '../classes/diary.dart';
 import '../classes/grade.dart';
 import 'assessment_number_widget.dart';
 import '../classes/assessment.dart';
+import 'grade_widget.dart';
 
 class IMKOSubjectViewModel {
   String subjectName;
@@ -12,10 +13,9 @@ class IMKOSubjectViewModel {
 
   double calculateGradePercentage() {
     double percentage;
-    if(summative.maximum == 0) {
+    if (summative.maximum == 0) {
       percentage = formative.getPercentage() * 60.0;
-    }
-    else {
+    } else {
       percentage = formative.getPercentage() * 18.0 + summative.getPercentage() * 42.0;
     }
     percentage /= 60.0;
@@ -23,8 +23,12 @@ class IMKOSubjectViewModel {
   }
 
   String calculateGrade() {
-    double percentage = calculateGradePercentage();
-    return Grade.calculateGrade(percentage, Diary.imko);
+    if (summative.current == 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
+      return Grade.calculateGrade(percentage, Diary.imko);
+    }
   }
 
   Color calculateGradeColor() {
@@ -39,8 +43,7 @@ class IMKOSubjectViewModel {
       case '2':
         return Colors.red;
       default:
-      return
-      default:
+        return Colors.black12;
     }
   }
 
@@ -49,6 +52,8 @@ class IMKOSubjectViewModel {
 
 class IMKOSubjectWidget extends StatelessWidget {
   IMKOSubjectViewModel viewModel;
+
+  IMKOSubjectWidget({this.viewModel});
 
   @override
   Widget build(BuildContext context) {
@@ -59,41 +64,40 @@ class IMKOSubjectWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('English', style: TextStyle(color: Colors.black87, fontSize: 18.0)),
+            new Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: new GradeWidget(
+                viewModel: new GradeWidgetViewModel(
+                  grade: viewModel.calculateGrade(),
+                  gradeColor: viewModel.calculateGradeColor(),
+                ),
+              ),
+            ),
+            new Expanded(
+              child: Text('English', style: TextStyle(color: Colors.black87, fontSize: 18.0)),
+            ),
             new Row(
               children: <Widget>[
                 new Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 5.0),
                   child: new AssessmentPercentWidget(
                     new AssessmentPercentViewModel(
-                      assessmentCurrent: 7,
-                      assessmentMaximum: 8,
+                      assessment: viewModel.formative,
                       description: 'FA',
                       isColored: true,
                     ),
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                  padding: EdgeInsets.only(left: 5.0),
                   child: new AssessmentPercentWidget(
                     new AssessmentPercentViewModel(
-                      assessmentCurrent: 31,
-                      assessmentMaximum: 40,
+                      assessment: viewModel.summative,
                       description: 'SA',
                       isColored: true,
                     ),
                   ),
                 ),
-                new Padding(
-                    padding: EdgeInsets.only(left: 15.0),
-                    child: new Text(
-                      'A+',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.green,
-                        fontSize: 40.0,
-                      ),
-                    ))
               ],
             ),
           ],

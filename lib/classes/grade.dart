@@ -12,7 +12,7 @@ class Grade {
   static String toNumericalGrade(String grade) {
     switch (grade) {
       case APlus:
-        return '5+';
+        return '5';
       case A:
         return '5';
       case B:

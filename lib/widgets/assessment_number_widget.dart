@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../classes/assessment.dart';
+
 class AssessmentPercentViewModel {
-  int assessmentCurrent;
-  int assessmentMaximum;
+  Assessment assessment;
   String description;
   bool isColored;
 
-  AssessmentPercentViewModel({this.assessmentCurrent, this.assessmentMaximum, this.description, this.isColored});
+  AssessmentPercentViewModel({this.assessment, this.description, this.isColored});
 }
 
 class AssessmentPercentWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class AssessmentPercentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Color mainTextColor = Colors.black87;
     if (viewModel.isColored) {
-      double percentage = viewModel.assessmentCurrent.toDouble() / viewModel.assessmentMaximum.toDouble();
+      double percentage = viewModel.assessment.current.toDouble() / viewModel.assessment.maximum.toDouble();
       if (percentage > 0.7) {
         mainTextColor = Colors.green;
       } else if (percentage > 0.5) {
@@ -32,7 +33,7 @@ class AssessmentPercentWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          viewModel.assessmentCurrent.toString(),
+          viewModel.assessment.current.toString(),
           style: TextStyle(
             fontWeight: FontWeight.w500,
             color: mainTextColor,
@@ -51,7 +52,7 @@ class AssessmentPercentWidget extends StatelessWidget {
               ),
             ),
             Text(
-              viewModel.assessmentMaximum.toString(),
+              viewModel.assessment.maximum.toString(),
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 18.0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'classes/assessment.dart';
 import 'widgets/imko_subject_widget.dart';
 
 void main() => runApp(new MyApp());
@@ -29,7 +30,19 @@ class _TestPageState extends State<TestPage> {
       appBar: AppBar(title: Text('eNIS')),
       body: new Padding(
         padding: EdgeInsets.all(8.0),
-        child: IMKOSubjectWidget(),
+        child: IMKOSubjectWidget(
+          viewModel: new IMKOSubjectViewModel(
+            subjectName: 'Kazakhstan in Modern World',
+            formative: new Assessment(
+              current: 9,
+              maximum: 10,
+            ),
+            summative: new Assessment(
+              current: 40,
+              maximum: 40,
+            ),
+          ),
+        ),
       ),
     );
   }
