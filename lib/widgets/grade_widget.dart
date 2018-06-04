@@ -46,9 +46,9 @@ class GradeWidget extends StatelessWidget {
       return new Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          new AnimatedCircularProgressWidget(
+          new CircularProgressIndicator(
             value: viewModel.percentage,
-            color: viewModel.gradeColor,
+            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
           ),
           Text(
             viewModel.grade,
