@@ -7,6 +7,10 @@ class GradeWidgetViewModel {
   Color gradeColor;
   double percentage;
 
+  String getDisplayPercentage() {
+    return (percentage * 100.0).toStringAsFixed(3);
+  }
+
   GradeWidgetViewModel({this.grade, this.gradeColor, this.percentage = 0.0});
 }
 
@@ -43,20 +47,25 @@ class GradeWidget extends StatelessWidget {
         ],
       );
     } else {
-      return new Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          new CircularProgressIndicator(
-            value: viewModel.percentage,
-            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
-          ),
-          Text(
-            viewModel.grade,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: viewModel.gradeColor,
-              fontSize: 24.0,
-            ),
+      return new Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          new Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              new CircularProgressIndicator(
+                value: viewModel.percentage,
+                valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
+              ),
+              Text(
+                viewModel.grade,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: viewModel.gradeColor,
+                  fontSize: 24.0,
+                ),
+              ),
+            ],
           ),
         ],
       );

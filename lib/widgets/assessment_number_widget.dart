@@ -52,7 +52,7 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
               ),
             ),
             Text(
-              viewModel.assessment.maximum.toString(),
+              '/${viewModel.assessment.maximum}',
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 18.0,

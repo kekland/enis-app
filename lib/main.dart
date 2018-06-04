@@ -24,61 +24,73 @@ class TestPage extends StatefulWidget {
   _TestPageState createState() => new _TestPageState();
 }
 
+List<String> tabs = ['1 quarter', '2 quarter', '3 quarter', '4 quarter'];
+
 class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(title: Text('eNIS')),
-      body: new Padding(
-        padding: EdgeInsets.all(8.0),
-        child: new Column(
-          children: <Widget>[
-            IMKOSubjectWidget(
-              viewModel: new IMKOSubjectViewModel(
-                subjectName: 'Russian Language',
-                formative: new Assessment(
-                  current: 3,
-                  maximum: 5,
-                ),
-                summative: new Assessment(
-                  current: 32,
-                  maximum: 40,
-                ),
-              ),
-            ),
-            IMKOSubjectWidget(
-              viewModel: new IMKOSubjectViewModel(
-                subjectName: 'English',
-                formative: new Assessment(
-                  current: 5,
-                  maximum: 10,
-                ),
-                summative: new Assessment(
-                  current: 12,
-                  maximum: 24,
+    return new DefaultTabController(
+      length: 4,
+      child: new Scaffold(
+        appBar: AppBar(
+          title: Text('eNIS'),
+          bottom: TabBar(
+            tabs: tabs.map((String tab) {
+              return Tab(text: tab);
+            }).toList(),
+          ),
+        ),
+        body: new Padding(
+          padding: EdgeInsets.all(8.0),
+          child: new Column(
+            children: <Widget>[
+              IMKOSubjectWidget(
+                viewModel: new IMKOSubjectViewModel(
+                  subjectName: 'Russian Language',
+                  formative: new Assessment(
+                    current: 3,
+                    maximum: 5,
+                  ),
+                  summative: new Assessment(
+                    current: 32,
+                    maximum: 40,
+                  ),
                 ),
               ),
-            ),
-            IMKOSubjectWidget(
-              viewModel: new IMKOSubjectViewModel(
-                subjectName: 'Kazakhstan in Modern World',
-                formative: new Assessment(
-                  current: 9,
-                  maximum: 10,
-                ),
-                summative: new Assessment(
-                  current: 40,
-                  maximum: 40,
+              IMKOSubjectWidget(
+                viewModel: new IMKOSubjectViewModel(
+                  subjectName: 'English',
+                  formative: new Assessment(
+                    current: 5,
+                    maximum: 10,
+                  ),
+                  summative: new Assessment(
+                    current: 12,
+                    maximum: 24,
+                  ),
                 ),
               ),
-            ),
-            new JKOSubjectWidget(
-              viewModel: new JKOSubjectViewModel(
-                percentage: 0.8399,
-                subjectName: 'English',
+              IMKOSubjectWidget(
+                viewModel: new IMKOSubjectViewModel(
+                  subjectName: 'Kazakhstan in Modern World',
+                  formative: new Assessment(
+                    current: 9,
+                    maximum: 10,
+                  ),
+                  summative: new Assessment(
+                    current: 40,
+                    maximum: 40,
+                  ),
+                ),
               ),
-            ),
-          ],
+              new JKOSubjectWidget(
+                viewModel: new JKOSubjectViewModel(
+                  percentage: 0.8399,
+                  subjectName: 'English',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

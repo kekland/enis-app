@@ -66,7 +66,13 @@ class IMKOSubjectWidget extends StatelessWidget {
               title: Text(viewModel.subjectName),
             ),
             body: new Container(
-                padding: const EdgeInsets.all(8.0), alignment: Alignment.topLeft, child: new IMKOSubjectWidget(viewModel: viewModel, tappable: false)),
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.topLeft,
+              child: new IMKOSubjectWidget(
+                viewModel: viewModel,
+                tappable: false,
+              ),
+            ),
           );
         },
       ),
