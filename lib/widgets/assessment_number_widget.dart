@@ -71,12 +71,14 @@ class AssessmentPercentViewModel {
 
   AssessmentPercentViewModel({this.percentage, this.description});
 
-  String calculateDisplayablePercentageInt() {
-    return percentage.floor().toString();
+  String calculateDisplayablePercentageInt([double animationValue = 1.0]) {
+    double percentageToUse = percentage * animationValue;
+    return percentageToUse.floor().toString();
   }
 
-  String calculateDisplayablePercentageDecimal() {
-    String decimalPercentage = (percentage - percentage.floor()).toString().substring(1);
+  String calculateDisplayablePercentageDecimal([double animationValue = 1.0]) {
+    double percentageToUse = percentage * animationValue;
+    String decimalPercentage = (percentageToUse - percentageToUse.floor()).toString().substring(1);
     if (decimalPercentage.length > 3) {
       decimalPercentage = decimalPercentage.substring(0, 3);
     }
@@ -86,8 +88,9 @@ class AssessmentPercentViewModel {
 
 class AsssesmentPercentWidget extends StatelessWidget {
   final AssessmentPercentViewModel viewModel;
+  final double animationValue;
 
-  AsssesmentPercentWidget(this.viewModel);
+  AsssesmentPercentWidget({this.viewModel, this.animationValue});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +98,7 @@ class AsssesmentPercentWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          viewModel.calculateDisplayablePercentageInt(),
+          viewModel.calculateDisplayablePercentageInt(animationValue),
           style: TextStyle(
             fontWeight: FontWeight.w500,
             color: Colors.black87,
@@ -107,7 +110,7 @@ class AsssesmentPercentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              viewModel.calculateDisplayablePercentageDecimal(),
+              viewModel.calculateDisplayablePercentageDecimal(animationValue),
               style: TextStyle(
                 color: Colors.black26,
                 fontSize: 12.0,

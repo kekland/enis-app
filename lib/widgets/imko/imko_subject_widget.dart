@@ -51,11 +51,45 @@ class IMKOSubjectViewModel {
   IMKOSubjectViewModel({this.subjectName, this.formative, this.summative, this.quarter});
 }
 
-class IMKOSubjectWidget extends StatelessWidget {
+class IMKOSubjectWidget extends StatefulWidget {
   final IMKOSubjectViewModel viewModel;
   final bool tappable;
+  final bool animate;
 
-  IMKOSubjectWidget({this.viewModel, this.tappable = true});
+  IMKOSubjectWidget({
+    this.viewModel,
+    this.tappable = true,
+    this.animate = true,
+  });
+  @override
+  _IMKOSubjectWidgetState createState() => new _IMKOSubjectWidgetState();
+}
+
+class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  initState() {
+    super.initState();
+    if (widget.animate) {
+      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          setState(() {});
+        });
+
+      controller.forward();
+    } else {
+      animation = new AlwaysStoppedAnimation(1.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    if (controller != null) controller.dispose();
+    super.dispose();
+  }
 
   onCardTap(BuildContext ctx) {
     Navigator.of(ctx).push(
@@ -63,14 +97,18 @@ class IMKOSubjectWidget extends StatelessWidget {
         builder: (BuildContext context) {
           return new Scaffold(
             appBar: new AppBar(
-              title: Text(viewModel.subjectName),
+              title: Text(widget.viewModel.subjectName),
             ),
-            body: new Container(
+            body: new Padding(
               padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.topLeft,
-              child: new IMKOSubjectWidget(
-                viewModel: viewModel,
-                tappable: false,
+              child: new Column(
+                children: [
+                  new IMKOSubjectWidget(
+                    viewModel: widget.viewModel,
+                    tappable: false,
+                    animate: false,
+                  ),
+                ],
               ),
             ),
           );
@@ -83,49 +121,51 @@ class IMKOSubjectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget cardChild = new Container(
       padding: EdgeInsets.all(16.0),
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: new GradeWidget(
-              viewModel: new GradeWidgetViewModel(
-                grade: viewModel.calculateGrade(),
-                gradeColor: viewModel.calculateGradeColor(),
-                percentage: viewModel.calculateGradePercentage(),
-              ),
-            ),
-          ),
-          new Expanded(
+            padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              viewModel.subjectName,
+              widget.viewModel.subjectName,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 17.0,
+                fontSize: 18.0,
               ),
             ),
           ),
           new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: EdgeInsets.only(right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: viewModel.formative,
+                    assessment: Assessment.lerp(widget.viewModel.formative, animation.value),
                     description: 'FA',
                     isColored: false,
                   ),
                 ),
               ),
               new Padding(
-                padding: EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: viewModel.summative,
+                    assessment: Assessment.lerp(widget.viewModel.summative, animation.value),
                     description: 'SA',
                     isColored: false,
                   ),
+                ),
+              ),
+              new Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: new GradeWidget(
+                  viewModel: new GradeWidgetViewModel(
+                    grade: widget.viewModel.calculateGrade(),
+                    gradeColor: widget.viewModel.calculateGradeColor(),
+                    percentage: widget.viewModel.calculateGradePercentage(),
+                  ),
+                  animationValue: animation.value,
                 ),
               ),
             ],
@@ -134,21 +174,27 @@ class IMKOSubjectWidget extends StatelessWidget {
       ),
     );
 
-    if (tappable) {
+    if (widget.tappable) {
       return new Hero(
-        tag: 'imko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
-        child: new Card(
-          child: new InkWell(
-            onTap: () => onCardTap(context),
-            child: cardChild,
+        tag: 'imko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        child: new Opacity(
+          opacity: animation.value,
+          child: new Card(
+            child: new InkWell(
+              onTap: () => onCardTap(context),
+              child: cardChild,
+            ),
           ),
         ),
       );
     } else {
       return new Hero(
-        tag: 'imko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
-        child: Card(
-          child: cardChild,
+        tag: 'imko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        child: Opacity(
+          opacity: animation.value,
+          child: Card(
+            child: cardChild,
+          ),
         ),
       );
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'classes/assessment.dart';
+import 'pages/login_page.dart';
 import 'widgets/imko/imko_subject_widget.dart';
 import 'widgets/jko/jko_subject_widget.dart';
 
@@ -14,7 +15,11 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new TestPage(),
+      home: new LoginPage(),
+      routes: {
+        '/login': (BuildContext context) => new LoginPage(),
+        '/main': (BuildContext context) => new TestPage(),
+      },
     );
   }
 }
@@ -65,7 +70,7 @@ class _TestPageState extends State<TestPage> {
                     maximum: 10,
                   ),
                   summative: new Assessment(
-                    current: 12,
+                    current: 23,
                     maximum: 24,
                   ),
                 ),

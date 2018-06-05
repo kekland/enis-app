@@ -16,35 +16,39 @@ class GradeWidgetViewModel {
 
 class GradeWidget extends StatelessWidget {
   final GradeWidgetViewModel viewModel;
+  final double animationValue;
 
-  GradeWidget({this.viewModel});
+  GradeWidget({this.viewModel, this.animationValue = 1.0});
   @override
   Widget build(BuildContext context) {
     if (viewModel.percentage == 0.0) {
-      return new Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Container(
-            width: 36.0,
-            height: 36.0,
-            decoration: BoxDecoration(
-              color: viewModel.gradeColor,
-              shape: BoxShape.circle,
+      return new Opacity(
+        opacity: animationValue,
+        child: new Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Container(
+              width: 36.0,
+              height: 36.0,
+              decoration: BoxDecoration(
+                color: viewModel.gradeColor,
+                shape: BoxShape.circle,
+              ),
             ),
-          ),
-          CircularProgressIndicator(
-            value: 1.0,
-            valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
-          ),
-          Text(
-            viewModel.grade,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              fontSize: 24.0,
+            CircularProgressIndicator(
+              value: 1.0,
+              valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
             ),
-          ),
-        ],
+            Text(
+              viewModel.grade,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+                fontSize: 24.0,
+              ),
+            ),
+          ],
+        ),
       );
     } else {
       return new Column(
@@ -54,14 +58,14 @@ class GradeWidget extends StatelessWidget {
             alignment: AlignmentDirectional.center,
             children: [
               new CircularProgressIndicator(
-                value: viewModel.percentage,
+                value: viewModel.percentage * animationValue,
                 valueColor: AlwaysStoppedAnimation(viewModel.gradeColor),
               ),
               Text(
                 viewModel.grade,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: viewModel.gradeColor,
+                  color: viewModel.gradeColor.withOpacity(animationValue),
                   fontSize: 24.0,
                 ),
               ),

@@ -10,4 +10,10 @@ class Assessment {
   }
 
   Assessment({this.current, this.maximum});
+
+  static Assessment lerp(Assessment assessment, double value) {
+    int newCurrent = (assessment.current.toDouble() * value).round();
+    int newMaximum = (assessment.maximum.toDouble() * value).round();
+    return Assessment(current: newCurrent, maximum: newMaximum);
+  }
 }

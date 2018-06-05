@@ -41,11 +41,45 @@ class JKOSubjectViewModel {
   JKOSubjectViewModel({this.subjectName, this.percentage, this.quarter});
 }
 
-class JKOSubjectWidget extends StatelessWidget {
+class JKOSubjectWidget extends StatefulWidget {
   final JKOSubjectViewModel viewModel;
   final bool tappable;
+  final bool animate;
 
-  JKOSubjectWidget({this.viewModel, this.tappable = true});
+  JKOSubjectWidget({
+    this.viewModel,
+    this.tappable = true,
+    this.animate = true,
+  });
+
+  @override
+  _JKOSubjectWidgetState createState() => new _JKOSubjectWidgetState();
+}
+
+class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  initState() {
+    super.initState();
+    if (widget.animate) {
+      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          setState(() {});
+        });
+
+      controller.forward();
+    } else {
+      animation = new AlwaysStoppedAnimation(1.0);
+    }
+  }
+  @override
+  void dispose() {
+    if (controller != null) controller.dispose();
+    super.dispose();
+  }
 
   onCardTap(BuildContext ctx) {
     Navigator.of(ctx).push(
@@ -53,10 +87,17 @@ class JKOSubjectWidget extends StatelessWidget {
         builder: (BuildContext context) {
           return new Scaffold(
             appBar: new AppBar(
-              title: Text(viewModel.subjectName),
+              title: Text(widget.viewModel.subjectName),
             ),
             body: new Container(
-                padding: const EdgeInsets.all(8.0), alignment: Alignment.topLeft, child: new JKOSubjectWidget(viewModel: viewModel, tappable: false)),
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.topLeft,
+              child: new JKOSubjectWidget(
+                viewModel: widget.viewModel,
+                tappable: false,
+                animate: false,
+              ),
+            ),
           );
         },
       ),
@@ -71,31 +112,33 @@ class JKOSubjectWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          new Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: new GradeWidget(
-              viewModel: new GradeWidgetViewModel(
-                grade: viewModel.calculateGrade(),
-                gradeColor: viewModel.calculateGradeColor(),
-                percentage: 0.85,
-              ),
-            ),
-          ),
           new Expanded(
             child: Text(
               'English',
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 17.0,
+                fontSize: 18.0,
               ),
             ),
           ),
           new Row(
             children: <Widget>[
               new AsssesmentPercentWidget(
-                new AssessmentPercentViewModel(
-                  percentage: viewModel.getPercentageToDisplay(),
+                viewModel: new AssessmentPercentViewModel(
+                  percentage: widget.viewModel.getPercentageToDisplay(),
                   description: '%',
+                ),
+                animationValue: animation.value,
+              ),
+              new Padding(
+                padding: EdgeInsets.only(left: 16.0),
+                child: new GradeWidget(
+                  viewModel: new GradeWidgetViewModel(
+                    grade: widget.viewModel.calculateGrade(),
+                    gradeColor: widget.viewModel.calculateGradeColor(),
+                    percentage: 0.85,
+                  ),
+                  animationValue: animation.value,
                 ),
               ),
             ],
@@ -104,21 +147,27 @@ class JKOSubjectWidget extends StatelessWidget {
       ),
     );
 
-    if (tappable) {
+    if (widget.tappable) {
       return new Hero(
-        tag: 'jko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
-        child: new Card(
-          child: new InkWell(
-            onTap: () => onCardTap(context),
-            child: cardChild,
+        tag: 'jko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        child: new Opacity(
+          opacity: animation.value,
+          child: new Card(
+            child: new InkWell(
+              onTap: () => onCardTap(context),
+              child: cardChild,
+            ),
           ),
         ),
       );
     } else {
       return new Hero(
-        tag: 'jko.${viewModel.quarter}.${viewModel.subjectName}.heroWidget',
-        child: Card(
-          child: cardChild,
+        tag: 'jko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        child: Opacity(
+          opacity: animation.value,
+          child: Card(
+            child: cardChild,
+          ),
         ),
       );
     }
