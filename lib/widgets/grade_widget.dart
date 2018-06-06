@@ -65,7 +65,7 @@ class GradeWidget extends StatelessWidget {
                 viewModel.grade,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: viewModel.gradeColor.withOpacity(animationValue),
+                  color: Color.lerp(Colors.red.shade400, viewModel.gradeColor, animationValue).withOpacity(animationValue),
                   fontSize: 24.0,
                 ),
               ),

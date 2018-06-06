@@ -5,6 +5,7 @@ import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
 import '../../classes/assessment.dart';
 import '../grade_widget.dart';
+import 'imko_goal_widget.dart';
 
 class IMKOSubjectViewModel {
   String subjectName;
@@ -99,16 +100,18 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
             appBar: new AppBar(
               title: Text(widget.viewModel.subjectName),
             ),
-            body: new Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new Column(
-                children: [
-                  new IMKOSubjectWidget(
-                    viewModel: widget.viewModel,
-                    tappable: false,
-                    animate: false,
-                  ),
-                ],
+            body: new SingleChildScrollView(
+              child: new Padding(
+                padding: EdgeInsets.all(16.0),
+                child: new Column(
+                  children: [
+                    new IMKOSubjectWidget(
+                      viewModel: widget.viewModel,
+                      tappable: false,
+                      animate: false,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

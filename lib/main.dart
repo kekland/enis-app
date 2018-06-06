@@ -10,6 +10,7 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    MaterialPageRoute.debugEnableFadingRoutes = true;
     return new MaterialApp(
       title: 'eNIS',
       theme: new ThemeData(
