@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'eNIS',
       theme: new ThemeData(
+        brightness: Brightness.dark,
         primarySwatch: Colors.green,
       ),
       home: new LoginPage(),

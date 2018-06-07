@@ -115,8 +115,7 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
           new Expanded(
             child: Text(
               'English',
-              style: TextStyle(
-                color: Colors.black,
+              style: Theme.of(context).textTheme.body1.copyWith(
                 fontSize: 18.0,
               ),
             ),

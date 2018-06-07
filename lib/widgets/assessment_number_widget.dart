@@ -5,9 +5,8 @@ import '../classes/assessment.dart';
 class AssessmentCurrentMaximumViewModel {
   Assessment assessment;
   String description;
-  bool isColored;
 
-  AssessmentCurrentMaximumViewModel({this.assessment, this.description, this.isColored});
+  AssessmentCurrentMaximumViewModel({this.assessment, this.description});
 }
 
 class AssessmentCurrentMaximumWidget extends StatelessWidget {
@@ -16,27 +15,13 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
   AssessmentCurrentMaximumWidget(this.viewModel);
   @override
   Widget build(BuildContext context) {
-    Color mainTextColor = Colors.black87;
-    if (viewModel.isColored) {
-      double percentage = viewModel.assessment.current.toDouble() / viewModel.assessment.maximum.toDouble();
-      if (percentage > 0.7) {
-        mainTextColor = Colors.green;
-      } else if (percentage > 0.5) {
-        mainTextColor = Colors.amber;
-      } else if (percentage > 0.3) {
-        mainTextColor = Colors.red;
-      } else {
-        mainTextColor = Colors.black87;
-      }
-    }
     return new Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           viewModel.assessment.current.toString(),
-          style: TextStyle(
+          style: Theme.of(context).textTheme.body1.copyWith(
             fontWeight: FontWeight.w500,
-            color: mainTextColor,
             fontSize: 40.0,
           ),
         ),
@@ -46,15 +31,13 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
           children: [
             Text(
               viewModel.description,
-              style: TextStyle(
-                color: Colors.black26,
+              style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: 12.0,
               ),
             ),
             Text(
               '/${viewModel.assessment.maximum}',
-              style: TextStyle(
-                color: Colors.black54,
+              style: Theme.of(context).textTheme.subhead.copyWith(
                 fontSize: 18.0,
               ),
             ),
@@ -99,9 +82,8 @@ class AsssesmentPercentWidget extends StatelessWidget {
       children: [
         Text(
           viewModel.calculateDisplayablePercentageInt(animationValue),
-          style: TextStyle(
+          style: Theme.of(context).textTheme.body1.copyWith(
             fontWeight: FontWeight.w500,
-            color: Colors.black87,
             fontSize: 40.0,
           ),
         ),
@@ -111,15 +93,13 @@ class AsssesmentPercentWidget extends StatelessWidget {
           children: [
             Text(
               viewModel.calculateDisplayablePercentageDecimal(animationValue),
-              style: TextStyle(
-                color: Colors.black26,
+              style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: 12.0,
               ),
             ),
             Text(
               viewModel.description,
-              style: TextStyle(
-                color: Colors.black54,
+              style: Theme.of(context).textTheme.subhead.copyWith(
                 fontSize: 18.0,
               ),
             ),

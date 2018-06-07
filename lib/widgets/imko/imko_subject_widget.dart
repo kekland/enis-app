@@ -131,8 +131,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
               widget.viewModel.subjectName,
-              style: TextStyle(
-                color: Colors.black,
+              style: Theme.of(context).textTheme.body1.copyWith(
                 fontSize: 18.0,
               ),
             ),
@@ -146,7 +145,6 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                   new AssessmentCurrentMaximumViewModel(
                     assessment: Assessment.lerp(widget.viewModel.formative, animation.value),
                     description: 'FA',
-                    isColored: false,
                   ),
                 ),
               ),
@@ -156,7 +154,6 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                   new AssessmentCurrentMaximumViewModel(
                     assessment: Assessment.lerp(widget.viewModel.summative, animation.value),
                     description: 'SA',
-                    isColored: false,
                   ),
                 ),
               ),
