@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               ),
             ),
             new Container(
-              color: Colors.white.withOpacity(animation.value),
+              color: Theme.of(context).dialogBackgroundColor.withOpacity(animation.value),
               padding: new EdgeInsets.all(32.0),
               child: new Opacity(
                 opacity: animation.value,
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       new RaisedButton(
                         child: new Text('Login'),
                         onPressed: () => login(context),
-                        color: Colors.white,
+                        color: Theme.of(context).buttonColor,
                       )
                     ],
                   ),
