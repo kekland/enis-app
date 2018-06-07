@@ -110,6 +110,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                       tappable: false,
                       animate: false,
                     ),
+                    new IMKOGoalWidget(),
                   ],
                 ),
               ),
