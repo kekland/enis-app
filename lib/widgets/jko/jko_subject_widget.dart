@@ -4,6 +4,7 @@ import '../../classes/diary.dart';
 import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
 import '../grade_widget.dart';
+import 'jko_evaluation_widget.dart';
 
 class JKOSubjectViewModel {
   String subjectName;
@@ -89,13 +90,19 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
             appBar: new AppBar(
               title: Text(widget.viewModel.subjectName),
             ),
-            body: new Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.topLeft,
-              child: new JKOSubjectWidget(
-                viewModel: widget.viewModel,
-                tappable: false,
-                animate: false,
+            body: new SingleChildScrollView(
+              child: new Padding(
+                padding: EdgeInsets.all(16.0),
+                child: new Column(
+                  children: [
+                    new JKOSubjectWidget(
+                      viewModel: widget.viewModel,
+                      tappable: false,
+                      animate: false,
+                    ),
+                    new JKOEvaluationWidget(),
+                  ],
+                ),
               ),
             ),
           );

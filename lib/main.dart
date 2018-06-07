@@ -1,3 +1,5 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:dynamic_theme/theme_switcher_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'classes/assessment.dart';
@@ -11,16 +13,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MaterialPageRoute.debugEnableFadingRoutes = true;
-    return new MaterialApp(
-      title: 'eNIS',
-      theme: new ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.green,
-      ),
-      home: new LoginPage(),
-      routes: {
-        '/login': (BuildContext context) => new LoginPage(),
-        '/main': (BuildContext context) => new TestPage(),
+    return new DynamicTheme(
+      defaultBrightness: Brightness.dark,
+      data: (brightness) => new ThemeData(
+            brightness: brightness,
+            primarySwatch: Colors.green,
+            buttonColor: Colors.greenAccent,
+          ),
+      themedWidgetBuilder: (context, theme) {
+        return new MaterialApp(
+          title: 'eNIS',
+          theme: theme,
+          home: new LoginPage(),
+          routes: {
+            '/login': (BuildContext context) => new LoginPage(),
+            '/main': (BuildContext context) => new TestPage(),
+          },
+        );
       },
     );
   }
@@ -34,6 +43,15 @@ class TestPage extends StatefulWidget {
 List<String> tabs = ['1 quarter', '2 quarter', '3 quarter', '4 quarter'];
 
 class _TestPageState extends State<TestPage> {
+  openBrightnessDialog(BuildContext ctx) {
+    Brightness br = Theme.of(ctx).brightness;
+    if (br == Brightness.dark)
+      DynamicTheme.of(context).setBrightness(Brightness.light);
+    else
+      DynamicTheme.of(context).setBrightness(Brightness.dark);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
@@ -46,6 +64,12 @@ class _TestPageState extends State<TestPage> {
               return Tab(text: tab);
             }).toList(),
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.brightness_auto),
+              onPressed: () => openBrightnessDialog(context),
+            ),
+          ],
         ),
         body: new Padding(
           padding: EdgeInsets.all(8.0),
