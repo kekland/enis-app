@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       data: (brightness) => new ThemeData(
             brightness: brightness,
             primarySwatch: Colors.green,
-            buttonColor: Colors.greenAccent,
+            buttonColor: Colors.lightBlueAccent,
           ),
       themedWidgetBuilder: (context, theme) {
         return new MaterialApp(

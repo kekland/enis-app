@@ -112,9 +112,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         padding: new EdgeInsets.all(8.0),
                       ),
                       new RaisedButton(
-                        child: new Text('Login'),
+                        child: new Text('Login', style: TextStyle(color: Colors.black),),
                         onPressed: () => login(context),
-                        color: Theme.of(context).buttonColor,
+                        color: Colors.white,
                       )
                     ],
                   ),
