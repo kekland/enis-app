@@ -4,23 +4,38 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 import '../account_api.dart';
+import '../quarter.dart';
 import '../user_data.dart';
 import 'dart:convert';
 import '../utils.dart';
 import 'jko_data.dart';
 
 class JKODiaryAPI {
-  static Future<List<JKOSubject>> getSubjectsOnQuarter(quarter, [UserData userData]) async {
+
+  static Future<Null> getAllJkoSubjectsCallback(Function callback, [UserData userData]) async {
+    try {
+      if (userData == null) {
+        userData = await AccountAPI.loginFromPrefs();
+      }
+
+      for (int quarterIndex = 1; quarterIndex <= 4; quarterIndex++) {
+        callback(quarterIndex - 1, await getSubjectsOnQuarter(quarterIndex, userData));
+      }
+    } catch (Exception) {
+      throw Exception;
+    }
+  }
+  static Future<Quarter> getSubjectsOnQuarter(quarter, [UserData userData]) async {
     if (userData == null) {
       userData = await AccountAPI.loginFromPrefs();
     }
     String link = await getLink(quarterID: quarter, userData: userData);
     String header = await openLink(link: link, userData: userData);
 
-    getSubjectsWithLink(link, header, userData);
+    return await getSubjectsWithLink(link, header, quarter, userData);
   }
 
-  static Future<List<JKOSubject>> getSubjectsWithLink(String link, String header, UserData userData) async {
+  static Future<Quarter> getSubjectsWithLink(String link, String header, int quarter, UserData userData) async {
     Dio dio = await Utils.createDioInstance(userData.schoolURL);
 
     Map params = {
@@ -39,8 +54,15 @@ class JKODiaryAPI {
 
     final bodyData = json.decode(response.data);
 
+    List<JKOSubject> list = new List();
     if (bodyData['success']) {
-      //yay
+      for (Map item in bodyData['data']) {
+        list.add(new JKOSubject.fromApiJson(item));
+      }
+      list.forEach((JKOSubject subject) {
+        subject.quarter = quarter;
+      });
+      return new Quarter(subjects: list);
     } else {
       throw new Exception('Error when fetching subjects');
     }
@@ -114,11 +136,7 @@ class JKODiaryAPI {
       userData = await AccountAPI.loginFromPrefs();
     }
 
-    final response = await dio.post(
-      userData.schoolURL + '/JceDiary/JceDiary',
-      data: {},
-      options: Options(responseType: ResponseType.PLAIN)
-    );
+    final response = await dio.post(userData.schoolURL + '/JceDiary/JceDiary', data: {}, options: Options(responseType: ResponseType.PLAIN));
 
     return parseStudentData(response.data);
   }

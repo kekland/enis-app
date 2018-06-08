@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../widgets/jko/jko_subject_widget.dart';
 import '../subject.dart';
 
 class JKOSubjectEvaluation {
@@ -32,7 +33,11 @@ class JKOSubject implements Subject {
   bool destroy = false;
   @override
   Widget createWidget() {
-    return null;
+    return JKOSubjectWidget(
+      viewModel: JKOSubjectViewModel(subject: this),
+      animate: !alreadyAnimated,
+      destroy: destroy,
+    );
   }
 
   JKOSubject();
@@ -51,9 +56,9 @@ class JKOSubject implements Subject {
 
     result.id = data['Id'];
     result.diaryId = data['JournalId'];
-    result.grade = data['Mark'];
+    result.grade = data['Mark'].toString();
     result.name = data['Name'];
-    result.points = data['Score'];
+    result.points = data['Score'] / 100.0;
     result.evaluations = new List();
 
     List evals = data['Evalutions'];

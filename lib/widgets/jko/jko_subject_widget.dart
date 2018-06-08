@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../api/jko/jko_data.dart';
 import '../../classes/diary.dart';
 import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
@@ -7,19 +8,17 @@ import '../grade_widget.dart';
 import 'jko_evaluation_widget.dart';
 
 class JKOSubjectViewModel {
-  String subjectName;
-  double percentage;
-  int quarter;
+  JKOSubject subject;
 
   double getPercentageToDisplay() {
-    return percentage * 100.0;
+    return subject.points * 100.0;
   }
 
   String calculateGrade() {
-    if (percentage == 0.0) {
+    if (subject.points == 0.0) {
       return '-';
     } else {
-      return Grade.toNumericalGrade(Grade.calculateGrade(percentage, Diary.jko));
+      return Grade.toNumericalGrade(Grade.calculateGrade(subject.points, Diary.jko));
     }
   }
 
@@ -39,18 +38,20 @@ class JKOSubjectViewModel {
     }
   }
 
-  JKOSubjectViewModel({this.subjectName, this.percentage, this.quarter});
+  JKOSubjectViewModel({this.subject});
 }
 
 class JKOSubjectWidget extends StatefulWidget {
   final JKOSubjectViewModel viewModel;
   final bool tappable;
   final bool animate;
+  final bool destroy;
 
   JKOSubjectWidget({
     this.viewModel,
     this.tappable = true,
     this.animate = true,
+    this.destroy = false,
   });
 
   @override
@@ -76,6 +77,7 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
       animation = new AlwaysStoppedAnimation(1.0);
     }
   }
+
   @override
   void dispose() {
     if (controller != null) controller.dispose();
@@ -88,7 +90,7 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
         builder: (BuildContext context) {
           return new Scaffold(
             appBar: new AppBar(
-              title: Text(widget.viewModel.subjectName),
+              title: Text(widget.viewModel.subject.name),
             ),
             body: new SingleChildScrollView(
               child: new Padding(
@@ -121,10 +123,10 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
         children: [
           new Expanded(
             child: Text(
-              'English',
+              widget.viewModel.subject.name,
               style: Theme.of(context).textTheme.body1.copyWith(
-                fontSize: 18.0,
-              ),
+                    fontSize: 18.0,
+                  ),
             ),
           ),
           new Row(
@@ -155,9 +157,9 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
 
     if (widget.tappable) {
       return new Hero(
-        tag: 'jko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        tag: 'jko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: new Opacity(
-          opacity: animation.value,
+          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
           child: new Card(
             child: new InkWell(
               onTap: () => onCardTap(context),
@@ -168,9 +170,9 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
       );
     } else {
       return new Hero(
-        tag: 'jko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        tag: 'jko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: Opacity(
-          opacity: animation.value,
+          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
           child: Card(
             child: cardChild,
           ),

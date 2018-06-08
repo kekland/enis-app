@@ -92,7 +92,7 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
         print(error);
       });*/
     } else {
-      JKODiaryAPI.getSubjectsOnQuarter(1);
+      JKODiaryAPI.getAllJkoSubjectsCallback(callbackDataRecieveHandler);
     }
   }
 
