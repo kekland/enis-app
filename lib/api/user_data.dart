@@ -27,14 +27,17 @@ abstract class UserData {
   String language = 'en-US';
 
   Map toJSON();
+  Map<String, String> generateHeaders();
+  String role;
 }
 
 class StudentUserData implements UserData {
   String pin;
   String password;
   String schoolURL;
+  String role = 'Student';
 
-  String sessionID = '';
+  String sessionID;
   String language = 'en-US';
 
   @override
@@ -44,6 +47,7 @@ class StudentUserData implements UserData {
       'password': password,
       'schoolURL': schoolURL,
       'language': language,
+      'sessionID': sessionID,
     };
   }
 
@@ -52,7 +56,18 @@ class StudentUserData implements UserData {
     this.password,
     this.schoolURL,
     this.language = 'en-US',
+    this.sessionID = '',
   });
+
+  factory StudentUserData.fromUserData(UserData data) {
+    return StudentUserData(
+      pin: data.pin,
+      password: data.password,
+      schoolURL: data.schoolURL,
+      language: data.language,
+      sessionID: data.sessionID,
+    );
+  }
 
   factory StudentUserData.fromJSON(Map json) {
     StudentUserData data = new StudentUserData(
@@ -60,7 +75,15 @@ class StudentUserData implements UserData {
       password: json['password'],
       schoolURL: json['schoolURL'],
       language: json['language'],
+      sessionID: json['sessionID'],
     );
     return data;
+  }
+
+  @override
+  Map<String, String> generateHeaders() {
+    Map<String, String> headers = new Map<String, String>();
+    headers = {"Cookie": sessionID + "; locale=$language; Culture=$language"};
+    return headers;
   }
 }
