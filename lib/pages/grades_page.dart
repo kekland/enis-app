@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/imko/imko_api.dart';
 import '../api/imko/imko_data.dart';
+import '../api/jko/jko_api.dart';
 import '../api/quarter.dart';
 import '../api/subject.dart';
 import '../api/subject_data.dart';
@@ -91,12 +92,7 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
         print(error);
       });*/
     } else {
-      /*JKODiaryAPI.getStudentData().then((result) {
-        print(result.studentID);
-        print(result.classID);
-      }).catchError((error) {
-        print(error);
-      });*/
+      JKODiaryAPI.getSubjectsOnQuarter(1);
     }
   }
 
