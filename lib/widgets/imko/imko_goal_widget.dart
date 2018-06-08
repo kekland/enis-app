@@ -12,36 +12,33 @@ class IMKOGoalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       child: new Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0,),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '1.0.1',
+                  goal.index,
                   style: Theme.of(context).textTheme.body1.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                Text(
-                  '09.03.2018',
-                  style: Theme.of(context).textTheme.caption,
-                ),
                 Chip(
                   label: Text(
-                    'Achieved',
+                    (goal.status == GoalStatus.achieved)? 'Achieved' : 'Working Towards',
                     style: Theme.of(context).textTheme.caption.copyWith(color: Colors.white),
                   ),
-                  backgroundColor: Colors.green,
+                  backgroundColor: (goal.status == GoalStatus.achieved)? Colors.green : Colors.amber,
                 )
               ],
             ),
             new Padding(
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id feugiat orci. Sed vestibulum at nunc sed tincidunt. Praesent viverra velit quis dapibus eleifend. Sed sem lorem, convallis non pharetra ac, scelerisque vel sem. Aenean sed augue odio. Vivamus mollis nulla in fermentum ullamcorper.',
+                goal.description
               ),
             ),
           ],
