@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   child: Text('IMKO'),
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.setInt('diaryType', 1);
+                    prefs.setInt('diary_type', 1);
                     Navigator.of(ctx).pop();
                     Navigator.of(ctx).pushReplacementNamed('/main');
                   },
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   child: Text('JKO'),
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.setInt('diaryType', 2);
+                    prefs.setInt('diary_type', 2);
                     Navigator.of(ctx).pop();
                     Navigator.of(ctx).pushReplacementNamed('/main');
                   },

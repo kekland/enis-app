@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../api/imko/imko_data.dart';
 import '../../classes/diary.dart';
 import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
@@ -8,24 +9,21 @@ import '../grade_widget.dart';
 import 'imko_goal_widget.dart';
 
 class IMKOSubjectViewModel {
-  String subjectName;
-  Assessment formative;
-  Assessment summative;
-  int quarter;
+  IMKOSubject subject;
 
   double calculateGradePercentage() {
     double percentage;
-    if (summative.maximum == 0) {
-      percentage = formative.getPercentage() * 60.0;
+    if (subject.summative.maximum == 0) {
+      percentage = subject.formative.getPercentage() * 60.0;
     } else {
-      percentage = formative.getPercentage() * 18.0 + summative.getPercentage() * 42.0;
+      percentage = subject.formative.getPercentage() * 18.0 + subject.summative.getPercentage() * 42.0;
     }
     percentage /= 60.0;
     return percentage;
   }
 
   String calculateGrade() {
-    if (summative.current == 0) {
+    if (subject.summative.current == 0) {
       return '-';
     } else {
       double percentage = calculateGradePercentage();
@@ -49,7 +47,7 @@ class IMKOSubjectViewModel {
     }
   }
 
-  IMKOSubjectViewModel({this.subjectName, this.formative, this.summative, this.quarter});
+  IMKOSubjectViewModel({this.subject});
 }
 
 class IMKOSubjectWidget extends StatefulWidget {
@@ -98,7 +96,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
         builder: (BuildContext context) {
           return new Scaffold(
             appBar: new AppBar(
-              title: Text(widget.viewModel.subjectName),
+              title: Text(widget.viewModel.subject.name),
             ),
             body: new SingleChildScrollView(
               child: new Padding(
@@ -131,10 +129,10 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
           new Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              widget.viewModel.subjectName,
+              widget.viewModel.subject.name,
               style: Theme.of(context).textTheme.body1.copyWith(
-                fontSize: 18.0,
-              ),
+                    fontSize: 18.0,
+                  ),
             ),
           ),
           new Row(
@@ -144,7 +142,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                 padding: EdgeInsets.only(right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(widget.viewModel.formative, animation.value),
+                    assessment: Assessment.lerp(widget.viewModel.subject.formative, animation.value),
                     description: 'FA',
                   ),
                 ),
@@ -153,7 +151,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(widget.viewModel.summative, animation.value),
+                    assessment: Assessment.lerp(widget.viewModel.subject.summative, animation.value),
                     description: 'SA',
                   ),
                 ),
@@ -177,7 +175,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
 
     if (widget.tappable) {
       return new Hero(
-        tag: 'imko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: new Opacity(
           opacity: animation.value,
           child: new Card(
@@ -190,7 +188,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
       );
     } else {
       return new Hero(
-        tag: 'imko.${widget.viewModel.quarter}.${widget.viewModel.subjectName}.heroWidget',
+        tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: Opacity(
           opacity: animation.value,
           child: Card(

@@ -116,7 +116,7 @@ class AccountAPI {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setString('user_data', json.encode(dataToReturn.toJSON()));
-      prefs.setString('user_data_role', data.role);
+      prefs.setString('user_data_role', dataToReturn.role);
 
       return dataToReturn;
     } catch (Exception) {
@@ -129,7 +129,8 @@ class AccountAPI {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       UserData data;
-      if (prefs.getString('user_data_role') == 'Student') {
+      String userRole = prefs.getString('user_data_role');
+      if (userRole == 'Student') {
         data = new StudentUserData.fromJSON(json.decode(prefs.getString('user_data')));
       }
       return login(data);

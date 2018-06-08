@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../../classes/assessment.dart';
 import '../../classes/goal_status.dart';
+import '../../widgets/imko/imko_subject_widget.dart';
 import '../subject.dart';
 
 class IMKOGoalGroup {
@@ -81,9 +84,18 @@ class IMKOSubject implements Subject {
     subject.id = json["Id"];
     subject.name = json["Name"];
     subject.formative = new Assessment(current: json["ApproveCnt"], maximum: json['Cnt']);
-    subject.summative = new Assessment(current: json["ApproveISA"].toInt(), maximum: json['maxISA'].toInt());
+    subject.summative = new Assessment(current: json["ApproveISA"].toInt(), maximum: json['MaxISA'].toInt());
     subject.quarter = quarter;
     subject.grade = json["Period"];
     return subject;
+  }
+
+  @override
+  Widget createWidget() {
+    return new IMKOSubjectWidget(
+      viewModel: new IMKOSubjectViewModel(
+        subject: this,
+      ),
+    );
   }
 }
