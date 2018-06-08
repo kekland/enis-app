@@ -16,4 +16,18 @@ class Assessment {
     int newMaximum = (assessment.maximum.toDouble() * value).round();
     return Assessment(current: newCurrent, maximum: newMaximum);
   }
+
+  Map toJSON() {
+    return {
+      'current': current,
+      'maximum': maximum,
+    };
+  }
+
+  factory Assessment.fromJSON(Map json) {
+    return Assessment(
+      current: json['current'],
+      maximum: json['maximum'],
+    );
+  }
 }
