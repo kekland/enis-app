@@ -23,7 +23,7 @@ class IMKOSubjectViewModel {
   }
 
   String calculateGrade() {
-    if (subject.summative.current == 0) {
+    if (subject.summative.current == 0 && subject.summative.maximum != 0) {
       return '-';
     } else {
       double percentage = calculateGradePercentage();
