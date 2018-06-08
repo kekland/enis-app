@@ -6,6 +6,7 @@ import '../../api/imko/imko_api.dart';
 import '../../api/imko/imko_data.dart';
 import '../../classes/diary.dart';
 import '../../classes/grade.dart';
+import '../../global.dart';
 import '../assessment_number_widget.dart';
 import '../../classes/assessment.dart';
 import '../grade_widget.dart';
@@ -75,7 +76,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
 
   initState() {
     super.initState();
-    if (widget.animate || widget.destroy) {
+    if ((widget.animate || widget.destroy) && Global.animate) {
       controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
       final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
       animation = new Tween(begin: 0.0, end: 1.0).animate(curve)

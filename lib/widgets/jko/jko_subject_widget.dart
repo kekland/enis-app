@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../api/jko/jko_data.dart';
 import '../../classes/diary.dart';
 import '../../classes/grade.dart';
+import '../../global.dart';
 import '../assessment_number_widget.dart';
 import '../grade_widget.dart';
 import 'jko_evaluation_widget.dart';
@@ -65,7 +66,7 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
 
   initState() {
     super.initState();
-    if (widget.animate) {
+    if (widget.animate && Global.animate) {
       controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
       final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
       animation = new Tween(begin: 0.0, end: 1.0).animate(curve)

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../global.dart';
+
 class AnimatedCircularProgressWidget extends StatefulWidget {
   final double value;
   final Color color;
@@ -15,14 +17,18 @@ class _AnimatedCircularProgressWidgetState extends State<AnimatedCircularProgres
 
   initState() {
     super.initState();
-    controller = new AnimationController(duration: Duration(milliseconds: 750), vsync: this);
-    final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
-    animation = new Tween(begin: 0.0, end: widget.value).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    if (Global.animate) {
+      controller = new AnimationController(duration: Duration(milliseconds: 750), vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+      animation = new Tween(begin: 0.0, end: widget.value).animate(curve)
+        ..addListener(() {
+          setState(() {});
+        });
 
-    controller.forward();
+      controller.forward();
+    } else {
+      animation = AlwaysStoppedAnimation(widget.value);
+    }
   }
 
   @override

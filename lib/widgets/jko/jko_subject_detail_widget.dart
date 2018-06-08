@@ -31,7 +31,7 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> {
       evaluationModels = await JKODiaryAPI.getAssessments(widget.viewModel.subject);
       setState(() {});
     } catch (e) {
-      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
+       if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
     }
   }
 

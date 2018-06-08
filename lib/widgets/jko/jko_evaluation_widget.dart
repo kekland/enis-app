@@ -1,4 +1,5 @@
 import '../../api/jko/jko_data.dart';
+import '../../global.dart';
 import '../../widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,14 +28,18 @@ class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTi
 
   initState() {
     super.initState();
-    controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
-    final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-    animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-      ..addListener(() {
-        setState(() {});
-      });
+    if (Global.animate) {
+      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          setState(() {});
+        });
 
-    controller.forward();
+      controller.forward();
+    } else {
+      animation = AlwaysStoppedAnimation(1.0);
+    }
   }
 
   @override

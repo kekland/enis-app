@@ -30,6 +30,10 @@ class _GradesPageState extends State<GradesPage> {
       DynamicTheme.of(context).setBrightness(Brightness.dark);
   }
 
+  openSettings(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed('/settings');
+  }
+
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
@@ -44,8 +48,8 @@ class _GradesPageState extends State<GradesPage> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.brightness_auto),
-              onPressed: () => openBrightnessDialog(context),
+              icon: Icon(Icons.settings),
+              onPressed: () => openSettings(context),
             ),
           ],
         ),
@@ -68,47 +72,59 @@ SubjectData data = new SubjectData();
 
 class _QuarterListWidgetState extends State<QuarterListWidget> {
   callbackDataRecieveHandler(int index, Quarter quarter) {
-    setState(() {
-      data.setQuarter(index, quarter);
-    });
+    if (mounted) {
+      setState(() {
+        data.setQuarter(index, quarter);
+      });
+    }
   }
 
   Future<Null> updateQuarter(int index) async {}
 
   Future<Null> fetchData() async {
-    setState(() {
-      data = new SubjectData();
-    });
+    if (mounted) {
+      setState(() {
+        data = new SubjectData();
+      });
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int diaryType = prefs.getInt('diary_type');
-    if (diaryType == 1) {
-      IMKODiaryAPI.getAllImkoSubjectsCallback(callbackDataRecieveHandler);
-      /*IMKODiaryAPI.getAllImkoSubjects().then((dynamic loadedData) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int diaryType = prefs.getInt('diary_type');
+      if (diaryType == 1) {
+        IMKODiaryAPI.getAllImkoSubjectsCallback(callbackDataRecieveHandler);
+        /*IMKODiaryAPI.getAllImkoSubjects().then((dynamic loadedData) {
         setState(() {
           data = loadedData;
         });
       }).catchError((error) {
         print(error);
       });*/
-    } else {
-      JKODiaryAPI.getAllJkoSubjectsCallback(callbackDataRecieveHandler);
+      } else {
+        JKODiaryAPI.getAllJkoSubjectsCallback(callbackDataRecieveHandler);
+      }
     }
   }
 
   List quarters = [1, 2, 3, 4];
   @override
   Widget build(BuildContext context) {
+    List quarterWidgets = quarters
+        .map(
+          (quarter) => new QuarterWidget(
+                quarterIndex: quarter - 1,
+                data: data.quarters[quarter - 1],
+                toRefresh: fetchData,
+              ),
+        )
+        .whereType<Widget>()
+        .toList();
+
+    /*quarterWidgets.add(
+      Container(
+        child: CircularProgressIndicator(),
+      ),
+    )*/
     return new TabBarView(
-      children: quarters
-          .map(
-            (quarter) => new QuarterWidget(
-                  quarterIndex: quarter - 1,
-                  data: data.quarters[quarter - 1],
-                  toRefresh: fetchData,
-                ),
-          )
-          .toList(),
+      children: quarterWidgets,
     );
   }
 }

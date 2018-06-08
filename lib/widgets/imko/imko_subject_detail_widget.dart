@@ -34,7 +34,7 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
         });
       });
     } catch (e) {
-      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
+      if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
     }
   }
 

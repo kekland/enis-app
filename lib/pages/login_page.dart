@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool debuggingWithMyAccount = true;
+  bool debuggingWithMyAccount = false;
   String submittedSchool, submittedPIN, submittedPassword;
   AnimationController controller;
   Animation<double> animation;
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     }).catchError((e) {
       print(e);
       Navigator.pop(ctx);
-      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
+       if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
     });
     //Navigator.of(ctx).pushReplacementNamed('/main');
   }
@@ -101,8 +101,20 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     controller.forward();
   }
 
+  checkIfUserLoggedIn(BuildContext ctx) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      if (prefs.getBool('user_log_in_at_next_time')) {
+        Navigator.of(ctx).pushReplacementNamed('/main');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkIfUserLoggedIn(context);
     return new Scaffold(
       key: scaffoldKey,
       body: new Container(

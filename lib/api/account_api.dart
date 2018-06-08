@@ -115,6 +115,7 @@ class AccountAPI {
 
       prefs.setString('user_data', json.encode(dataToReturn.toJSON()));
       prefs.setString('user_data_role', dataToReturn.role);
+      prefs.setBool('user_log_in_at_next_time', true);
 
       return dataToReturn;
     } catch (Exception) {
