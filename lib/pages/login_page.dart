@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool debuggingWithMyAccount = true;
   String submittedSchool, submittedPIN, submittedPassword;
   AnimationController controller;
   Animation<double> animation;
@@ -25,6 +26,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       password: submittedPassword,
       schoolURL: submittedSchool,
     );
+
+    if (debuggingWithMyAccount) {
+      userData.pin = '021107501405';
+      userData.password = 'TestPassword';
+      userData.schoolURL = 'http://fmalm.nis.edu.kz/Almaty_Fmsh';
+    }
 
     showDialog(
       context: ctx,
@@ -52,7 +59,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setInt('diaryType', 1);
-                    Navigator.of(ctx).popAndPushNamed('/main');
+                    Navigator.of(ctx).pop();
+                    Navigator.of(ctx).pushReplacementNamed('/main');
                   },
                 ),
                 FlatButton(
@@ -60,7 +68,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setInt('diaryType', 2);
-                    Navigator.of(ctx).popAndPushNamed('/main');
+                    Navigator.of(ctx).pop();
+                    Navigator.of(ctx).pushReplacementNamed('/main');
                   },
                 ),
               ],
