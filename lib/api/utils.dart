@@ -29,9 +29,9 @@ class Utils {
 
     Dio dio = new Dio();
     dio.options.baseUrl = url;
-    dio.options.connectTimeout = 5000;
+    dio.options.connectTimeout = 10000;
     dio.cookieJar = new PersistCookieJar(tempPath);
-    dio.options.receiveTimeout = 3000;
+    dio.options.receiveTimeout = 8000;
 
     return dio;
   }

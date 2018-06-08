@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 import '../account_api.dart';
@@ -20,46 +21,47 @@ class JKODiaryAPI {
   }
 
   static Future<List<JKOSubject>> getSubjectsWithLink(String link, String header, UserData userData) async {
+    Dio dio = await Utils.createDioInstance(userData.schoolURL);
+
     Map params = {
       'page': '1',
       'start': '0',
       'limit': '100',
     };
 
-    Map<String, String> headers = userData.generateHeaders();
-    headers['Referer'] = link;
-    headers['Cookie'] += '; ' + header;
-
-    final response = await Utils.post(
-      url: userData.schoolURL + '/Jce/Diary/GetSubjects',
-      reqData: params,
-      headers: headers,
+    final response = await dio.post(
+      userData.schoolURL + '/Jce/Diary/GetSubjects',
+      data: params,
+      options: Options(
+        responseType: ResponseType.JSON,
+      ),
     );
 
-    final bodyData = json.decode(response.body);
+    final bodyData = json.decode(response.data);
 
     if (bodyData['success']) {
-      String link = bodyData['data'];
       //yay
     } else {
       throw new Exception('Error when fetching subjects');
     }
   }
 
-  static Future<String> openLink({String link, UserData userData}) async {
-    final linkOpenResponse = await http.get(link, headers: userData.generateHeaders());
+  static Future<Null> openLink({String link, UserData userData}) async {
+    Dio dio = await Utils.createDioInstance(userData.schoolURL);
+    final linkOpenResponse = await dio.get(
+      link,
+      data: {},
+    );
 
-    String userSessionKey = linkOpenResponse.headers['set-cookie'];
-
-    userSessionKey = userSessionKey.substring(userSessionKey.indexOf('UserSessionKey='));
-
-    return userSessionKey;
+    int a = 0;
   }
 
   static Future<String> getLink({int quarterID, UserData userData}) async {
     if (userData == null) {
       userData = await AccountAPI.loginFromPrefs();
     }
+
+    Dio dio = await Utils.createDioInstance(userData.schoolURL);
 
     if (userData.runtimeType == StudentUserData) {
       IDData userID = await getStudentData(userData);
@@ -69,13 +71,12 @@ class JKODiaryAPI {
         'klassId': userID.classID,
       };
 
-      final response = await Utils.post(
-        url: userData.schoolURL + '/JCEDiary/GetDiaryURL',
-        headers: userData.generateHeaders(),
-        reqData: requestData,
+      final response = await dio.post(
+        userData.schoolURL + '/JCEDiary/GetDiaryURL',
+        data: requestData,
       );
 
-      final bodyData = json.decode(response.body);
+      final bodyData = response.data;
 
       if (bodyData['success']) {
         String link = bodyData['data'];
@@ -108,16 +109,17 @@ class JKODiaryAPI {
   }
 
   static Future<IDData> getStudentData([UserData userData]) async {
+    Dio dio = await Utils.createDioInstance(userData.schoolURL);
     if (userData == null) {
       userData = await AccountAPI.loginFromPrefs();
     }
 
-    final response = await Utils.post(
-      url: userData.schoolURL + '/JceDiary/JceDiary',
-      reqData: null,
-      headers: userData.generateHeaders(),
+    final response = await dio.post(
+      userData.schoolURL + '/JceDiary/JceDiary',
+      data: {},
+      options: Options(responseType: ResponseType.PLAIN)
     );
 
-    return parseStudentData(response.body);
+    return parseStudentData(response.data);
   }
 }
