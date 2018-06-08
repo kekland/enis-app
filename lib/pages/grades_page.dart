@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/imko/imko_api.dart';
+import '../api/imko/imko_data.dart';
 import '../api/quarter.dart';
+import '../api/subject.dart';
 import '../api/subject_data.dart';
 import '../classes/assessment.dart';
 import '../widgets/imko/imko_subject_widget.dart';
@@ -70,6 +72,8 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
     });
   }
 
+  Future<Null> updateQuarter(int index) async {}
+
   Future<Null> fetchData() async {
     setState(() {
       data = new SubjectData();
@@ -103,6 +107,7 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
       children: quarters
           .map(
             (quarter) => new QuarterWidget(
+                  quarterIndex: quarter - 1,
                   data: data.quarters[quarter - 1],
                   toRefresh: fetchData,
                 ),
@@ -112,26 +117,40 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
   }
 }
 
-class QuarterWidget extends StatelessWidget {
+class QuarterWidget extends StatefulWidget {
+  final int quarterIndex;
   final Quarter data;
   final Function toRefresh;
-  QuarterWidget({this.data, this.toRefresh});
 
+  QuarterWidget({this.quarterIndex, this.data, this.toRefresh});
+  @override
+  _QuarterWidgetState createState() => _QuarterWidgetState();
+}
+
+class _QuarterWidgetState extends State<QuarterWidget> {
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
+    if (widget.data == null) {
       return new Center(child: new CircularProgressIndicator());
     } else {
       return new RefreshIndicator(
         child: new ListView.builder(
           padding: new EdgeInsets.all(8.0),
-          itemCount: data.subjects.length,
+          itemCount: widget.data.subjects.length,
           itemBuilder: (BuildContext context, int index) {
-            return data.subjects[index].createWidget();
+            Widget w = widget.data.subjects[index].createWidget();
+            widget.data.subjects[index].alreadyAnimated = true;
+            data.quarters[widget.quarterIndex].subjects[index].alreadyAnimated = true;
+            return Padding(padding: EdgeInsets.only(top: 4.0, bottom: 4.0), child: w);
           },
         ),
-        onRefresh: toRefresh,
+        onRefresh: widget.toRefresh,
       );
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

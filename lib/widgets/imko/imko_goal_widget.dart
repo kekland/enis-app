@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../api/imko/imko_data.dart';
 import '../../classes/goal_status.dart';
 
-class IMKOGoalViewModel {
-  String goalNumber;
-  String goalDescription;
-  GoalStatus goalStatus;
-
-  String workingTowardsComment;
-
-  IMKOGoalViewModel({this.goalNumber, this.goalDescription, this.goalStatus, this.workingTowardsComment = ""});
-}
 
 class IMKOGoalWidget extends StatelessWidget {
-  final IMKOGoalViewModel viewModel;
+  final IMKOGoal goal;
 
-  IMKOGoalWidget({this.viewModel});
+  IMKOGoalWidget({this.goal});
   @override
   Widget build(BuildContext context) {
     return new Container(

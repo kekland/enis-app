@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../api/imko/imko_api.dart';
 import '../../api/imko/imko_data.dart';
 import '../../classes/diary.dart';
 import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
 import '../../classes/assessment.dart';
 import '../grade_widget.dart';
-import 'imko_goal_widget.dart';
+import 'imko_subject_detail_widget.dart';
 
 class IMKOSubjectViewModel {
   IMKOSubject subject;
@@ -54,11 +57,13 @@ class IMKOSubjectWidget extends StatefulWidget {
   final IMKOSubjectViewModel viewModel;
   final bool tappable;
   final bool animate;
+  final bool destroy;
 
   IMKOSubjectWidget({
     this.viewModel,
     this.tappable = true,
     this.animate = true,
+    this.destroy = false,
   });
   @override
   _IMKOSubjectWidgetState createState() => new _IMKOSubjectWidgetState();
@@ -70,7 +75,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
 
   initState() {
     super.initState();
-    if (widget.animate) {
+    if (widget.animate || widget.destroy) {
       controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
       final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
       animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
@@ -91,32 +96,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
   }
 
   onCardTap(BuildContext ctx) {
-    Navigator.of(ctx).push(
-      new MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return new Scaffold(
-            appBar: new AppBar(
-              title: Text(widget.viewModel.subject.name),
-            ),
-            body: new SingleChildScrollView(
-              child: new Padding(
-                padding: EdgeInsets.all(16.0),
-                child: new Column(
-                  children: [
-                    new IMKOSubjectWidget(
-                      viewModel: widget.viewModel,
-                      tappable: false,
-                      animate: false,
-                    ),
-                    new IMKOGoalWidget(),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    Navigator.of(ctx).push(new MaterialPageRoute(builder: (BuildContext ctx) {
+      return IMKOSubjectDetailPage(viewModel: widget.viewModel);
+    }));
   }
 
   @override
@@ -177,8 +159,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
       return new Hero(
         tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: new Opacity(
-          opacity: animation.value,
+          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
           child: new Card(
+            margin: EdgeInsets.zero,
             child: new InkWell(
               onTap: () => onCardTap(context),
               child: cardChild,
@@ -190,8 +173,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
       return new Hero(
         tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
         child: Opacity(
-          opacity: animation.value,
+          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
           child: Card(
+            margin: EdgeInsets.zero,
             child: cardChild,
           ),
         ),
