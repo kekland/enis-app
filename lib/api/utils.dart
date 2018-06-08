@@ -1,5 +1,9 @@
 import 'dart:core';
 import 'dart:async';
+import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class Utils {
@@ -13,11 +17,23 @@ class Utils {
         print('Request at url: $url failed with code: ${response.statusCode}, phrase: ${response.reasonPhrase}');
         throw new Exception(response.reasonPhrase);
       }
-    }
-    catch(Exception) {
-        print('Request at url: $url failed with cause: $Exception');
+    } catch (Exception) {
+      print('Request at url: $url failed with cause: $Exception');
       throw Exception;
     }
+  }
+
+  static Future<Dio> createDioInstance(String url) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+
+    Dio dio = new Dio();
+    dio.options.baseUrl = url;
+    dio.options.connectTimeout = 5000;
+    dio.cookieJar = new PersistCookieJar(tempPath);
+    dio.options.receiveTimeout = 3000;
+
+    return dio;
   }
 
   static int getTimestamp() {

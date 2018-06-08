@@ -28,8 +28,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     );
 
     if (debuggingWithMyAccount) {
+      /*
       userData.pin = '020917501426';
-      userData.password = 'Almaty98';
+      userData.password = 'Almaty98';*/
+      userData.pin = '021107501405';
+      userData.password = 'TestPassword';
       userData.schoolURL = 'http://fmalm.nis.edu.kz/Almaty_Fmsh';
     }
 

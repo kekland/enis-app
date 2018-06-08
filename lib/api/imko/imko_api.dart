@@ -1,13 +1,16 @@
 import 'dart:core';
 import 'dart:async';
+import 'package:cookie_jar/cookie_jar.dart';
+
 import '../account_api.dart';
 import '../quarter.dart';
 import '../subject_data.dart';
 import '../user_data.dart';
 import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import '../utils.dart';
 import 'imko_data.dart';
+
 class IMKODiaryAPI {
   static Future<SubjectData> getAllImkoSubjects([UserData userData]) async {
     try {
@@ -53,14 +56,15 @@ class IMKODiaryAPI {
 
   static Future<Quarter> getSubjectData(UserData userData, int quarterIndex) async {
     try {
+      Dio dio = await Utils.createDioInstance(userData.schoolURL);
+
       Map requestData = {"periodId": quarterIndex.toString()};
 
-      final response = await Utils.post(
-        url: userData.schoolURL + '/ImkoDiary/Subjects',
-        reqData: requestData,
-        headers: userData.generateHeaders(),
+      final response = await dio.post(
+        '/ImkoDiary/Subjects',
+        data: requestData,
       );
-      Map bodyData = json.decode(response.body);
+      Map bodyData = response.data;
 
       if (bodyData['success']) {
         List subjects = bodyData['data'];
@@ -104,17 +108,18 @@ class IMKODiaryAPI {
 
   static Future<List<IMKOGoalGroup>> getGoalsData(UserData userData, int quarterIndex, int subjectIndex) async {
     try {
+      Dio dio = await Utils.createDioInstance(userData.schoolURL);
+
       Map requestData = {
         "periodId": quarterIndex.toString(),
         "subjectId": subjectIndex.toString(),
       };
 
-      final response = await Utils.post(
-        url: userData.schoolURL + '/ImkoDiary/Goals',
-        reqData: requestData,
-        headers: userData.generateHeaders(),
+      final response = await dio.post(
+        userData.schoolURL + '/ImkoDiary/Goals',
+        data: requestData,
       );
-      Map bodyData = json.decode(response.body);
+      Map bodyData = response.data;
 
       if (bodyData['success']) {
         List data = bodyData['data']['goals'];

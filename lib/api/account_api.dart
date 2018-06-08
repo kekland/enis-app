@@ -1,40 +1,36 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'utils.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'user_data.dart';
-import 'utils.dart';
 
 class AccountAPI {
   /// This function gets the Session ID from cookies
   static Future<UserData> getSessionID(UserData loginData) async {
     try {
-      //Prepare request data
+      Dio dio = await Utils.createDioInstance(loginData.schoolURL);
+
+      dio.cookieJar.saveFromResponse(Uri.parse(loginData.schoolURL), [
+        new Cookie('locale', loginData.language),
+        new Cookie('Culture', loginData.language),
+      ]);
+
       Map requestData = {"txtUsername": loginData.pin, "txtPassword": loginData.password};
-      Map<String, String> headers = {"locale": loginData.language, "Culture": loginData.language};
       //Decode the data
-      final response = await Utils.post(
-        url: loginData.schoolURL + '/Account/Login',
-        reqData: requestData,
-        headers: headers,
+      Response response = await dio.post(
+        '/Account/Login',
+        data: requestData,
       );
-      final bodyData = json.decode(response.body);
+
+      final bodyData = response.data;
 
       //If request was successful
       if (bodyData['success']) {
-        //Extract session id from cookies
-        String cookies = response.headers['set-cookie'];
-        int schoolAuthIndex = cookies.indexOf('SchoolAuth');
-
-        String schoolAuth = cookies.substring(
-          schoolAuthIndex,
-          cookies.indexOf(';', schoolAuthIndex),
-        );
-
-        //Set session id to our user data class
-        loginData.sessionID = schoolAuth;
-
         return loginData;
       } else {
         //If request was unsuccessful - throw exception
@@ -47,14 +43,15 @@ class AccountAPI {
 
   static Future<UserData> getRoles(UserData loginData) async {
     try {
-      Map requestData = {};
+      Dio dio = await Utils.createDioInstance(loginData.schoolURL);
+
       //Decode the data
-      final response = await Utils.post(
-        url: loginData.schoolURL + '/Account/GetRoles',
-        reqData: requestData,
-        headers: loginData.generateHeaders(),
+      Response response = await dio.post(
+        '/Account/GetRoles',
+        data: {},
       );
-      final bodyData = json.decode(response.body);
+
+      final bodyData = response.data;
 
       if (bodyData['success']) {
         List roles = bodyData['listRole'];
@@ -81,14 +78,15 @@ class AccountAPI {
 
   static Future<UserData> confirmLogin(UserData loginData) async {
     try {
+      Dio dio = await Utils.createDioInstance(loginData.schoolURL);
+
       Map requestData = {"role": loginData.role, "password": loginData.password};
 
-      final response = await Utils.post(
-        url: loginData.schoolURL + '/Account/LoginWithRole',
-        reqData: requestData,
-        headers: loginData.generateHeaders(),
+      Response response = await dio.post(
+        '/Account/LoginWithRole',
+        data: requestData,
       );
-      final bodyData = json.decode(response.body);
+      final bodyData = response.data;
 
       if (bodyData['success']) {
         return loginData;
