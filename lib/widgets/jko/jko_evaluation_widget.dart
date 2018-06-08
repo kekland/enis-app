@@ -1,3 +1,4 @@
+import '../../api/jko/jko_data.dart';
 import '../../widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,49 +13,74 @@ class JKOEvaluationViewModel {
   JKOEvaluationViewModel({this.evaluationDescription, this.topicEvaluation, this.quarterEvaluation});
 }
 
-class JKOEvaluationWidget extends StatelessWidget {
-  final JKOEvaluationViewModel viewModel;
+class JKOEvaluationWidget extends StatefulWidget {
+  final JKOAssessment data;
 
-  JKOEvaluationWidget({this.viewModel});
+  JKOEvaluationWidget({this.data});
+  @override
+  _JKOEvaluationWidgetState createState() => _JKOEvaluationWidgetState();
+}
+
+class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  initState() {
+    super.initState();
+    controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+    final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+      ..addListener(() {
+        setState(() {});
+      });
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    if (controller != null) controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Card(
-      child: new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                'Maecenas a congue odio, vitae aliquam augue',
-                style: Theme.of(context).textTheme.body1.copyWith(
-                      fontSize: 16.0,
-                    ),
+    return new Opacity(
+      opacity: animation.value,
+      child: new Card(
+        child: new Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  widget.data.description,
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                        fontSize: 16.0,
+                      ),
+                ),
               ),
-            ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                new AssessmentCurrentMaximumWidget(
-                  new AssessmentCurrentMaximumViewModel(
-                      assessment: new Assessment(
-                        current: 14,
-                        maximum: 20,
-                      ),
-                      description: 'Topic'),
-                ),
-                new AssessmentCurrentMaximumWidget(
-                  new AssessmentCurrentMaximumViewModel(
-                      assessment: new Assessment(
-                        current: 16,
-                        maximum: 20,
-                      ),
-                      description: 'Quarter'),
-                ),
-              ],
-            ),
-          ],
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  new AssessmentCurrentMaximumWidget(
+                    new AssessmentCurrentMaximumViewModel(
+                      assessment: Assessment.lerp(widget.data.topic, animation.value),
+                      description: 'Topic',
+                    ),
+                  ),
+                  new AssessmentCurrentMaximumWidget(
+                    new AssessmentCurrentMaximumViewModel(
+                      assessment: Assessment.lerp(widget.data.quarter, animation.value),
+                      description: 'Quarter',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

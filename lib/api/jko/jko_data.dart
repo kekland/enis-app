@@ -1,7 +1,30 @@
 import 'package:flutter/widgets.dart';
 
+import '../../classes/assessment.dart';
 import '../../widgets/jko/jko_subject_widget.dart';
 import '../subject.dart';
+
+class JKOAssessment {
+  String description;
+  Assessment topic;
+  Assessment quarter;
+
+  JKOAssessment({this.description, this.topic, this.quarter});
+
+  factory JKOAssessment.fromApiJson(Map jsonTopic, Map jsonQuarter) {
+    return JKOAssessment(
+      description: jsonTopic['Name'],
+      topic: Assessment(
+        current: jsonTopic['Score'].round(),
+        maximum: jsonTopic['MaxScore'],
+      ),
+      quarter: Assessment(
+        current: jsonQuarter['Score'].round(),
+        maximum: jsonQuarter['MaxScore'],
+      ),
+    );
+  }
+}
 
 class JKOSubjectEvaluation {
   String evaluationName;

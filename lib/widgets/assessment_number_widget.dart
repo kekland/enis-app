@@ -21,9 +21,9 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
         Text(
           viewModel.assessment.current.toString(),
           style: Theme.of(context).textTheme.body1.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 40.0,
-          ),
+                fontWeight: FontWeight.w500,
+                fontSize: 40.0,
+              ),
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -32,14 +32,14 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
             Text(
               viewModel.description,
               style: Theme.of(context).textTheme.caption.copyWith(
-                fontSize: 12.0,
-              ),
+                    fontSize: 12.0,
+                  ),
             ),
             Text(
               '/${viewModel.assessment.maximum}',
               style: Theme.of(context).textTheme.subhead.copyWith(
-                fontSize: 18.0,
-              ),
+                    fontSize: 18.0,
+                  ),
             ),
           ],
         ),
@@ -65,6 +65,7 @@ class AssessmentPercentViewModel {
     if (decimalPercentage.length > 3) {
       decimalPercentage = decimalPercentage.substring(0, 3);
     }
+    decimalPercentage = decimalPercentage.padRight(3, '0');
     return decimalPercentage;
   }
 }
@@ -83,9 +84,9 @@ class AsssesmentPercentWidget extends StatelessWidget {
         Text(
           viewModel.calculateDisplayablePercentageInt(animationValue),
           style: Theme.of(context).textTheme.body1.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 40.0,
-          ),
+                fontWeight: FontWeight.w500,
+                fontSize: 40.0,
+              ),
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -94,14 +95,14 @@ class AsssesmentPercentWidget extends StatelessWidget {
             Text(
               viewModel.calculateDisplayablePercentageDecimal(animationValue),
               style: Theme.of(context).textTheme.caption.copyWith(
-                fontSize: 12.0,
-              ),
+                    fontSize: 12.0,
+                  ),
             ),
             Text(
               viewModel.description,
               style: Theme.of(context).textTheme.subhead.copyWith(
-                fontSize: 18.0,
-              ),
+                    fontSize: 18.0,
+                  ),
             ),
           ],
         ),

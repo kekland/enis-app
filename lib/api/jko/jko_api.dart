@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
+import '../../classes/assessment.dart';
 import '../account_api.dart';
 import '../quarter.dart';
 import '../user_data.dart';
@@ -11,6 +12,47 @@ import '../utils.dart';
 import 'jko_data.dart';
 
 class JKODiaryAPI {
+  static Future<List<JKOAssessment>> getAssessments(JKOSubject subject, [UserData userData]) async {
+    if (userData == null) {
+      userData = await AccountAPI.loginFromPrefs();
+    }
+
+    List topicJson = await getAssessmentOnEvaluation(subject.diaryId, subject.evaluations[0], userData);
+    List quarterJson = await getAssessmentOnEvaluation(subject.diaryId, subject.evaluations[1], userData);
+
+    List<JKOAssessment> assessments = new List();
+    for (int i = 0; i < topicJson.length; i++) {
+      Map topic = topicJson[i];
+      Map quarter = quarterJson[i];
+      assessments.add(new JKOAssessment.fromApiJson(topic, quarter));
+    }
+    return assessments;
+  }
+
+  static Future<List> getAssessmentOnEvaluation(String journalEvalID, JKOSubjectEvaluation evaluation, [UserData userData]) async {
+    if (userData == null) {
+      userData = await AccountAPI.loginFromPrefs();
+    }
+
+    Dio dio = await Utils.createDioInstance(userData.schoolURL);
+    Map requestParams = {
+      'evalId': evaluation.evaluationID,
+      'journalId': journalEvalID,
+      'page': '1',
+      'start': '0',
+      'limit': '100',
+    };
+
+    Response response = await dio.post('/Jce/Diary/GetResultByEvalution', data: requestParams);
+
+    Map data = json.decode(response.data);
+    if (data['success']) {
+      return data['data'];
+      //good
+    } else {
+      throw Exception('Error occurred while fetching assessment data');
+    }
+  }
 
   static Future<Null> getAllJkoSubjectsCallback(Function callback, [UserData userData]) async {
     try {
@@ -25,6 +67,7 @@ class JKODiaryAPI {
       throw Exception;
     }
   }
+
   static Future<Quarter> getSubjectsOnQuarter(quarter, [UserData userData]) async {
     if (userData == null) {
       userData = await AccountAPI.loginFromPrefs();

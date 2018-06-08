@@ -6,6 +6,7 @@ import '../../classes/grade.dart';
 import '../assessment_number_widget.dart';
 import '../grade_widget.dart';
 import 'jko_evaluation_widget.dart';
+import 'jko_subject_detail_widget.dart';
 
 class JKOSubjectViewModel {
   JKOSubject subject;
@@ -88,26 +89,7 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
     Navigator.of(ctx).push(
       new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new Scaffold(
-            appBar: new AppBar(
-              title: Text(widget.viewModel.subject.name),
-            ),
-            body: new SingleChildScrollView(
-              child: new Padding(
-                padding: EdgeInsets.all(16.0),
-                child: new Column(
-                  children: [
-                    new JKOSubjectWidget(
-                      viewModel: widget.viewModel,
-                      tappable: false,
-                      animate: false,
-                    ),
-                    new JKOEvaluationWidget(),
-                  ],
-                ),
-              ),
-            ),
-          );
+          return new JKOSubjectDetailPage(viewModel: widget.viewModel,);
         },
       ),
     );
