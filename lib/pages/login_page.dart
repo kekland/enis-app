@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../api/account_api.dart';
+import '../api/user_data.dart';
 import '../classes/school.dart';
+import '../widgets/loading_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,12 +14,66 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   String submittedSchool, submittedPIN, submittedPassword;
   AnimationController controller;
   Animation<double> animation;
 
   login(BuildContext ctx) {
-    Navigator.of(ctx).pushReplacementNamed('/main');
+    UnknownUserData userData = new UnknownUserData(
+      pin: submittedPIN,
+      password: submittedPassword,
+      schoolURL: submittedSchool,
+    );
+
+    showDialog(
+      context: ctx,
+      barrierDismissible: false,
+      builder: ((BuildContext ctx) {
+        return new LoadingDialogWidget('Logging in');
+      }),
+    );
+
+    AccountAPI.login(userData).then((UserData data) {
+      Navigator.pop(ctx);
+      print(json.encode(data.toJSON()));
+      showDialog(
+        context: ctx,
+        barrierDismissible: true,
+        builder: ((BuildContext ctx) {
+          return new AlertDialog(
+            title: Text('Select diary type'),
+            content: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FlatButton(
+                  child: Text('IMKO'),
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setInt('diaryType', 1);
+                    Navigator.of(ctx).popAndPushNamed('/main');
+                  },
+                ),
+                FlatButton(
+                  child: Text('JKO'),
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setInt('diaryType', 2);
+                    Navigator.of(ctx).popAndPushNamed('/main');
+                  },
+                ),
+              ],
+            ),
+          );
+        }),
+      );
+    }).catchError((e) {
+      print(e);
+      Navigator.pop(ctx);
+      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
+    });
+    //Navigator.of(ctx).pushReplacementNamed('/main');
   }
 
   initState() {
@@ -31,6 +91,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: scaffoldKey,
       body: new Container(
         decoration: new BoxDecoration(
           gradient: new LinearGradient(
@@ -112,7 +173,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         padding: new EdgeInsets.all(8.0),
                       ),
                       new RaisedButton(
-                        child: new Text('Login', style: TextStyle(color: Colors.black),),
+                        child: new Text(
+                          'Login',
+                          style: TextStyle(color: Colors.black),
+                        ),
                         onPressed: () => login(context),
                         color: Colors.white,
                       )

@@ -31,6 +31,63 @@ abstract class UserData {
   String role;
 }
 
+class UnknownUserData implements UserData {
+  String pin;
+  String password;
+  String schoolURL;
+  String role = 'Unknown';
+
+  String sessionID;
+  String language = 'en-US';
+
+  @override
+  Map toJSON() {
+    return <String, dynamic>{
+      'pin': pin,
+      'password': password,
+      'schoolURL': schoolURL,
+      'language': language,
+      'sessionID': sessionID,
+    };
+  }
+
+  UnknownUserData({
+    this.pin,
+    this.password,
+    this.schoolURL,
+    this.language = 'en-US',
+    this.sessionID = '',
+  });
+
+  factory UnknownUserData.fromUserData(UserData data) {
+    return UnknownUserData(
+      pin: data.pin,
+      password: data.password,
+      schoolURL: data.schoolURL,
+      language: data.language,
+      sessionID: data.sessionID,
+    );
+  }
+
+  factory UnknownUserData.fromJSON(Map json) {
+    UnknownUserData data = new UnknownUserData(
+      pin: json['pin'],
+      password: json['password'],
+      schoolURL: json['schoolURL'],
+      language: json['language'],
+      sessionID: json['sessionID'],
+    );
+    return data;
+  }
+
+  @override
+  Map<String, String> generateHeaders() {
+    Map<String, String> headers = new Map<String, String>();
+    headers = {"Cookie": sessionID + "; locale=$language; Culture=$language"};
+    return headers;
+  }
+
+}
 class StudentUserData implements UserData {
   String pin;
   String password;
