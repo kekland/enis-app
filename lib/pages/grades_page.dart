@@ -34,11 +34,13 @@ class _GradesPageState extends State<GradesPage> {
     Navigator.of(ctx).pushNamed('/settings');
   }
 
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
       length: 4,
       child: new Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
           title: Text('eNIS'),
           bottom: TabBar(
@@ -53,13 +55,15 @@ class _GradesPageState extends State<GradesPage> {
             ),
           ],
         ),
-        body: QuarterListWidget(),
+        body: QuarterListWidget(scaffoldKey: scaffoldKey),
       ),
     );
   }
 }
 
 class QuarterListWidget extends StatefulWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  QuarterListWidget({this.scaffoldKey});
   @override
   _QuarterListWidgetState createState() {
     _QuarterListWidgetState state = new _QuarterListWidgetState();
@@ -90,7 +94,9 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int diaryType = prefs.getInt('diary_type');
       if (diaryType == 1) {
-        IMKODiaryAPI.getAllImkoSubjectsCallback(callbackDataRecieveHandler);
+        IMKODiaryAPI.getAllImkoSubjectsCallback(callbackDataRecieveHandler).catchError((e) {
+          widget.scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(e.message)));
+        });
         /*IMKODiaryAPI.getAllImkoSubjects().then((dynamic loadedData) {
         setState(() {
           data = loadedData;
@@ -99,7 +105,9 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
         print(error);
       });*/
       } else {
-        JKODiaryAPI.getAllJkoSubjectsCallback(callbackDataRecieveHandler);
+        JKODiaryAPI.getAllJkoSubjectsCallback(callbackDataRecieveHandler).catchError((e) {
+          widget.scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(e.message)));
+        });
       }
     }
   }

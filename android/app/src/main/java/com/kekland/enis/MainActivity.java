@@ -1,4 +1,4 @@
-package com.example.enisnew;
+package com.kekland.enis;
 
 import android.os.Bundle;
 

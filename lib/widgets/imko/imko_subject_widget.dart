@@ -22,6 +22,7 @@ class IMKOSubjectViewModel {
     } else {
       percentage = subject.formative.getPercentage() * 18.0 + subject.summative.getPercentage() * 42.0;
     }
+    percentage.roundToDouble();
     percentage /= 60.0;
     return percentage;
   }

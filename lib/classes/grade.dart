@@ -30,7 +30,10 @@ class Grade {
     }
   }
 
+  //TODO: Fix percentage calculation and rounding
   static String calculateGrade(double percentage, Diary diary) {
+    //64.92
+    //->65
     if (diary == Diary.imko) {
       if (percentage > 0.9)
         return APlus;
@@ -47,6 +50,7 @@ class Grade {
       else
         return F;
     } else {
+      percentage = (percentage * 100.0).roundToDouble() / 100.0;
       if (percentage > 0.9)
         return APlus;
       else if (percentage > 0.85)
