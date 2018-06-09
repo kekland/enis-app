@@ -19,7 +19,7 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => new _GradesPageState();
 }
 
-List<String> tabs = ['1 quarter', '2 quarter', '3 quarter', '4 quarter'];
+List<String> tabs = ['Term 1', 'Term 2', 'Term 3', 'Term 4', 'Results'];
 
 class _GradesPageState extends State<GradesPage> {
   openBrightnessDialog(BuildContext ctx) {
@@ -38,7 +38,7 @@ class _GradesPageState extends State<GradesPage> {
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
-      length: 4,
+      length: 5,
       child: new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -126,11 +126,11 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
         .whereType<Widget>()
         .toList();
 
-    /*quarterWidgets.add(
+    quarterWidgets.add(
       Container(
         child: CircularProgressIndicator(),
       ),
-    )*/
+    );
     return new TabBarView(
       children: quarterWidgets,
     );
