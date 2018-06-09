@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
             '/login': (BuildContext context) => new LoginPage(),
             '/main': (BuildContext context) => new GradesPage(),
             '/settings': (BuildContext context) => new SettingsPage(),
+            '/calculator': (BuildContext context) => new CalculatorPage(),
           },
         );
       },

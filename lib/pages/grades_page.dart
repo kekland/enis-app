@@ -16,7 +16,6 @@ import '../widgets/jko/jko_subject_widget.dart';
 import 'calculator_page.dart';
 
 class GradesPage extends StatefulWidget {
-  final CalculatorPage calculatorPage = new CalculatorPage();
   @override
   _GradesPageState createState() => new _GradesPageState();
 }
@@ -37,9 +36,7 @@ class _GradesPageState extends State<GradesPage> {
   }
 
   openCalculator(BuildContext ctx) {
-    Navigator.of(ctx).push(new MaterialPageRoute(builder: ((BuildContext context) {
-      return widget.calculatorPage;
-    })));
+    Navigator.of(ctx).pushNamed('/calculator');
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
