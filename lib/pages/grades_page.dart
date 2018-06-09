@@ -13,8 +13,10 @@ import '../api/subject_data.dart';
 import '../classes/assessment.dart';
 import '../widgets/imko/imko_subject_widget.dart';
 import '../widgets/jko/jko_subject_widget.dart';
+import 'calculator_page.dart';
 
 class GradesPage extends StatefulWidget {
+  final CalculatorPage calculatorPage = new CalculatorPage();
   @override
   _GradesPageState createState() => new _GradesPageState();
 }
@@ -32,6 +34,12 @@ class _GradesPageState extends State<GradesPage> {
 
   openSettings(BuildContext ctx) {
     Navigator.of(ctx).pushNamed('/settings');
+  }
+
+  openCalculator(BuildContext ctx) {
+    Navigator.of(ctx).push(new MaterialPageRoute(builder: ((BuildContext context) {
+      return widget.calculatorPage;
+    })));
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
@@ -53,6 +61,10 @@ class _GradesPageState extends State<GradesPage> {
               icon: Icon(Icons.settings),
               onPressed: () => openSettings(context),
             ),
+            IconButton(
+              icon: Icon(Icons.assessment),
+              onPressed: () => openCalculator(context),
+            )
           ],
         ),
         body: QuarterListWidget(scaffoldKey: scaffoldKey),

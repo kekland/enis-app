@@ -1,3 +1,4 @@
+import 'assessment.dart';
 import 'diary.dart';
 
 class Grade {
@@ -28,6 +29,14 @@ class Grade {
       default:
         return '-';
     }
+  }
+
+  static int calculateIMKOPoints(Assessment formative, Assessment summative) {
+    return (formative.getPercentage() * 18.0 + summative.getPercentage() * 42.0).round();
+  }
+
+  static String calculateIMKOGrade(Assessment formative, Assessment summative) {
+    return calculateGrade(calculateIMKOPoints(formative, summative).toDouble() / 60.0, Diary.imko);
   }
 
   //TODO: Fix percentage calculation and rounding

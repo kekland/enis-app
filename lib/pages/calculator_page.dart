@@ -1,0 +1,223 @@
+import 'package:flutter/material.dart';
+
+import '../classes/assessment.dart';
+import '../classes/grade.dart';
+import '../widgets/assessment_number_widget.dart';
+
+class CalculatorPage extends StatefulWidget {
+  @override
+  _CalculatorPageState createState() => _CalculatorPageState();
+}
+
+List<String> tabs = ['IMKO Term', 'JKO Term', 'IMKO Year', 'JKO Year'];
+
+class _CalculatorPageState extends State<CalculatorPage> {
+  @override
+  Widget build(BuildContext context) {
+    return new DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Calculator'),
+          bottom: TabBar(
+            tabs: tabs.map((String tab) {
+              return Tab(text: tab);
+            }).toList(),
+          ),
+        ),
+        body: TabBarView(children: [
+          IMKOTermCalculatorPage(),
+          IMKOTermCalculatorPage(),
+          IMKOTermCalculatorPage(),
+          IMKOTermCalculatorPage(),
+        ]),
+      ),
+    );
+  }
+}
+
+class IMKOTermCalculatorPage extends StatefulWidget {
+  @override
+  IMKOTermCalculatorPageState createState() {
+    return new IMKOTermCalculatorPageState();
+  }
+}
+
+class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
+  Assessment formative = new Assessment(current: 10, maximum: 10);
+  Assessment summative = new Assessment(current: 40, maximum: 40);
+
+  displayDialogForFormative(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: ((BuildContext context) {
+        TextEditingController currentController = new TextEditingController(text: formative.current.toString());
+        currentController.addListener(() {
+          try {
+            formative.current = int.tryParse(currentController.text);
+          } catch (e) {
+            //ignore
+          }
+        });
+        TextEditingController maximumController = new TextEditingController(text: formative.maximum.toString());
+        maximumController.addListener(() {
+          try {
+            formative.maximum = int.tryParse(maximumController.text);
+          } catch (e) {
+            //ignore
+          }
+        });
+        return new AlertDialog(
+          title: Text('Change formative marks'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(hintText: 'Current formative points'),
+                keyboardType: TextInputType.number,
+                controller: currentController,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: 'Maximum formative points'),
+                keyboardType: TextInputType.number,
+                controller: maximumController,
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  displayDialogForSummative(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: ((BuildContext context) {
+        TextEditingController currentController = new TextEditingController(text: summative.current.toString());
+        currentController.addListener(() {
+          try {
+            summative.current = int.tryParse(currentController.text);
+          } catch (e) {
+            //ignore
+          }
+        });
+        TextEditingController maximumController = new TextEditingController(text: summative.maximum.toString());
+        maximumController.addListener(() {
+          try {
+            summative.maximum = int.tryParse(maximumController.text);
+          } catch (e) {
+            //ignore
+          }
+        });
+        return new AlertDialog(
+          title: Text('Change summative marks'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(hintText: 'Current summative points'),
+                keyboardType: TextInputType.number,
+                controller: currentController,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: 'Maximum summative points'),
+                keyboardType: TextInputType.number,
+                controller: maximumController,
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: new SingleChildScrollView(
+        child: Column(
+          children: [
+            Card(
+              child: new InkWell(
+                onTap: () => displayDialogForFormative(context),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Formative'),
+                      AssessmentCurrentMaximumWidget(
+                        AssessmentCurrentMaximumViewModel(
+                            assessment: formative,
+                            description: 'FA'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              child: new InkWell(
+                onTap: () => displayDialogForSummative(context),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Summative'),
+                      AssessmentCurrentMaximumWidget(
+                        AssessmentCurrentMaximumViewModel(
+                            assessment: summative,
+                            description: 'SA'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              child: new Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Results'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          Grade.calculateIMKOGrade(formative, summative),
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 40.0,
+                              ),
+                        ),
+                        Text(
+                          '(${Grade.toNumericalGrade(Grade.calculateIMKOGrade(formative, summative))})',
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                                fontSize: 24.0,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

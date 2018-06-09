@@ -13,6 +13,26 @@ class _SettingsPageState extends State<SettingsPage> {
   bool switchState = true;
   bool darkState = false;
 
+  @override
+  initState() {
+    super.initState();
+    loadStates();
+  }
+
+  void loadStates() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getBool('animate') == null) {
+        prefs.setBool('animate', true);
+      }
+      switchState = prefs.getBool('animate');
+      if (prefs.getBool('dark') == null) {
+        prefs.setBool('dark', false);
+      }
+      darkState = prefs.getBool('dark');
+    });
+  }
+
   void diarySelectionTapped(BuildContext context) {
     showDialog(
         barrierDismissible: true,
@@ -63,6 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void darkSwitchTapped(bool state, BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('dark', state);
     if (state)
       DynamicTheme.of(context).setBrightness(Brightness.dark);
     else
@@ -141,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   new Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Icon(Icons.offline_bolt),
+                    child: Icon(Icons.brightness_6),
                   ),
                   new Expanded(
                     child: new Column(

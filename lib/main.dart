@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'classes/assessment.dart';
 import 'global.dart';
+import 'pages/calculator_page.dart';
 import 'pages/grades_page.dart';
 import 'pages/login_page.dart';
 import 'pages/settings_page.dart';
