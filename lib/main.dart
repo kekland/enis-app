@@ -1,5 +1,6 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:dynamic_theme/theme_switcher_widgets.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,12 +10,20 @@ import 'pages/calculator_page.dart';
 import 'pages/grades_page.dart';
 import 'pages/login_page.dart';
 import 'pages/settings_page.dart';
+import 'routes.dart';
 import 'widgets/imko/imko_subject_widget.dart';
 import 'widgets/jko/jko_subject_widget.dart';
 
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() {
+    return new MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
   loadGlobalsAsync() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -22,6 +31,14 @@ class MyApp extends StatelessWidget {
     } catch (e) {
       Global.animate = true;
     }
+  }
+
+  @override
+  initState() {
+    super.initState();
+    Global.router = new Router();
+    Routes.configureRoutes(Global.router);
+    loadGlobalsAsync();
   }
 
   @override
@@ -39,6 +56,7 @@ class MyApp extends StatelessWidget {
           title: 'eNIS',
           theme: theme,
           home: new LoginPage(),
+          onGenerateRoute: Global.router.generator,
           routes: {
             '/login': (BuildContext context) => new LoginPage(),
             '/main': (BuildContext context) => new GradesPage(),

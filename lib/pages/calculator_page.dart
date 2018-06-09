@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import '../api/imko/imko_data.dart';
 import '../classes/assessment.dart';
 import '../classes/grade.dart';
 import '../widgets/assessment_number_widget.dart';
 
 class CalculatorPage extends StatefulWidget {
+  final int routedIndex;
+  final String routedData;
+
+  CalculatorPage({this.routedIndex = 0, this.routedData = ''});
   @override
   _CalculatorPageState createState() => _CalculatorPageState();
 }
@@ -16,6 +23,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   Widget build(BuildContext context) {
     return new DefaultTabController(
       length: 4,
+      initialIndex: widget.routedIndex,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Calculator'),
@@ -26,7 +34,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
         ),
         body: TabBarView(children: [
-          IMKOTermCalculatorPage(),
+          IMKOTermCalculatorPage(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
           IMKOTermCalculatorPage(),
           IMKOTermCalculatorPage(),
           IMKOTermCalculatorPage(),
@@ -37,6 +45,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
 }
 
 class IMKOTermCalculatorPage extends StatefulWidget {
+  final String routedData;
+  IMKOTermCalculatorPage({this.routedData = ''});
   @override
   IMKOTermCalculatorPageState createState() {
     return new IMKOTermCalculatorPageState();
@@ -46,6 +56,17 @@ class IMKOTermCalculatorPage extends StatefulWidget {
 class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
   Assessment formative = new Assessment(current: 10, maximum: 10);
   Assessment summative = new Assessment(current: 40, maximum: 40);
+
+  @override
+  initState() {
+    super.initState();
+    print(widget.routedData);
+    if (widget.routedData.length != 0) {
+      IMKOSubject subject = IMKOSubject.fromJson(json.decode(widget.routedData));
+      formative = subject.formative;
+      summative = subject.summative;
+    }
+  }
 
   displayDialogForFormative(BuildContext context) {
     showDialog(
@@ -152,9 +173,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                     children: [
                       Text('Formative'),
                       AssessmentCurrentMaximumWidget(
-                        AssessmentCurrentMaximumViewModel(
-                            assessment: formative,
-                            description: 'FA'),
+                        AssessmentCurrentMaximumViewModel(assessment: formative, description: 'FA'),
                       ),
                     ],
                   ),
@@ -173,9 +192,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                     children: [
                       Text('Summative'),
                       AssessmentCurrentMaximumWidget(
-                        AssessmentCurrentMaximumViewModel(
-                            assessment: summative,
-                            description: 'SA'),
+                        AssessmentCurrentMaximumViewModel(assessment: summative, description: 'SA'),
                       ),
                     ],
                   ),

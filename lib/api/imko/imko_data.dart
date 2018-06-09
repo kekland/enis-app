@@ -79,6 +79,17 @@ class IMKOSubject implements Subject {
         quarter = json["quarter"],
         grade = json["grade"];
 
+  Map toJSON() {
+    return {
+      'id': id,
+      'name': name,
+      'formative': formative.toJSON(),
+      'summative': summative.toJSON(),
+      'quarter': quarter,
+      'grade': grade,
+    };
+  }
+
   factory IMKOSubject.fromApiJson(Map json, int quarter) {
     IMKOSubject subject = new IMKOSubject();
     subject.id = json["Id"];

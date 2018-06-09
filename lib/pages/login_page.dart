@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/account_api.dart';
 import '../api/user_data.dart';
 import '../classes/school.dart';
+import '../global.dart';
+import '../routes.dart';
 import '../widgets/loading_dialog.dart';
 
 class LoginPage extends StatefulWidget {
@@ -84,6 +87,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     }).catchError((e) {
       print(e);
       Navigator.pop(ctx);
+
        if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
     });
     //Navigator.of(ctx).pushReplacementNamed('/main');

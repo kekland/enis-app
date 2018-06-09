@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/imko/imko_api.dart';
@@ -165,6 +167,11 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
           child: new Card(
             margin: EdgeInsets.zero,
             child: new InkWell(
+              onLongPress: () => Global.router.navigateTo(
+                    context,
+                    '/calculator?type=1&data=${json.encode(widget.viewModel.subject.toJSON())}',
+                    transition: TransitionType.inFromRight,
+                  ),
               onTap: () => onCardTap(context),
               child: cardChild,
             ),
