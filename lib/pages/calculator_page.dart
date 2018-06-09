@@ -35,9 +35,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
         body: TabBarView(children: [
           IMKOTermCalculatorPage(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
-          IMKOTermCalculatorPage(),
-          IMKOTermCalculatorPage(),
-          IMKOTermCalculatorPage(),
+          Container(child: Text('In development')),
+          Container(child: Text('In development')),
+          Container(child: Text('In development')),
         ]),
       ),
     );
