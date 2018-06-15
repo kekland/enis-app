@@ -49,6 +49,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    MaterialPageRoute.debugEnableFadingRoutes = true;
     return new DynamicTheme(
       defaultBrightness: Brightness.dark,
       data: (brightness) => new ThemeData(

@@ -1,4 +1,5 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:enis_new/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,8 +70,10 @@ class _SettingsPageState extends State<SettingsPage> {
   void logoutTapped(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('user_log_in_at_next_time', false);
-    Navigator.of(context).pop();
-    Navigator.of(context).popAndPushNamed('/login');
+    //Navigator.of(context).popUntil((Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+
+    //Global.router.navigateTo(context, Routes.login);
   }
 
   void animationSwitchTapped(bool state) async {

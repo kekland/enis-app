@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool debuggingWithMyAccount = false;
+  bool debuggingWithMyAccount = true;
   String submittedSchool, submittedPIN, submittedPassword;
   AnimationController controller;
   Animation<double> animation;
@@ -127,6 +127,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           Column(
             children: [
               new Expanded(
+                flex: 2,
                 child: new Opacity(
                   opacity: animation.value,
                   child: Container(
@@ -162,7 +163,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               padding: const EdgeInsets.only(
                 left: 16.0,
                 right: 16.0,
-                bottom: 168.0,
+                bottom: 16.0,
               ),
               child: new Opacity(
                 opacity: animation.value,
@@ -178,7 +179,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         new Text(
                           'eNIS',
                           textAlign: TextAlign.center,
-                          style: new TextStyle(fontSize: 32.0, fontFamily: 'Futura', fontWeight: FontWeight.w400),
+                          style: new TextStyle(fontSize: 32.0, fontFamily: 'OpenSans', fontWeight: FontWeight.w400),
                         ),
                         new TextField(
                           decoration: new InputDecoration(
@@ -218,33 +219,21 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           ),
                           padding: new EdgeInsets.all(16.0),
                         ),
+                        RaisedButton(
+                          child: new Text("Login",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              )),
+                          onPressed: () => login(context),
+                          padding: EdgeInsets.all(8.0),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.bottomCenter,
-            child: new Opacity(
-              opacity: animation.value,
-              child: new Padding(
-                padding: const EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                  bottom: 156.0,
-                ),
-                child: RaisedButton(
-                  child: new Text("Login",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      )),
-                  onPressed: () => login(context),
-                  padding: EdgeInsets.all(8.0),
-                  color: Colors.green,
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
                   ),
                 ),
               ),
