@@ -128,7 +128,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
             child: Text(
               widget.viewModel.subject.name,
               style: Theme.of(context).textTheme.body1.copyWith(
-                    fontSize: 18.0,
+                    fontSize: 20.0,
+                    fontFamily: 'Futura',
+                    fontWeight: FontWeight.w400
                   ),
             ),
           ),

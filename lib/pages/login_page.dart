@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:enis_new/widgets/page_reveal_widget.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       print(e);
       Navigator.pop(ctx);
 
-       if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
+      if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('${e.message}')));
     });
     //Navigator.of(ctx).pushReplacementNamed('/main');
   }
@@ -109,7 +110,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       if (prefs.getBool('user_log_in_at_next_time')) {
-        Navigator.of(ctx).pushReplacementNamed('/main');
+        //Navigator.of(ctx).pushReplacementNamed('/main');
       }
     } catch (e) {
       print(e);
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     checkIfUserLoggedIn(context);
-    return new Scaffold(
+    /*return new Scaffold(
       key: scaffoldKey,
       body: new Container(
         decoration: new BoxDecoration(
@@ -161,7 +162,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       new Text(
                         'eNIS',
                         textAlign: TextAlign.center,
-                        style: new TextStyle(fontSize: 32.0),
+                        style: new TextStyle(fontSize: 32.0, fontFamily: 'Futura', fontWeight: FontWeight.w400),
                       ),
                       new TextField(
                         decoration: new InputDecoration(
@@ -216,6 +217,142 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             ),
           ],
         ),
+      ),
+    );*/
+
+    return new Scaffold(
+      key: scaffoldKey,
+      body: new Stack(
+        children: <Widget>[
+          Column(
+            children: [
+              new Expanded(
+                child: new Opacity(
+                  opacity: animation.value,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                        begin: const Alignment(-1.0, -1.0),
+                        end: const Alignment(1.5, 1.5),
+                        colors: <Color>[Colors.lightBlueAccent, Colors.greenAccent],
+                      ),
+                    ),
+                    child: new Center(
+                      child: new Transform(
+                        transform: new Matrix4.translationValues(0.0, -100.0 * (1.0 - animation.value), 0.0),
+                        child: new Image.asset(
+                          'assets/nis_logo.png',
+                          width: 240.0,
+                          height: 240.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              new Expanded(
+                child: Container(),
+              ),
+            ],
+          ),
+          new Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: new Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                bottom: 168.0,
+              ),
+              child: new Opacity(
+                opacity: animation.value,
+                child: Card(
+                  elevation: animation.value * 12.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        new Text(
+                          'eNIS',
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(fontSize: 32.0, fontFamily: 'Futura', fontWeight: FontWeight.w400),
+                        ),
+                        new TextField(
+                          decoration: new InputDecoration(
+                            labelText: 'PIN',
+                            icon: new Icon(Icons.person),
+                          ),
+                          maxLength: 12,
+                          maxLengthEnforced: true,
+                          keyboardType: TextInputType.number,
+                          onChanged: (s) => submittedPIN = s,
+                        ),
+                        new TextField(
+                          decoration: new InputDecoration(
+                            labelText: 'Password',
+                            icon: new Icon(Icons.lock),
+                          ),
+                          obscureText: true,
+                          onChanged: (s) => submittedPassword = s,
+                        ),
+                        new Padding(
+                          child: new Center(
+                            child: new DropdownButton(
+                              items: School.schools.entries.map((MapEntry<String, String> entry) {
+                                return new DropdownMenuItem(
+                                  child: new Text(entry.key),
+                                  value: entry.value,
+                                );
+                              }).toList(),
+                              value: submittedSchool,
+                              onChanged: (String selected) {
+                                setState(() {
+                                  submittedSchool = selected;
+                                });
+                              },
+                              hint: new Text('School'),
+                            ),
+                          ),
+                          padding: new EdgeInsets.all(16.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: new Opacity(
+              opacity: animation.value,
+              child: new Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  bottom: 156.0,
+                ),
+                child: RaisedButton(
+                  child: new Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    )
+                  ),
+                  onPressed: () => login(context),
+                  padding: EdgeInsets.all(8.0),
+                  color: Colors.green,
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

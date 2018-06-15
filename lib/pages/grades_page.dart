@@ -48,7 +48,7 @@ class _GradesPageState extends State<GradesPage> {
       child: new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          title: Text('eNIS'),
+          title: Text('eNIS', style: Theme.of(context).textTheme.title.copyWith(fontFamily: 'Futura', color: Colors.white)),
           bottom: TabBar(
             tabs: tabs.map((String tab) {
               return Tab(text: tab);

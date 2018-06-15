@@ -25,7 +25,6 @@ class PageRevealWidget extends StatelessWidget {
 class CircleRevealClipper extends CustomClipper<Rect> {
   final double revealPercent;
   final Offset epicenter;
-  final Size screenSize;
 
   CircleRevealClipper(this.revealPercent, this.epicenter);
 

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'utils.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

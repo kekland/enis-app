@@ -108,7 +108,9 @@ class _JKOSubjectWidgetState extends State<JKOSubjectWidget> with SingleTickerPr
             child: Text(
               widget.viewModel.subject.name,
               style: Theme.of(context).textTheme.body1.copyWith(
-                    fontSize: 18.0,
+                    fontSize: 20.0,
+                    fontFamily: 'Futura',
+                    fontWeight: FontWeight.w400
                   ),
             ),
           ),

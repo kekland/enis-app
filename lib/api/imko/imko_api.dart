@@ -1,12 +1,10 @@
 import 'dart:core';
 import 'dart:async';
-import 'package:cookie_jar/cookie_jar.dart';
 
 import '../account_api.dart';
 import '../quarter.dart';
 import '../subject_data.dart';
 import '../user_data.dart';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../utils.dart';
 import 'imko_data.dart';

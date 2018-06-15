@@ -30,6 +30,11 @@ class MyAppState extends State<MyApp> {
       Global.animate = prefs.getBool('animate');
     } catch (e) {
       Global.animate = true;
+      prefs.setBool('animate', true);
+    }
+    if (Global.animate == null) {
+      Global.animate = true;
+      prefs.setBool('animate', true);
     }
   }
 
