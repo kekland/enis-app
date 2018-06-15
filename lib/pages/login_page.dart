@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool debuggingWithMyAccount = true;
+  bool debuggingWithMyAccount = false;
   String submittedSchool, submittedPIN, submittedPassword;
   AnimationController controller;
   Animation<double> animation;
