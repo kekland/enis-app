@@ -43,14 +43,23 @@ class _PageDraggerState extends State<PageDragger> {
       } else {
         slidePercent = 0.0;
       }
-      widget.slideUpdateStream.add(new SlideUpdate(UpdateType.dragging, slideDirection, slidePercent));
+      widget.slideUpdateStream.add(new SlideUpdate(UpdateType.dragging, slideDirection, slidePercent, false));
 
       //print("Dragging $slideDirection at $slidePercent%");
     }
   }
 
   onDragEnd(DragEndDetails details) {
-    widget.slideUpdateStream.add(new SlideUpdate(UpdateType.doneDragging, SlideDirection.none, 0.0));
+    widget.slideUpdateStream.add(new SlideUpdate(UpdateType.doneDragging, SlideDirection.none, 0.0, false));
+    dragStart = null;
+  }
+
+  onTap() {
+    if (widget.canDragRightToLeft) {
+      widget.slideUpdateStream.add(new SlideUpdate(UpdateType.dragging, SlideDirection.rightToLeft, 0.0, false));
+
+      widget.slideUpdateStream.add(new SlideUpdate(UpdateType.doneDragging, SlideDirection.none, 0.0, true));
+    }
     dragStart = null;
   }
 
@@ -60,6 +69,7 @@ class _PageDraggerState extends State<PageDragger> {
       onHorizontalDragStart: onDragStart,
       onHorizontalDragUpdate: onDragUpdate,
       onHorizontalDragEnd: onDragEnd,
+      onTap: onTap,
     );
   }
 }
@@ -106,6 +116,7 @@ class AnimatedPageDragger {
           UpdateType.animating,
           slideDirection,
           slidePercent,
+          false,
         ));
       })
       ..addStatusListener((AnimationStatus status) {
@@ -114,6 +125,7 @@ class AnimatedPageDragger {
             UpdateType.doneAnimating,
             slideDirection,
             endSlidePercent,
+            false,
           ));
         }
       });
@@ -144,6 +156,7 @@ class SlideUpdate {
   final slideDirection;
   final slidePercent;
   final updateType;
+  final tapped;
 
-  SlideUpdate(this.updateType, this.slideDirection, this.slidePercent);
+  SlideUpdate(this.updateType, this.slideDirection, this.slidePercent, this.tapped);
 }

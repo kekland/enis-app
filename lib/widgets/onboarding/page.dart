@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class PageViewModel {
   final Color color;
-  final IconData heroIcon;
+  final Widget hero;
   final String title;
   final String body;
   final IconData pagerIcon;
 
-  PageViewModel({this.color, this.heroIcon, this.title, this.body, this.pagerIcon});
+  PageViewModel({this.color, this.hero, this.title, this.body, this.pagerIcon});
 }
 
 class Page extends StatelessWidget {
@@ -31,11 +31,7 @@ class Page extends StatelessWidget {
               transform: new Matrix4.translationValues(0.0, 50.0 * (1.0 - percentVisible), 0.0),
               child: Padding(
                 padding: EdgeInsets.only(bottom: 25.0),
-                child: Icon(
-                  viewModel.heroIcon,
-                  size: 200.0,
-                  color: Colors.white,
-                ),
+                child: viewModel.hero,
               ),
             ),
             Transform(

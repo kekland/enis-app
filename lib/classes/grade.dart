@@ -44,33 +44,33 @@ class Grade {
     //64.92
     //->65
     if (diary == Diary.imko) {
-      if (percentage > 0.9)
+      if (percentage >= 0.9)
         return APlus;
-      else if (percentage > 0.8)
+      else if (percentage >= 0.8)
         return A;
-      else if (percentage > 0.7)
+      else if (percentage >= 0.7)
         return B;
-      else if (percentage > 0.6)
+      else if (percentage >= 0.6)
         return C;
-      else if (percentage > 0.5)
+      else if (percentage >= 0.5)
         return D;
-      else if (percentage > 0.4)
+      else if (percentage >= 0.4)
         return E;
       else
         return F;
     } else {
       percentage = (percentage * 100.0).roundToDouble() / 100.0;
-      if (percentage > 0.9)
+      if (percentage >= 0.9)
         return APlus;
-      else if (percentage > 0.85)
+      else if (percentage >= 0.85)
         return A;
-      else if (percentage > 0.7)
+      else if (percentage >= 0.7)
         return B;
-      else if (percentage > 0.65)
+      else if (percentage >= 0.65)
         return C;
-      else if (percentage > 0.5)
+      else if (percentage >= 0.5)
         return D;
-      else if (percentage > 0.4)
+      else if (percentage >= 0.4)
         return E;
       else
         return F;
