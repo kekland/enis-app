@@ -236,12 +236,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   bottom: 156.0,
                 ),
                 child: RaisedButton(
-                  child: new Text(
-                    "Login",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    )
-                  ),
+                  child: new Text("Login",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      )),
                   onPressed: () => login(context),
                   padding: EdgeInsets.all(8.0),
                   color: Colors.green,

@@ -60,7 +60,7 @@ class MyAppState extends State<MyApp> {
         return new MaterialApp(
           title: 'eNIS',
           theme: theme,
-          home: new OnboardingPage(),
+          home: new LoginPage(),
           onGenerateRoute: Global.router.generator,
           routes: {
             '/onboarding': (BuildContext context) => new OnboardingPage(),
