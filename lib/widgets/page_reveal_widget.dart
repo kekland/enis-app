@@ -30,13 +30,19 @@ class CircleRevealClipper extends CustomClipper<Rect> {
 
   @override
   Rect getClip(Size size) {
+    Offset definedEpicenter;
+    if (epicenter == null) {
+      definedEpicenter = new Offset(size.width / 2, size.height * 0.9);
+    } else {
+      definedEpicenter = epicenter;
+    }
     double height = size.height;
     double width = size.width;
 
-    double epicHeight = epicenter.dy;
+    double epicHeight = definedEpicenter.dy;
     double leftoverHeight = height - epicHeight;
 
-    double epicWidth = epicenter.dx;
+    double epicWidth = definedEpicenter.dx;
     double leftoverWidth = width - epicWidth;
 
     List<double> hyp = [
@@ -56,7 +62,7 @@ class CircleRevealClipper extends CustomClipper<Rect> {
     radius *= revealPercent;
     final diameter = radius * 2;
 
-    return new Rect.fromLTWH(epicenter.dx - radius, epicenter.dy - radius, diameter, diameter);
+    return new Rect.fromLTWH(definedEpicenter.dx - radius, definedEpicenter.dy - radius, diameter, diameter);
   }
 
   @override

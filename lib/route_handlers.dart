@@ -1,3 +1,5 @@
+import 'package:enis_new/pages/onboarding_page.dart';
+
 import 'pages/calculator_page.dart';
 import 'pages/login_page.dart';
 import 'package:fluro/fluro.dart';
@@ -18,6 +20,9 @@ var SettingsRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<
   return new SettingsPage();
 }));
 
+var OnboardingRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
+  return new OnboardingPage();
+}));
 var CalculatorRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
   String calcType = args['type'].first;
   if (calcType == '1') {
