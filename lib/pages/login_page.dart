@@ -106,6 +106,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     controller.forward();
   }
 
+  bool checkForUserLogin = true;
   checkIfUserLoggedIn(BuildContext ctx) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -119,7 +120,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    checkIfUserLoggedIn(context);
+    if (checkForUserLogin) {
+      checkIfUserLoggedIn(context);
+      checkForUserLogin = false;
+    }
     return new Scaffold(
       key: scaffoldKey,
       body: new Stack(
