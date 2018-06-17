@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enis_new/api/account_api.dart';
 import 'package:enis_new/api/user_birthday_data.dart';
 import 'package:enis_new/widgets/birthday/user_birthday_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,15 @@ class BirthdayPage extends StatefulWidget {
 }
 
 List<UserBirthdayData> data;
+List<UserBirthdayData> displayedData;
+String query;
 
 class _BirthdayPageState extends State<BirthdayPage> {
   loadData() async {
-    return new Future.delayed(Duration(seconds: 1), (() {
-      setState(() {
-        data = [
-          new UserBirthdayData(name: 'mem', surname: 'kek', role: 'a', birthday: new DateTime.now()),
-        ];
-      });
-    }));
+    List loadedData = await AccountAPI.getBirthdays();
+    setState(() {
+      data = loadedData;
+    });
   }
 
   @override

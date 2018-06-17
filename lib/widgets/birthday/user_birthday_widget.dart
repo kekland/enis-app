@@ -18,7 +18,7 @@ class UserBirthdayWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  data.name + ' ' + data.surname,
+                  data.surname + ' ' + data.name,
                   style: Theme.of(context).textTheme.body1.copyWith(
                         fontSize: 22.0,
                         fontFamily: 'OpenSans',
