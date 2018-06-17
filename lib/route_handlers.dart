@@ -1,3 +1,4 @@
+import 'package:enis_new/pages/birthday_page.dart';
 import 'package:enis_new/pages/onboarding_page.dart';
 
 import 'pages/calculator_page.dart';
@@ -22,6 +23,10 @@ var SettingsRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<
 
 var OnboardingRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
   return new OnboardingPage();
+}));
+
+var BirthdayRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
+  return new BirthdayPage();
 }));
 var CalculatorRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
   String calcType = args['type'].first;

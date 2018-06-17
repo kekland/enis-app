@@ -8,6 +8,7 @@ class Routes {
   static String settings = "/settings";
   static String calculator = "/calculator";
   static String onboarding = '/onboarding';
+  static String birthday = '/birthday';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -18,5 +19,6 @@ class Routes {
     router.define(settings, handler: SettingsRouteHandler);
     router.define(calculator, handler: CalculatorRouteHandler);
     router.define(onboarding, handler: OnboardingRouteHandler);
+    router.define(birthday, handler: BirthdayRouteHandler);
   }
 }

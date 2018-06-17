@@ -40,6 +40,10 @@ class _GradesPageState extends State<GradesPage> {
     Navigator.of(ctx).pushNamed('/calculator');
   }
 
+  openBirthday(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed('/birthday');
+  }
+
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -62,6 +66,10 @@ class _GradesPageState extends State<GradesPage> {
             IconButton(
               icon: Icon(Icons.assessment),
               onPressed: () => openCalculator(context),
+            ),
+            IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () => openBirthday(context),
             )
           ],
         ),

@@ -4,18 +4,37 @@ import 'package:flutter/material.dart';
 class UserBirthdayWidget extends StatelessWidget {
   final UserBirthdayData data;
   UserBirthdayWidget({this.data});
+
   @override
   Widget build(BuildContext context) {
     return Card(
       child: new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text(data.name + ' ' + data.surname),
-            Text(data.birthday.toString()),
+        padding: const EdgeInsets.all(16.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  data.name + ' ' + data.surname,
+                  style: Theme.of(context).textTheme.body1.copyWith(
+                        fontSize: 22.0,
+                        fontFamily: 'OpenSans',
+                      ),
+                ),
+                Text(data.role),
+              ],
+            ),
+            Text(birthdayToString()),
           ],
         ),
       ),
     );
+  }
+
+  String birthdayToString() {
+    return '${data.birthday.day}.${data.birthday.month}.${data.birthday.year}';
   }
 }
