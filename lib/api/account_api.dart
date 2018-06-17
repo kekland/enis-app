@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:enis_new/api/user_birthday_data.dart';
+
 import 'utils.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,5 +137,55 @@ class AccountAPI {
     } catch (Exception) {
       throw Exception;
     }
+  }
+
+  static List rolesToLoad = [
+    'Student',
+    'Teacher',
+    'ClassHeader',
+  ];
+  static Future<List<UserBirthdayData>> getBirthdays([UserData userData]) async {
+    if (userData == null) {
+      userData = await AccountAPI.loginFromPrefs();
+    }
+    try {
+      Dio dio = await Utils.createDioInstance(userData.schoolURL);
+      List<UserBirthdayData> data = [];
+      for (String role in rolesToLoad) {
+        Map requestData = {
+          'sort': 'SecondName',
+          'dir': 'ASC',
+          'filter': '',
+          'start': 0,
+          'limit': 20000,
+          'role': role,
+        };
+
+        final response = await dio.post(
+          userData.schoolURL + '/Management/GetPersons/',
+          data: requestData,
+        );
+        Map bodyData = response.data;
+        for (Map dat in bodyData['data']) {
+          data.add(new UserBirthdayData(
+            name: dat['FirstName'],
+            surname: dat['SecondName'],
+            role: role,
+            birthday: parseDate(dat['Birthday']),
+          ));
+        }
+      }
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static DateTime parseDate(String date) {
+    List<String> spl = date.split('-');
+    int year = int.parse(spl[0]);
+    int month = int.parse(spl[1]);
+    int day = int.parse(spl[2].substring(0, 2));
+    return new DateTime(year, month, day);
   }
 }
