@@ -18,10 +18,12 @@ class BirthdayPage extends StatefulWidget {
 
 List<UserBirthdayData> data;
 List<UserBirthdayData> displayedData;
-String query;
 
 class _BirthdayPageState extends State<BirthdayPage> {
-  applyQuery([String query]) {
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
+  String query;
+
+  applyQuery() {
     List<UserBirthdayData> dataToSet = [];
     if (query == null || query.length == 0) {
       dataToSet = data;
@@ -40,30 +42,46 @@ class _BirthdayPageState extends State<BirthdayPage> {
   }
 
   loadData() async {
-    List loadedData = await AccountAPI.getBirthdays();
-    displayedData = [];
     setState(() {
-      data = loadedData;
-      applyQuery('');
+      data = null;
+      displayedData = null;
     });
+    try {
+      List loadedData = await AccountAPI.getBirthdays();
+      displayedData = [];
+      setState(() {
+        data = loadedData;
+        applyQuery();
+      });
+    } catch (error) {
+      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(error.message)));
+    }
+  }
+
+  Future<Null> refresh() async {
+    await loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     Widget body;
     if (displayedData != null) {
-      body = new ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemBuilder: ((BuildContext ctx, int index) {
-          return new UserBirthdayWidget(data: displayedData[index]);
-        }),
-        itemCount: displayedData.length,
+      body = new RefreshIndicator(
+        onRefresh: refresh,
+        child: new ListView.builder(
+          padding: const EdgeInsets.all(8.0),
+          itemBuilder: ((BuildContext ctx, int index) {
+            return new UserBirthdayWidget(data: displayedData[index]);
+          }),
+          itemCount: displayedData.length,
+        ),
       );
     } else {
       body = new Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Birthdays'),
         bottom: PreferredSize(
@@ -82,7 +100,10 @@ class _BirthdayPageState extends State<BirthdayPage> {
               child: new Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
                 child: TextField(
-                  onChanged: (String s) => applyQuery(s),
+                  onChanged: (String s) {
+                    query = s;
+                    applyQuery();
+                  },
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     icon: Icon(Icons.search),

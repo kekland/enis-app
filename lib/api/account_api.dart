@@ -139,11 +139,11 @@ class AccountAPI {
     }
   }
 
-  static List rolesToLoad = [
-    'Student',
-    'Teacher',
-    'ClassHeader',
-  ];
+  static Map rolesToLoad = {
+    'Student': 'Student',
+    'Teacher': 'Teacher',
+    'ClassHeader': 'Curator',
+  };
   static Future<List<UserBirthdayData>> getBirthdays([UserData userData]) async {
     if (userData == null) {
       userData = await AccountAPI.loginFromPrefs();
@@ -151,7 +151,7 @@ class AccountAPI {
     try {
       Dio dio = await Utils.createDioInstance(userData.schoolURL);
       List<UserBirthdayData> data = [];
-      for (String role in rolesToLoad) {
+      for (String role in rolesToLoad.keys) {
         Map requestData = {
           'sort': 'SecondName',
           'dir': 'ASC',
@@ -170,7 +170,7 @@ class AccountAPI {
           data.add(new UserBirthdayData(
             name: dat['FirstName'],
             surname: dat['SecondName'],
-            role: role,
+            role: rolesToLoad[role],
             birthday: parseDate(dat['Birthday']),
           ));
         }
