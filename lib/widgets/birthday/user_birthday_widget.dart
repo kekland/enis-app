@@ -1,4 +1,6 @@
+import 'package:date_format/date_format.dart';
 import 'package:enis_new/api/user_birthday_data.dart';
+import 'package:enis_new/classes/birthday_utils.dart';
 import 'package:flutter/material.dart';
 
 class UserBirthdayWidget extends StatelessWidget {
@@ -14,27 +16,34 @@ class UserBirthdayWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  data.surname + ' ' + data.name,
-                  style: Theme.of(context).textTheme.body1.copyWith(
-                        fontSize: 22.0,
-                        fontFamily: 'OpenSans',
-                      ),
-                ),
-                Text(data.role),
-              ],
+            new Expanded(
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  (BirthdayUtils.isBirthdayToday(data))
+                      ? Text(
+                          data.surname + ' ' + data.name,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 22.0,
+                                fontFamily: 'OpenSans',
+                                color: (Theme.of(context).brightness == Brightness.dark) ? Colors.amber : Colors.red,
+                              ),
+                        )
+                      : Text(
+                          data.surname + ' ' + data.name,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                                fontSize: 22.0,
+                                fontFamily: 'OpenSans',
+                              ),
+                        ),
+                  Text(data.role),
+                ],
+              ),
             ),
-            Text(birthdayToString()),
+            Text(BirthdayUtils.birthdayToString(data)),
           ],
         ),
       ),
     );
-  }
-
-  String birthdayToString() {
-    return '${data.birthday.day}.${data.birthday.month}.${data.birthday.year}';
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:date_format/date_format.dart';
 import 'package:enis_new/api/account_api.dart';
 import 'package:enis_new/api/user_birthday_data.dart';
+import 'package:enis_new/classes/birthday_utils.dart';
 import 'package:enis_new/widgets/birthday/user_birthday_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
@@ -21,43 +22,21 @@ String query;
 
 class _BirthdayPageState extends State<BirthdayPage> {
   applyQuery([String query]) {
-    displayedData.clear();
-    if (query != null || query.length == 0) {
-      displayedData = data;
+    List<UserBirthdayData> dataToSet = [];
+    if (query == null || query.length == 0) {
+      dataToSet = data;
     } else {
       query = query.toLowerCase();
       for (UserBirthdayData dat in data) {
         String nameSurname = (dat.name + ' ' + dat.surname).toLowerCase();
         String surnameName = (dat.surname + ' ' + dat.name).toLowerCase();
-        if (nameSurname.contains(query) || surnameName.contains(query) || birthdayToString(dat).contains(query)) {
-          displayedData.add(dat);
+        String role = (dat.role).toLowerCase();
+        if (nameSurname.contains(query) || surnameName.contains(query) || BirthdayUtils.birthdayToString(dat).contains(query) || role.contains(query)) {
+          dataToSet.add(dat);
         }
       }
-      print(displayedData.length);
     }
-  }
-
-  SearchBar searchBar;
-  _BirthdayPageState() {
-    searchBar = new SearchBar(
-      inBar: true,
-      setState: setState,
-      onChanged: (String query) => applyQuery(query),
-      buildDefaultAppBar: buildAppBar,
-    );
-  }
-
-  String birthdayToString(UserBirthdayData data) {
-    return '${data.birthday.day}.${data.birthday.month}.${data.birthday.year}';
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return new AppBar(
-      title: Text('Birthdays'),
-      actions: [
-        searchBar.getSearchAction(context),
-      ],
-    );
+    setState(() => displayedData = dataToSet);
   }
 
   loadData() async {
@@ -73,14 +52,12 @@ class _BirthdayPageState extends State<BirthdayPage> {
   Widget build(BuildContext context) {
     Widget body;
     if (displayedData != null) {
-      body = new Container(
+      body = new ListView.builder(
         padding: const EdgeInsets.all(8.0),
-        child: new ListView.builder(
-          itemBuilder: ((BuildContext ctx, int index) {
-            return new UserBirthdayWidget(data: displayedData[index]);
-          }),
-          itemCount: displayedData.length,
-        ),
+        itemBuilder: ((BuildContext ctx, int index) {
+          return new UserBirthdayWidget(data: displayedData[index]);
+        }),
+        itemCount: displayedData.length,
       );
     } else {
       body = new Center(child: CircularProgressIndicator());
@@ -89,7 +66,34 @@ class _BirthdayPageState extends State<BirthdayPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Birthdays'),
-        bottom: AppBar(),
+        bottom: PreferredSize(
+          preferredSize: new Size.fromHeight(56.0),
+          child: new Container(
+            height: 56.0,
+            alignment: Alignment.center,
+            child: Card(
+              elevation: 8.0,
+              margin: const EdgeInsets.only(
+                left: 12.0,
+                right: 12.0,
+                top: 6.0,
+                bottom: 6.0,
+              ),
+              child: new Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
+                child: TextField(
+                  onChanged: (String s) => applyQuery(s),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    icon: Icon(Icons.search),
+                    hintText: 'Search',
+                    isDense: true,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: body,
     );

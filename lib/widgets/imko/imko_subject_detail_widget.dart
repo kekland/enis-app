@@ -69,7 +69,10 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
                       children: goals.map((IMKOGoalGroup group) {
                         return new ExpansionPanel(
                           headerBuilder: (BuildContext context, bool isExpanded) {
-                            return new Padding(padding: EdgeInsets.all(16.0), child: new Text(group.groupName));
+                            return new Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: new Text(group.groupName),
+                            );
                           },
                           body: new Column(
                             children: group.goals.map((IMKOGoal goal) {

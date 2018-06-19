@@ -1,9 +1,6 @@
 import 'dart:core';
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-
-import '../../classes/assessment.dart';
 import '../account_api.dart';
 import '../quarter.dart';
 import '../user_data.dart';
@@ -117,8 +114,6 @@ class JKODiaryAPI {
       link,
       data: {},
     );
-
-    int a = 0;
   }
 
   static Future<String> getLink({int quarterID, UserData userData}) async {
