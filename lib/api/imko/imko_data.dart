@@ -104,13 +104,12 @@ class IMKOSubject implements Subject {
   bool alreadyAnimated = false;
   bool destroy = false;
   @override
-  Widget createWidget() {
+  Widget createWidget(Animation<double> animation) {
     return new IMKOSubjectWidget(
       viewModel: new IMKOSubjectViewModel(
         subject: this,
       ),
-      animate: !alreadyAnimated,
-      destroy: destroy,
+      animation: animation,
     );
   }
 }

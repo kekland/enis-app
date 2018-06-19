@@ -58,60 +58,20 @@ class IMKOSubjectViewModel {
   IMKOSubjectViewModel({this.subject});
 }
 
-class IMKOSubjectWidget extends StatefulWidget {
+class IMKOSubjectWidget extends StatelessWidget {
   final IMKOSubjectViewModel viewModel;
   final bool tappable;
-  final bool animate;
-  final bool destroy;
+  final Animation<double> animation;
 
   IMKOSubjectWidget({
     this.viewModel,
     this.tappable = true,
-    this.animate = true,
-    this.destroy = false,
+    this.animation = const AlwaysStoppedAnimation(1.0),
   });
-  @override
-  _IMKOSubjectWidgetState createState() => new _IMKOSubjectWidgetState();
-}
-
-class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
-
-  initState() {
-    super.initState();
-    if ((widget.animate) && Global.animate) {
-      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-        ..addListener(() {
-          setState(() {});
-        });
-
-      controller.forward();
-    } else if (widget.destroy && Global.animate) {
-      controller = new AnimationController(duration: Duration(milliseconds: 500), vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-        ..addListener(() {
-          setState(() {});
-        });
-
-      controller.forward();
-    } else {
-      animation = new AlwaysStoppedAnimation(1.0);
-    }
-  }
-
-  @override
-  void dispose() {
-    if (controller != null) controller.dispose();
-    super.dispose();
-  }
 
   onCardTap(BuildContext ctx) {
     Navigator.of(ctx).push(new MaterialPageRoute(builder: (BuildContext ctx) {
-      return IMKOSubjectDetailPage(viewModel: widget.viewModel);
+      return IMKOSubjectDetailPage(viewModel: viewModel);
     }));
   }
 
@@ -126,12 +86,8 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
           new Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              widget.viewModel.subject.name,
-              style: Theme.of(context).textTheme.body1.copyWith(
-                    fontSize: 20.0,
-                    fontFamily: 'Futura',
-                    fontWeight: FontWeight.w400
-                  ),
+              viewModel.subject.name,
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20.0, fontFamily: 'Futura', fontWeight: FontWeight.w400),
             ),
           ),
           new Row(
@@ -141,7 +97,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                 padding: EdgeInsets.only(right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(widget.viewModel.subject.formative, animation.value),
+                    assessment: Assessment.lerp(viewModel.subject.formative, animation.value),
                     description: 'FA',
                   ),
                 ),
@@ -150,7 +106,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
                   new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(widget.viewModel.subject.summative, animation.value),
+                    assessment: Assessment.lerp(viewModel.subject.summative, animation.value),
                     description: 'SA',
                   ),
                 ),
@@ -159,9 +115,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
                 padding: EdgeInsets.only(left: 8.0),
                 child: new GradeWidget(
                   viewModel: new GradeWidgetViewModel(
-                    grade: widget.viewModel.calculateGrade(),
-                    gradeColor: widget.viewModel.calculateGradeColor(),
-                    percentage: widget.viewModel.calculateGradePercentage(),
+                    grade: viewModel.calculateGrade(),
+                    gradeColor: viewModel.calculateGradeColor(),
+                    percentage: viewModel.calculateGradePercentage(),
                   ),
                   animationValue: animation.value,
                 ),
@@ -172,11 +128,11 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
       ),
     );
 
-    if (widget.tappable) {
+    if (tappable) {
       return new Hero(
-        tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
+        tag: 'imko.${viewModel.subject.quarter}.${viewModel.subject.name}.heroWidget',
         child: new Opacity(
-          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
+          opacity: animation.value,
           child: new Card(
             margin: EdgeInsets.zero,
             child: new InkWell(
@@ -185,7 +141,7 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
               }),
               onLongPress: () => Global.router.navigateTo(
                     context,
-                    '/calculator?type=1&data=${json.encode(widget.viewModel.subject.toJSON())}',
+                    '/calculator?type=1&data=${json.encode(viewModel.subject.toJSON())}',
                     transition: TransitionType.custom,
                     transitionBuilder: ((BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
                       return new PageRevealWidget(
@@ -203,9 +159,9 @@ class _IMKOSubjectWidgetState extends State<IMKOSubjectWidget> with SingleTicker
       );
     } else {
       return new Hero(
-        tag: 'imko.${widget.viewModel.subject.quarter}.${widget.viewModel.subject.name}.heroWidget',
+        tag: 'imko.${viewModel.subject.quarter}.${viewModel.subject.name}.heroWidget',
         child: Opacity(
-          opacity: (widget.destroy) ? 1.0 - animation.value : animation.value,
+          opacity: animation.value,
           child: Card(
             margin: EdgeInsets.zero,
             child: cardChild,

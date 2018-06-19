@@ -55,7 +55,6 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
                 child: new IMKOSubjectWidget(
                   viewModel: widget.viewModel,
                   tappable: false,
-                  animate: false,
                 ),
               ),
               (goals == null)

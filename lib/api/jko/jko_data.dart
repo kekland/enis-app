@@ -52,14 +52,11 @@ class JKOSubject implements Subject {
 
   List<JKOSubjectEvaluation> evaluations;
 
-  bool alreadyAnimated = false;
-  bool destroy = false;
   @override
-  Widget createWidget() {
+  Widget createWidget(Animation<double> animation) {
     return JKOSubjectWidget(
+      animation: animation,
       viewModel: JKOSubjectViewModel(subject: this),
-      animate: !alreadyAnimated,
-      destroy: destroy,
     );
   }
 

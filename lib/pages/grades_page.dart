@@ -92,7 +92,7 @@ class QuarterListWidget extends StatefulWidget {
 
 SubjectData data = new SubjectData();
 
-class _QuarterListWidgetState extends State<QuarterListWidget> {
+class _QuarterListWidgetState extends State<QuarterListWidget> with SingleTickerProviderStateMixin {
   callbackDataRecieveHandler(int index, Quarter quarter) {
     if (mounted) {
       setState(() {
@@ -156,12 +156,6 @@ class _QuarterListWidgetState extends State<QuarterListWidget> {
         )
         .whereType<Widget>()
         .toList();
-
-    quarterWidgets.add(
-      Container(
-        child: CircularProgressIndicator(),
-      ),
-    );
     return new TabBarView(
       children: quarterWidgets,
     );
@@ -180,42 +174,50 @@ class QuarterWidget extends StatefulWidget {
 }
 
 class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateMixin {
+  Animation<double> animation;
   AnimationController controller;
-  Animation<double> animation = AlwaysStoppedAnimation(1.0);
 
+  Duration duration = Duration(milliseconds: 1000);
+  initState() {
+    super.initState();
+    if (Global.animate) {
+      controller = new AnimationController(duration: duration, vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          if (mounted) {
+            setState(() {});
+          }
+        });
+    } else {
+      animation = AlwaysStoppedAnimation(1.0);
+    }
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    if (controller != null) controller.dispose();
+    if (animation != null) {}
+  }
+
+  bool showForward = true;
   Future<Null> onRefresh() async {
     if (!mounted) {
       return;
     }
     if (Global.animate) {
-      controller = new AnimationController(duration: Duration(milliseconds: 500), vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-      animation = new Tween(begin: 1.0, end: 0.0).animate(curve)
-        ..addListener(() {
-          setState(() {});
-        })
-        ..addStatusListener((AnimationStatus status) {
-          if (status == AnimationStatus.completed) {
-            animation = AlwaysStoppedAnimation(1.0);
-            widget.toRefresh();
-          }
-        });
-
-      controller.forward();
+      controller.reverse(from: 1.0);
+      new Future.delayed(duration, () => widget.toRefresh());
     } else {
       widget.toRefresh();
     }
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    if (controller != null) controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (widget.errorOccurredReload) {
+      showForward = true;
       return new Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -223,7 +225,7 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
             IconButton(
               iconSize: 36.0,
               icon: Icon(Icons.refresh),
-              onPressed: widget.toRefresh,
+              onPressed: onRefresh,
             ),
             Text(
               'Something went wrong. Click button above to refresh',
@@ -233,8 +235,13 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
         ),
       );
     } else if (widget.data == null) {
+      showForward = true;
       return new Center(child: new CircularProgressIndicator());
     } else {
+      if (showForward) {
+        controller.forward();
+        showForward = false;
+      }
       return new RefreshIndicator(
         child: new Opacity(
           opacity: animation.value,
@@ -242,9 +249,7 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
             padding: new EdgeInsets.all(8.0),
             itemCount: widget.data.subjects.length,
             itemBuilder: (BuildContext context, int index) {
-              Widget w = widget.data.subjects[index].createWidget();
-              widget.data.subjects[index].alreadyAnimated = true;
-              data.quarters[widget.quarterIndex].subjects[index].alreadyAnimated = true;
+              Widget w = widget.data.subjects[index].createWidget(animation);
               return Padding(padding: EdgeInsets.only(top: 4.0, bottom: 4.0), child: w);
             },
           ),

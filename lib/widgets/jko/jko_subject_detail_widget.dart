@@ -52,7 +52,6 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> {
                 child: new JKOSubjectWidget(
                   viewModel: widget.viewModel,
                   tappable: false,
-                  animate: false,
                 ),
               ),
               (evaluationModels == null)
