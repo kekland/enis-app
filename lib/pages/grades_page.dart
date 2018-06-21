@@ -259,3 +259,4 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
     }
   }
 }
+

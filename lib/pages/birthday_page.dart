@@ -3,6 +3,7 @@ import 'package:date_format/date_format.dart';
 import 'package:enis_new/api/account_api.dart';
 import 'package:enis_new/api/user_birthday_data.dart';
 import 'package:enis_new/classes/birthday_utils.dart';
+import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/birthday/user_birthday_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
@@ -19,9 +20,35 @@ class BirthdayPage extends StatefulWidget {
 List<UserBirthdayData> data;
 List<UserBirthdayData> displayedData;
 
-class _BirthdayPageState extends State<BirthdayPage> {
+class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderStateMixin {
+  Animation<double> animation;
+  AnimationController controller;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   String query;
+
+  Duration duration = Duration(milliseconds: 1000);
+  initState() {
+    super.initState();
+    if (Global.animate) {
+      controller = new AnimationController(duration: duration, vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          if (mounted) {
+            setState(() {});
+          }
+        });
+    } else {
+      animation = AlwaysStoppedAnimation(1.0);
+    }
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    if (controller != null) controller.dispose();
+    if (animation != null) {}
+  }
 
   applyQuery() {
     List<UserBirthdayData> dataToSet = [];
@@ -42,20 +69,24 @@ class _BirthdayPageState extends State<BirthdayPage> {
   }
 
   loadData() async {
-    setState(() {
-      data = null;
-      displayedData = null;
-    });
-    try {
-      List loadedData = await AccountAPI.getBirthdays();
-      displayedData = [];
+    controller.reverse();
+    new Future.delayed(duration, () async {
       setState(() {
-        data = loadedData;
-        applyQuery();
+        data = null;
+        displayedData = null;
       });
-    } catch (error) {
-      scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(error.message)));
-    }
+      try {
+        List loadedData = await AccountAPI.getBirthdays();
+        displayedData = [];
+        controller.forward();
+        setState(() {
+          data = loadedData;
+          applyQuery();
+        });
+      } catch (error) {
+        scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(error.message)));
+      }
+    });
   }
 
   Future<Null> refresh() async {
@@ -68,12 +99,15 @@ class _BirthdayPageState extends State<BirthdayPage> {
     if (displayedData != null) {
       body = new RefreshIndicator(
         onRefresh: refresh,
-        child: new ListView.builder(
-          padding: const EdgeInsets.all(8.0),
-          itemBuilder: ((BuildContext ctx, int index) {
-            return new UserBirthdayWidget(data: displayedData[index]);
-          }),
-          itemCount: displayedData.length,
+        child: new Opacity(
+          opacity: animation.value,
+          child: new ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemBuilder: ((BuildContext ctx, int index) {
+              return new UserBirthdayWidget(data: displayedData[index]);
+            }),
+            itemCount: displayedData.length,
+          ),
         ),
       );
     } else {
