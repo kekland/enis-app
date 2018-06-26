@@ -1,5 +1,6 @@
 import 'package:enis_new/classes/assessment.dart';
 import 'package:enis_new/classes/diary.dart';
+import 'package:flutter/material.dart';
 
 class Grade {
   static const String APlus = "A+";
@@ -39,10 +40,24 @@ class Grade {
     return calculateGrade(calculateIMKOPoints(formative, summative).toDouble() / 60.0, Diary.imko);
   }
 
-  //TODO: Fix percentage calculation and rounding
+  static Color calculateGradeColor(double percentage, Diary diary, [bool blackInsteadOfRed = true]) {
+    String numericGrade = toNumericalGrade(calculateGrade(percentage, diary));
+
+    switch (numericGrade) {
+      case '5':
+        return Colors.green;
+      case '4':
+        return Colors.amber;
+      case '3':
+        return Colors.deepOrange;
+      case '2':
+        return Colors.red;
+      default:
+        return (blackInsteadOfRed)? Colors.black12 : Colors.red;
+    }
+  }
+
   static String calculateGrade(double percentage, Diary diary) {
-    //64.92
-    //->65
     if (diary == Diary.imko) {
       if (percentage >= 0.9)
         return APlus;

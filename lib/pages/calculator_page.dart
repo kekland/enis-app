@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:enis_new/api/imko/imko_data.dart';
 import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
         body: TabBarView(children: [
           IMKOTermCalculatorPage(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
-          Container(child: Text('In development')),
-          Container(child: Text('In development')),
-          Container(child: Text('In development')),
+          Container(child: Center(child: Text('In development'))),
+          Container(child: Center(child: Text('In development'))),
+          Container(child: Center(child: Text('In development'))),
         ]),
       ),
     );
@@ -94,12 +95,12 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: InputDecoration(hintText: 'Current formative points'),
+                decoration: InputDecoration(labelText: 'Current formative points'),
                 keyboardType: TextInputType.number,
                 controller: currentController,
               ),
               TextField(
-                decoration: InputDecoration(hintText: 'Maximum formative points'),
+                decoration: InputDecoration(labelText: 'Maximum formative points'),
                 keyboardType: TextInputType.number,
                 controller: maximumController,
               ),
@@ -137,12 +138,12 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: InputDecoration(hintText: 'Current summative points'),
+                decoration: InputDecoration(labelText: 'Current summative points'),
                 keyboardType: TextInputType.number,
                 controller: currentController,
               ),
               TextField(
-                decoration: InputDecoration(hintText: 'Maximum summative points'),
+                decoration: InputDecoration(labelText: 'Maximum summative points'),
                 keyboardType: TextInputType.number,
                 controller: maximumController,
               ),
@@ -210,17 +211,22 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.ideographic,
                       children: [
                         Text(
                           Grade.calculateIMKOGrade(formative, summative),
                           style: Theme.of(context).textTheme.body1.copyWith(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 40.0,
+                                color: Grade.calculateGradeColor(
+                                  Grade.calculateIMKOPoints(formative, summative) / 60.0,
+                                  Diary.imko,
+                                ),
                               ),
                         ),
                         Text(
-                          '(${Grade.toNumericalGrade(Grade.calculateIMKOGrade(formative, summative))})',
+                          Grade.toNumericalGrade(Grade.calculateIMKOGrade(formative, summative)),
                           style: Theme.of(context).textTheme.caption.copyWith(
                                 fontSize: 24.0,
                               ),
