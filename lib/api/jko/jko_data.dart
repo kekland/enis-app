@@ -1,6 +1,9 @@
 import 'package:enis_new/api/subject.dart';
 import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/diary.dart';
+import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class JKOAssessment {
@@ -86,5 +89,37 @@ class JKOSubject implements Subject {
     }
 
     return result;
+  }
+
+  @override
+  double calculateGradePercentage() {
+    return points;
+  }
+
+  @override
+  String calculateGrade() {
+    if (points == 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
+      return Grade.toNumericalGrade(Grade.calculateGrade(percentage, Diary.jko));
+    }
+  }
+
+  @override
+  Color calculateGradeColor() {
+    String numericGrade = calculateGrade();
+    switch (numericGrade) {
+      case '5':
+        return Colors.green;
+      case '4':
+        return Colors.amber;
+      case '3':
+        return Colors.deepOrange;
+      case '2':
+        return Colors.red;
+      default:
+        return Colors.black12;
+    }
   }
 }

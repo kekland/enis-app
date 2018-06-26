@@ -13,29 +13,6 @@ class JKOSubjectViewModel {
     return subject.points * 100.0;
   }
 
-  String calculateGrade() {
-    if (subject.points == 0.0) {
-      return '-';
-    } else {
-      return Grade.toNumericalGrade(Grade.calculateGrade(subject.points, Diary.jko));
-    }
-  }
-
-  Color calculateGradeColor() {
-    String numericGrade = calculateGrade();
-    switch (numericGrade) {
-      case '5':
-        return Colors.green;
-      case '4':
-        return Colors.amber;
-      case '3':
-        return Colors.deepOrange;
-      case '2':
-        return Colors.red;
-      default:
-        return Colors.black12;
-    }
-  }
 
   JKOSubjectViewModel({this.subject});
 }
@@ -89,8 +66,8 @@ class JKOSubjectWidget extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16.0),
                 child: new GradeWidget(
                   viewModel: new GradeWidgetViewModel(
-                    grade: viewModel.calculateGrade(),
-                    gradeColor: viewModel.calculateGradeColor(),
+                    grade: viewModel.subject.calculateGrade(),
+                    gradeColor: viewModel.subject.calculateGradeColor(),
                     percentage: 0.85,
                   ),
                   animationValue: animation.value,

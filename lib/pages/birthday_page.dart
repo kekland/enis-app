@@ -26,7 +26,7 @@ class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderSt
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   String query;
 
-  Duration duration = Duration(milliseconds: 1000);
+  Duration duration = Duration(milliseconds: 500);
   initState() {
     super.initState();
     if (Global.animate) {
@@ -68,6 +68,7 @@ class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderSt
     setState(() => displayedData = dataToSet);
   }
 
+  bool errorOccurredReload = false;
   loadData() async {
     controller.reverse();
     new Future.delayed(duration, () async {
@@ -78,25 +79,52 @@ class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderSt
       try {
         List loadedData = await AccountAPI.getBirthdays();
         displayedData = [];
-        controller.forward();
-        setState(() {
-          data = loadedData;
-          applyQuery();
-        });
+        if (mounted) {
+          controller.forward();
+          setState(() {
+            data = loadedData;
+            applyQuery();
+          });
+        }
       } catch (error) {
-        scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(error.message)));
+        if (scaffoldKey != null && mounted) {
+          scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text(error.message)));
+          setState(() {
+            errorOccurredReload = true;
+          });
+        }
       }
     });
   }
 
   Future<Null> refresh() async {
+    setState(() {
+      errorOccurredReload = false;
+    });
     await loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     Widget body;
-    if (displayedData != null) {
+    if (errorOccurredReload) {
+      body = new Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              iconSize: 36.0,
+              icon: Icon(Icons.refresh),
+              onPressed: refresh,
+            ),
+            Text(
+              'Something went wrong. Click button above to refresh',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ],
+        ),
+      );
+    } else if (displayedData != null && displayedData.length != 0) {
       body = new RefreshIndicator(
         onRefresh: refresh,
         child: new Opacity(

@@ -15,42 +15,6 @@ import 'package:flutter/material.dart';
 class IMKOSubjectViewModel {
   IMKOSubject subject;
 
-  double calculateGradePercentage() {
-    double percentage;
-    if (subject.summative.maximum == 0) {
-      percentage = subject.formative.getPercentage() * 60.0;
-    } else {
-      percentage = subject.formative.getPercentage() * 18.0 + subject.summative.getPercentage() * 42.0;
-    }
-    percentage.roundToDouble();
-    percentage /= 60.0;
-    return percentage;
-  }
-
-  String calculateGrade() {
-    if (subject.summative.current == 0 && subject.summative.maximum != 0) {
-      return '-';
-    } else {
-      double percentage = calculateGradePercentage();
-      return Grade.toNumericalGrade(Grade.calculateGrade(percentage, Diary.imko));
-    }
-  }
-
-  Color calculateGradeColor() {
-    String numericGrade = calculateGrade();
-    switch (numericGrade) {
-      case '5':
-        return Colors.green;
-      case '4':
-        return Colors.amber;
-      case '3':
-        return Colors.deepOrange;
-      case '2':
-        return Colors.red;
-      default:
-        return Colors.black12;
-    }
-  }
 
   IMKOSubjectViewModel({this.subject});
 }
@@ -112,9 +76,9 @@ class IMKOSubjectWidget extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8.0),
                 child: new GradeWidget(
                   viewModel: new GradeWidgetViewModel(
-                    grade: viewModel.calculateGrade(),
-                    gradeColor: viewModel.calculateGradeColor(),
-                    percentage: viewModel.calculateGradePercentage(),
+                    grade: viewModel.subject.calculateGrade(),
+                    gradeColor: viewModel.subject.calculateGradeColor(),
+                    percentage: viewModel.subject.calculateGradePercentage(),
                   ),
                   animationValue: animation.value,
                 ),

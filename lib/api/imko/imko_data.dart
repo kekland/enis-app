@@ -1,6 +1,8 @@
 import 'package:enis_new/api/subject.dart';
 import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/goal_status.dart';
+import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/widgets/imko/imko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -110,5 +112,45 @@ class IMKOSubject implements Subject {
       ),
       animation: animation,
     );
+  }
+
+  @override
+  double calculateGradePercentage() {
+    double percentage;
+    if (summative.maximum == 0) {
+      percentage = formative.getPercentage() * 60.0;
+    } else {
+      percentage = formative.getPercentage() * 18.0 + summative.getPercentage() * 42.0;
+    }
+    percentage.roundToDouble();
+    percentage /= 60.0;
+    return percentage;
+  }
+
+  @override
+  String calculateGrade() {
+    if (summative.current == 0 && summative.maximum != 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
+      return Grade.toNumericalGrade(Grade.calculateGrade(percentage, Diary.imko));
+    }
+  }
+
+  @override
+  Color calculateGradeColor() {
+    String numericGrade = calculateGrade();
+    switch (numericGrade) {
+      case '5':
+        return Colors.green;
+      case '4':
+        return Colors.amber;
+      case '3':
+        return Colors.deepOrange;
+      case '2':
+        return Colors.red;
+      default:
+        return Colors.black12;
+    }
   }
 }

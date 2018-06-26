@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:enis_new/api/imko/imko_api.dart';
+import 'package:enis_new/api/imko/imko_data.dart';
 import 'package:enis_new/api/jko/jko_api.dart';
 import 'package:enis_new/api/quarter.dart';
 import 'package:enis_new/api/subject_data.dart';
 import 'package:enis_new/global.dart';
+import 'package:enis_new/widgets/imko/imko_result_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +16,8 @@ class GradesPage extends StatefulWidget {
   _GradesPageState createState() => new _GradesPageState();
 }
 
-List<String> tabs = ['Term 1', 'Term 2', 'Term 3', 'Term 4', 'Results'];
+List<String> tabs = ['Term 1', 'Term 2', 'Term 3', 'Term 4'];
+//List<String> tabs = ['Term 1', 'Term 2', 'Term 3', 'Term 4', 'Results'];
 
 class _GradesPageState extends State<GradesPage> {
   openBrightnessDialog(BuildContext ctx) {
@@ -41,7 +44,8 @@ class _GradesPageState extends State<GradesPage> {
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
-      length: 5,
+      length: 4,
+      //length: 5,
       child: new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -53,17 +57,17 @@ class _GradesPageState extends State<GradesPage> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => openSettings(context),
-            ),
-            IconButton(
               icon: Icon(Icons.assessment),
               onPressed: () => openCalculator(context),
             ),
             IconButton(
               icon: Icon(Icons.calendar_today),
               onPressed: () => openBirthday(context),
-            )
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () => openSettings(context),
+            ),
           ],
         ),
         body: QuarterListWidget(scaffoldKey: scaffoldKey),
@@ -149,6 +153,8 @@ class _QuarterListWidgetState extends State<QuarterListWidget> with SingleTicker
         )
         .whereType<Widget>()
         .toList();
+
+    //quarterWidgets.add(ResultsWidget());
     return new TabBarView(
       children: quarterWidgets,
     );
@@ -170,7 +176,7 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
   Animation<double> animation;
   AnimationController controller;
 
-  Duration duration = Duration(milliseconds: 1000);
+  Duration duration = Duration(milliseconds: 500);
   initState() {
     super.initState();
     if (Global.animate) {
@@ -253,3 +259,28 @@ class _QuarterWidgetState extends State<QuarterWidget> with TickerProviderStateM
   }
 }
 
+class ResultsWidget extends StatefulWidget {
+  @override
+  _ResultsWidgetState createState() => _ResultsWidgetState();
+}
+
+class _ResultsWidgetState extends State<ResultsWidget> {
+  @override
+  Widget build(BuildContext context) {
+    if (data == null) {
+      return new Center(child: new CircularProgressIndicator());
+    } else {
+      return ListView.builder(
+        padding: new EdgeInsets.all(8.0),
+        itemCount: data.quarters[0].subjects.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (data.quarters[0].subjects[0].runtimeType == IMKOSubject) {
+            return IMKOResultWidget(
+              subjects: data.quarters.map((Quarter q) => q.subjects[index]).cast<IMKOSubject>().toList(),
+            );
+          }
+        },
+      );
+    }
+  }
+}

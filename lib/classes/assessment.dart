@@ -11,6 +11,15 @@ class Assessment {
 
   Assessment({this.current, this.maximum});
 
+  operator +(Assessment other) {
+    this.current += other.current;
+    this.maximum += other.maximum;
+  }
+
+  operator -(Assessment other) {
+    this.current -= other.current;
+    this.maximum -= other.maximum;
+  }
   static Assessment lerp(Assessment assessment, double value) {
     int newCurrent = (assessment.current.toDouble() * value).round();
     int newMaximum = (assessment.maximum.toDouble() * value).round();
