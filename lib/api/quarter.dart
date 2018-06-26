@@ -1,4 +1,4 @@
-import 'subject.dart';
+import 'package:enis_new/api/subject.dart';
 
 class Quarter {
   List<Subject> subjects;

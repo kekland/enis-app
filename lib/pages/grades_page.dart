@@ -1,20 +1,13 @@
 import 'dart:async';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:enis_new/api/imko/imko_api.dart';
+import 'package:enis_new/api/jko/jko_api.dart';
+import 'package:enis_new/api/quarter.dart';
+import 'package:enis_new/api/subject_data.dart';
+import 'package:enis_new/global.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../api/imko/imko_api.dart';
-import '../api/imko/imko_data.dart';
-import '../api/jko/jko_api.dart';
-import '../api/quarter.dart';
-import '../api/subject.dart';
-import '../api/subject_data.dart';
-import '../classes/assessment.dart';
-import '../global.dart';
-import '../widgets/imko/imko_subject_widget.dart';
-import '../widgets/jko/jko_subject_widget.dart';
-import 'calculator_page.dart';
 
 class GradesPage extends StatefulWidget {
   @override

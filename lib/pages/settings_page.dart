@@ -1,9 +1,8 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:enis_new/global.dart';
 import 'package:enis_new/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../global.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

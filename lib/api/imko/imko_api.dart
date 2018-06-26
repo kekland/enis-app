@@ -1,13 +1,12 @@
-import 'dart:core';
 import 'dart:async';
 
-import '../account_api.dart';
-import '../quarter.dart';
-import '../subject_data.dart';
-import '../user_data.dart';
 import 'package:dio/dio.dart';
-import '../utils.dart';
-import 'imko_data.dart';
+import 'package:enis_new/api/account_api.dart';
+import 'package:enis_new/api/imko/imko_data.dart';
+import 'package:enis_new/api/quarter.dart';
+import 'package:enis_new/api/subject_data.dart';
+import 'package:enis_new/api/user_data.dart';
+import 'package:enis_new/api/utils.dart';
 
 class IMKODiaryAPI {
   static Future<SubjectData> getAllImkoSubjects([UserData userData]) async {

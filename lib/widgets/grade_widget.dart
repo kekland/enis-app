@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'animated_circular_progress.dart';
-
 class GradeWidgetViewModel {
   String grade;
   Color gradeColor;

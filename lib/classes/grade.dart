@@ -1,5 +1,5 @@
-import 'assessment.dart';
-import 'diary.dart';
+import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/diary.dart';
 
 class Grade {
   static const String APlus = "A+";

@@ -1,21 +1,16 @@
+
 import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:dynamic_theme/theme_switcher_widgets.dart';
+import 'package:enis_new/global.dart';
 import 'package:enis_new/pages/birthday_page.dart';
+import 'package:enis_new/pages/calculator_page.dart';
+import 'package:enis_new/pages/grades_page.dart';
+import 'package:enis_new/pages/login_page.dart';
 import 'package:enis_new/pages/onboarding_page.dart';
-import 'package:enis_new/pages/playground.dart';
+import 'package:enis_new/pages/settings_page.dart';
+import 'package:enis_new/routes.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'classes/assessment.dart';
-import 'global.dart';
-import 'pages/calculator_page.dart';
-import 'pages/grades_page.dart';
-import 'pages/login_page.dart';
-import 'pages/settings_page.dart';
-import 'routes.dart';
-import 'widgets/imko/imko_subject_widget.dart';
-import 'widgets/jko/jko_subject_widget.dart';
 
 void main() => runApp(new MyApp());
 

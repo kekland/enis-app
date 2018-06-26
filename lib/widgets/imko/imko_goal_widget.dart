@@ -1,8 +1,6 @@
+import 'package:enis_new/api/imko/imko_data.dart';
+import 'package:enis_new/classes/goal_status.dart';
 import 'package:flutter/material.dart';
-
-import '../../api/imko/imko_data.dart';
-import '../../classes/goal_status.dart';
-
 
 class IMKOGoalWidget extends StatelessWidget {
   final IMKOGoal goal;

@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import '../../api/imko/imko_api.dart';
-import '../../api/imko/imko_data.dart';
+import 'package:enis_new/api/jko/jko_api.dart';
+import 'package:enis_new/api/jko/jko_data.dart';
+import 'package:enis_new/widgets/jko/jko_evaluation_widget.dart';
+import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../api/jko/jko_api.dart';
-import '../../api/jko/jko_data.dart';
-import 'jko_evaluation_widget.dart';
-import 'jko_subject_widget.dart';
 
 class JKOSubjectDetailPage extends StatefulWidget {
   final JKOSubjectViewModel viewModel;
@@ -31,7 +29,7 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> {
       evaluationModels = await JKODiaryAPI.getAssessments(widget.viewModel.subject);
       setState(() {});
     } catch (e) {
-       if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
+      if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
     }
   }
 

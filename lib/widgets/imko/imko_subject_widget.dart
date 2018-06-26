@@ -1,19 +1,16 @@
-import 'dart:async';
 import 'dart:convert';
 
+import 'package:enis_new/api/imko/imko_data.dart';
+import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/diary.dart';
+import 'package:enis_new/classes/grade.dart';
+import 'package:enis_new/global.dart';
+import 'package:enis_new/widgets/assessment_number_widget.dart';
+import 'package:enis_new/widgets/grade_widget.dart';
+import 'package:enis_new/widgets/imko/imko_subject_detail_widget.dart';
+import 'package:enis_new/widgets/page_reveal_widget.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-
-import '../../api/imko/imko_api.dart';
-import '../../api/imko/imko_data.dart';
-import '../../classes/diary.dart';
-import '../../classes/grade.dart';
-import '../../global.dart';
-import '../assessment_number_widget.dart';
-import '../../classes/assessment.dart';
-import '../grade_widget.dart';
-import '../page_reveal_widget.dart';
-import 'imko_subject_detail_widget.dart';
 
 class IMKOSubjectViewModel {
   IMKOSubject subject;

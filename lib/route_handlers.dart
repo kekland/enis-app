@@ -1,13 +1,12 @@
-import 'package:enis_new/pages/birthday_page.dart';
-import 'package:enis_new/pages/onboarding_page.dart';
-
-import 'pages/calculator_page.dart';
-import 'pages/login_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/grades_page.dart';
-import 'pages/settings_page.dart';
+import 'package:enis_new/pages/birthday_page.dart';
+import 'package:enis_new/pages/calculator_page.dart';
+import 'package:enis_new/pages/grades_page.dart';
+import 'package:enis_new/pages/login_page.dart';
+import 'package:enis_new/pages/onboarding_page.dart';
+import 'package:enis_new/pages/settings_page.dart';
 
 var LoginRouteHandler = new Handler(handlerFunc: ((BuildContext context, Map<String, List<String>> args) {
   return new LoginPage();

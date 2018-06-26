@@ -1,6 +1,6 @@
+import 'package:enis_new/route_handlers.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'route_handlers.dart';
 
 class Routes {
   static String login = "/login";

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
+import 'package:enis_new/api/imko/imko_data.dart';
+import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/classes/grade.dart';
+import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../api/imko/imko_data.dart';
-import '../classes/assessment.dart';
-import '../classes/grade.dart';
-import '../widgets/assessment_number_widget.dart';
 
 class CalculatorPage extends StatefulWidget {
   final int routedIndex;

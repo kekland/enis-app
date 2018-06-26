@@ -4,11 +4,11 @@ import 'dart:io';
 
 import 'package:enis_new/api/user_birthday_data.dart';
 
-import 'utils.dart';
 import 'package:dio/dio.dart';
+import 'package:enis_new/api/user_data.dart';
+import 'package:enis_new/api/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'user_data.dart';
 
 class AccountAPI {
   /// This function gets the Session ID from cookies

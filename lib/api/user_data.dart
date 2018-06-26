@@ -1,5 +1,3 @@
-import '../classes/school.dart';
-
 class IDData {
   String studentID;
   String classID;

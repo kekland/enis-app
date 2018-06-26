@@ -1,16 +1,11 @@
 import 'dart:convert';
 
-import 'package:enis_new/widgets/page_reveal_widget.dart';
-import 'package:fluro/fluro.dart';
+import 'package:enis_new/api/account_api.dart';
+import 'package:enis_new/api/user_data.dart';
+import 'package:enis_new/classes/school.dart';
+import 'package:enis_new/widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../api/account_api.dart';
-import '../api/user_data.dart';
-import '../classes/school.dart';
-import '../global.dart';
-import '../routes.dart';
-import '../widgets/loading_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   @override

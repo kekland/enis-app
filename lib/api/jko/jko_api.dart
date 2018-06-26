@@ -1,12 +1,13 @@
 import 'dart:core';
 import 'dart:async';
 import 'package:dio/dio.dart';
-import '../account_api.dart';
-import '../quarter.dart';
-import '../user_data.dart';
+import 'package:enis_new/api/account_api.dart';
 import 'dart:convert';
-import '../utils.dart';
-import 'jko_data.dart';
+
+import 'package:enis_new/api/jko/jko_data.dart';
+import 'package:enis_new/api/quarter.dart';
+import 'package:enis_new/api/user_data.dart';
+import 'package:enis_new/api/utils.dart';
 
 class JKODiaryAPI {
   static Future<List<JKOAssessment>> getAssessments(JKOSubject subject, [UserData userData]) async {

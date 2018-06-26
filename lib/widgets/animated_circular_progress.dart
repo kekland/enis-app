@@ -1,6 +1,6 @@
+import 'package:enis_new/global.dart';
 import 'package:flutter/material.dart';
 
-import '../global.dart';
 
 class AnimatedCircularProgressWidget extends StatefulWidget {
   final double value;

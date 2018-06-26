@@ -1,9 +1,9 @@
-import '../../api/jko/jko_data.dart';
-import '../../global.dart';
-import '../../widgets/assessment_number_widget.dart';
+import 'package:enis_new/api/jko/jko_data.dart';
+import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/global.dart';
+import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../classes/assessment.dart';
 
 class JKOEvaluationViewModel {
   Assessment topicEvaluation;

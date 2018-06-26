@@ -1,12 +1,11 @@
+import 'package:enis_new/api/jko/jko_data.dart';
+import 'package:enis_new/classes/diary.dart';
+import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:enis_new/widgets/grade_widget.dart';
 import 'package:enis_new/widgets/jko/jko_subject_detail_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../api/jko/jko_data.dart';
-import '../../classes/diary.dart';
-import '../../classes/grade.dart';
-import '../../global.dart';
 class JKOSubjectViewModel {
   JKOSubject subject;
 

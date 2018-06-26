@@ -1,8 +1,7 @@
+import 'package:enis_new/api/subject.dart';
+import 'package:enis_new/classes/assessment.dart';
+import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:flutter/widgets.dart';
-
-import '../../classes/assessment.dart';
-import '../../widgets/jko/jko_subject_widget.dart';
-import '../subject.dart';
 
 class JKOAssessment {
   String description;

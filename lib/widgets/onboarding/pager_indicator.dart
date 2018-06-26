@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:enis_new/widgets/onboarding/page.dart';
 import 'package:flutter/material.dart';
 
-import 'page.dart';
 
 class PagerIndicatorViewModel {
   final List<PageViewModel> pages;

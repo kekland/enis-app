@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:enis_new/api/imko/imko_data.dart';
-import 'package:enis_new/api/jko/jko_data.dart';
 import 'package:enis_new/classes/assessment.dart';
 import 'package:enis_new/widgets/imko/imko_subject_widget.dart';
-import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:enis_new/widgets/onboarding/page.dart';
 import 'package:enis_new/widgets/onboarding/page_dragger.dart';
 import 'package:enis_new/widgets/onboarding/pager_indicator.dart';

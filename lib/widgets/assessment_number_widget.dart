@@ -1,6 +1,6 @@
+import 'package:enis_new/classes/assessment.dart';
 import 'package:flutter/material.dart';
 
-import '../classes/assessment.dart';
 
 class AssessmentCurrentMaximumViewModel {
   Assessment assessment;

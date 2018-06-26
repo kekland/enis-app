@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import '../../api/imko/imko_api.dart';
-import '../../api/imko/imko_data.dart';
-import 'imko_goal_widget.dart';
-import 'imko_subject_widget.dart';
+import 'package:enis_new/api/imko/imko_api.dart';
+import 'package:enis_new/api/imko/imko_data.dart';
+import 'package:enis_new/widgets/imko/imko_goal_widget.dart';
+import 'package:enis_new/widgets/imko/imko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
 class IMKOSubjectDetailPage extends StatefulWidget {
