@@ -98,7 +98,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
       summativeTemp.current = int.parse(currentSAController.text);
       summativeTemp.maximum = int.parse(maximumSAController.text);
 
-      if(formativeTemp.getPercentage() > 1.0 || summativeTemp.getPercentage() > 1.0) {
+      if (formativeTemp.getPercentage() > 1.0 || summativeTemp.getPercentage() > 1.0) {
         throw Exception('Formative or Summative current value is more than maximum');
       }
 
@@ -133,6 +133,8 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
       currentSAController.text = summative.current.toString();
       maximumSAController.text = summative.maximum.toString();
     }
+
+    dataChanged();
   }
 
   @override
@@ -205,7 +207,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                     child: Center(
                       child: AssessmentCurrentMaximumWidget(AssessmentCurrentMaximumViewModel(
-                        assessment: Assessment(current: (error)? 0 : Grade.calculateIMKOPoints(formative, summative), maximum: 60),
+                        assessment: Assessment(current: (error) ? 0 : Grade.calculateIMKOPoints(formative, summative), maximum: 60),
                         description: 'Total',
                       )),
                     ),
