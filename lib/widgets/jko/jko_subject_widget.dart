@@ -54,7 +54,7 @@ class JKOSubjectWidget extends StatelessWidget {
           ),
           new Row(
             children: <Widget>[
-              new AsssesmentPercentWidget(
+              new AsssessmentPercentWidget(
                 viewModel: new AssessmentPercentViewModel(
                   percentage: viewModel.getPercentageToDisplay(),
                   description: '%',

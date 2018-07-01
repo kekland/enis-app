@@ -44,6 +44,29 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 }
 
+class TextFieldRoundedEdges extends StatelessWidget {
+  final String label;
+  TextFieldRoundedEdges({this.label});
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(100.0),
+        ),
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0, bottom: 12.0),
+          isDense: true,
+          labelText: label,
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+}
+
 class IMKOTermCalculatorPage extends StatefulWidget {
   final String routedData;
   IMKOTermCalculatorPage({this.routedData = ''});
@@ -68,175 +91,106 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
     }
   }
 
-  displayDialogForFormative(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: ((BuildContext context) {
-        TextEditingController currentController = new TextEditingController(text: formative.current.toString());
-        currentController.addListener(() {
-          try {
-            formative.current = int.tryParse(currentController.text);
-          } catch (e) {
-            //ignore
-          }
-        });
-        TextEditingController maximumController = new TextEditingController(text: formative.maximum.toString());
-        maximumController.addListener(() {
-          try {
-            formative.maximum = int.tryParse(maximumController.text);
-          } catch (e) {
-            //ignore
-          }
-        });
-        return new AlertDialog(
-          title: Text('Change formative marks'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Current formative points'),
-                keyboardType: TextInputType.number,
-                controller: currentController,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Maximum formative points'),
-                keyboardType: TextInputType.number,
-                controller: maximumController,
-              ),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-
-  displayDialogForSummative(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: ((BuildContext context) {
-        TextEditingController currentController = new TextEditingController(text: summative.current.toString());
-        currentController.addListener(() {
-          try {
-            summative.current = int.tryParse(currentController.text);
-          } catch (e) {
-            //ignore
-          }
-        });
-        TextEditingController maximumController = new TextEditingController(text: summative.maximum.toString());
-        maximumController.addListener(() {
-          try {
-            summative.maximum = int.tryParse(maximumController.text);
-          } catch (e) {
-            //ignore
-          }
-        });
-        return new AlertDialog(
-          title: Text('Change summative marks'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Current summative points'),
-                keyboardType: TextInputType.number,
-                controller: currentController,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Maximum summative points'),
-                keyboardType: TextInputType.number,
-                controller: maximumController,
-              ),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16.0),
       child: new SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Card(
-              child: new InkWell(
-                onTap: () => displayDialogForFormative(context),
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text('Formative'),
-                      AssessmentCurrentMaximumWidget(
-                        AssessmentCurrentMaximumViewModel(assessment: formative, description: 'FA'),
-                      ),
-                    ],
-                  ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: TextFieldRoundedEdges(label: 'Current FA'),
                 ),
-              ),
-            ),
-            Card(
-              child: new InkWell(
-                onTap: () => displayDialogForSummative(context),
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text('Summative'),
-                      AssessmentCurrentMaximumWidget(
-                        AssessmentCurrentMaximumViewModel(assessment: summative, description: 'SA'),
-                      ),
-                    ],
-                  ),
+                Flexible(
+                  flex: 1,
+                  child: TextFieldRoundedEdges(label: 'Maximum FA'),
                 ),
-              ),
+              ],
             ),
-            Card(
-              child: new Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Results'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.ideographic,
-                      children: [
-                        Text(
-                          Grade.calculateIMKOGrade(formative, summative),
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 40.0,
-                                color: Grade.calculateGradeColor(
-                                  Grade.calculateIMKOPoints(formative, summative) / 60.0,
-                                  Diary.imko,
-                                ),
-                              ),
-                        ),
-                        Text(
-                          Grade.toNumericalGrade(Grade.calculateIMKOGrade(formative, summative)),
-                          style: Theme.of(context).textTheme.caption.copyWith(
-                                fontSize: 24.0,
-                              ),
-                        ),
-                      ],
+            SizedBox(
+              height: 16.0,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: TextFieldRoundedEdges(label: 'Current SA'),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: TextFieldRoundedEdges(label: 'Maximum SA'),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Row(
+              children: <Widget>[
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100.0),
                     ),
-                  ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+                    child: Center(
+                      child: AssessmentCurrentMaximumWidget(AssessmentCurrentMaximumViewModel(
+                        assessment: Assessment(current: 59, maximum: 60),
+                        description: 'Total',
+                      )),
+                    ),
+                  ),
                 ),
-              ),
-            )
+                Expanded(
+                  child: Card(
+                    color: Colors.amber,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(100.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              'B',
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                    fontSize: 24.0,
+                                    color: Colors.white,
+                                  ),
+                            ),
+                            Text(
+                              '(4)',
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                    fontSize: 24.0,
+                                    color: Colors.white70,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

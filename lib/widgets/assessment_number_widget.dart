@@ -70,11 +70,11 @@ class AssessmentPercentViewModel {
   }
 }
 
-class AsssesmentPercentWidget extends StatelessWidget {
+class AsssessmentPercentWidget extends StatelessWidget {
   final AssessmentPercentViewModel viewModel;
   final double animationValue;
 
-  AsssesmentPercentWidget({this.viewModel, this.animationValue});
+  AsssessmentPercentWidget({this.viewModel, this.animationValue});
 
   @override
   Widget build(BuildContext context) {
