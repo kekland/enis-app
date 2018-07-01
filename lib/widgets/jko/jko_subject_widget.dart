@@ -13,7 +13,6 @@ class JKOSubjectViewModel {
     return subject.points * 100.0;
   }
 
-
   JKOSubjectViewModel({this.subject});
 }
 
@@ -85,6 +84,7 @@ class JKOSubjectWidget extends StatelessWidget {
         child: new Opacity(
           opacity: animation.value,
           child: new Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             child: new InkWell(
               onTap: () => onCardTap(context),
               child: cardChild,
@@ -98,6 +98,7 @@ class JKOSubjectWidget extends StatelessWidget {
         child: Opacity(
           opacity: animation.value,
           child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             child: cardChild,
           ),
         ),

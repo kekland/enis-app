@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 class IMKOSubjectViewModel {
   IMKOSubject subject;
 
-
   IMKOSubjectViewModel({this.subject});
 }
 
@@ -95,6 +94,7 @@ class IMKOSubjectWidget extends StatelessWidget {
         child: new Opacity(
           opacity: animation.value,
           child: new Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             margin: EdgeInsets.zero,
             child: new InkWell(
               onTapDown: ((TapDownDetails details) {
@@ -124,6 +124,7 @@ class IMKOSubjectWidget extends StatelessWidget {
         child: Opacity(
           opacity: animation.value,
           child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             margin: EdgeInsets.zero,
             child: cardChild,
           ),

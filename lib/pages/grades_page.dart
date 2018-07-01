@@ -28,15 +28,15 @@ class _GradesPageState extends State<GradesPage> {
       DynamicTheme.of(context).setBrightness(Brightness.dark);
   }
 
-  openSettings(BuildContext ctx) {
+  openSettingsPage(BuildContext ctx) {
     Navigator.of(ctx).pushNamed('/settings');
   }
 
-  openCalculator(BuildContext ctx) {
+  openCalculatorPage(BuildContext ctx) {
     Navigator.of(ctx).pushNamed('/calculator');
   }
 
-  openBirthday(BuildContext ctx) {
+  openBirthdayPage(BuildContext ctx) {
     Navigator.of(ctx).pushNamed('/birthday');
   }
 
@@ -58,15 +58,15 @@ class _GradesPageState extends State<GradesPage> {
           actions: [
             IconButton(
               icon: Icon(Icons.assessment),
-              onPressed: () => openCalculator(context),
+              onPressed: () => openCalculatorPage(context),
             ),
             IconButton(
               icon: Icon(Icons.calendar_today),
-              onPressed: () => openBirthday(context),
+              onPressed: () => openBirthdayPage(context),
             ),
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => openSettings(context),
+              onPressed: () => openSettingsPage(context),
             ),
           ],
         ),

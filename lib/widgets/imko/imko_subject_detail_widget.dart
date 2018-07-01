@@ -65,22 +65,24 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
                           expanded[index] = !expanded[index];
                         });
                       },
-                      children: goals.map((IMKOGoalGroup group) {
-                        return new ExpansionPanel(
-                          headerBuilder: (BuildContext context, bool isExpanded) {
-                            return new Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: new Text(group.groupName),
-                            );
-                          },
-                          body: new Column(
-                            children: group.goals.map((IMKOGoal goal) {
-                              return new IMKOGoalWidget(goal: goal);
-                            }).toList(),
-                          ),
-                          isExpanded: expanded[goals.indexOf(group)],
-                        );
-                      }).toList(),
+                      children: goals.map(
+                        (IMKOGoalGroup group) {
+                          return new ExpansionPanel(
+                            headerBuilder: (BuildContext context, bool isExpanded) {
+                              return new Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: new Text(group.groupName),
+                              );
+                            },
+                            body: new Column(
+                              children: group.goals.map((IMKOGoal goal) {
+                                return new IMKOGoalWidget(goal: goal);
+                              }).toList(),
+                            ),
+                            isExpanded: expanded[goals.indexOf(group)],
+                          );
+                        },
+                      ).toList(),
                     ),
             ],
           ),

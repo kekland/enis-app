@@ -152,6 +152,7 @@ class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderSt
             height: 56.0,
             alignment: Alignment.center,
             child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28.0))),
               elevation: 8.0,
               margin: const EdgeInsets.only(
                 left: 12.0,
