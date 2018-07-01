@@ -1,11 +1,13 @@
 import 'dart:convert';
-
+import 'package:enis_new/widgets/bottom_sheet_fix.dart';
 import 'package:enis_new/api/imko/imko_data.dart';
 import 'package:enis_new/classes/assessment.dart';
 import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/global.dart';
+import 'package:enis_new/pages/calculator_page.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
+import 'package:enis_new/widgets/calculator/imko_term_calculator_widget.dart';
 import 'package:enis_new/widgets/grade_widget.dart';
 import 'package:enis_new/widgets/imko/imko_subject_detail_widget.dart';
 import 'package:enis_new/widgets/page_reveal_widget.dart';
@@ -56,19 +58,15 @@ class IMKOSubjectWidget extends StatelessWidget {
               new Padding(
                 padding: EdgeInsets.only(right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
-                  new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(viewModel.subject.formative, animation.value),
-                    description: 'FA',
-                  ),
+                  assessment: Assessment.lerp(viewModel.subject.formative, animation.value),
+                  description: 'FA',
                 ),
               ),
               new Padding(
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
-                  new AssessmentCurrentMaximumViewModel(
-                    assessment: Assessment.lerp(viewModel.subject.summative, animation.value),
-                    description: 'SA',
-                  ),
+                  assessment: Assessment.lerp(viewModel.subject.summative, animation.value),
+                  description: 'SA',
                 ),
               ),
               new Padding(
@@ -100,7 +98,8 @@ class IMKOSubjectWidget extends StatelessWidget {
               onTapDown: ((TapDownDetails details) {
                 this.details = details;
               }),
-              onLongPress: () => Global.router.navigateTo(
+              onLongPress: () =>
+                  /*Global.router.navigateTo(
                     context,
                     '/calculator?type=1&data=${json.encode(viewModel.subject.toJSON())}',
                     transition: TransitionType.custom,
@@ -111,7 +110,27 @@ class IMKOSubjectWidget extends StatelessWidget {
                         clickPosition: details.globalPosition,
                       );
                     }),
-                  ),
+                  ),*/
+                  showModalBottomSheetFixed(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Column(
+                          children: <Widget>[
+                            new Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: new IMKOSubjectWidget(
+                                viewModel: viewModel,
+                                tappable: false,
+                              ),
+                            ),
+                            IMKOTermCalculatorWidget(
+                              routedData: json.encode(viewModel.subject.toJSON()),
+                            ),
+                          ],
+                        );
+                      },
+                      dismissOnTap: false,
+                      resizeToAvoidBottomPadding: true),
               onTap: () => onCardTap(context),
               child: cardChild,
             ),

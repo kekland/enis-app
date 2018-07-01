@@ -2,24 +2,18 @@ import 'package:enis_new/classes/assessment.dart';
 import 'package:flutter/material.dart';
 
 
-class AssessmentCurrentMaximumViewModel {
-  Assessment assessment;
-  String description;
-
-  AssessmentCurrentMaximumViewModel({this.assessment, this.description});
-}
-
 class AssessmentCurrentMaximumWidget extends StatelessWidget {
-  final AssessmentCurrentMaximumViewModel viewModel;
+  final Assessment assessment;
+  final String description;
 
-  AssessmentCurrentMaximumWidget(this.viewModel);
+  AssessmentCurrentMaximumWidget({this.assessment, this.description});
   @override
   Widget build(BuildContext context) {
     return new Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          viewModel.assessment.current.toString(),
+          assessment.current.toString(),
           style: Theme.of(context).textTheme.body1.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 40.0,
@@ -30,13 +24,13 @@ class AssessmentCurrentMaximumWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              viewModel.description,
+              description,
               style: Theme.of(context).textTheme.caption.copyWith(
                     fontSize: 12.0,
                   ),
             ),
             Text(
-              '/${viewModel.assessment.maximum}',
+              '/${assessment.maximum}',
               style: Theme.of(context).textTheme.subhead.copyWith(
                     fontSize: 18.0,
                   ),

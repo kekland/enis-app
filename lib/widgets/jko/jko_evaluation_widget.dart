@@ -4,7 +4,6 @@ import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
 
-
 class JKOEvaluationViewModel {
   Assessment topicEvaluation;
   Assessment quarterEvaluation;
@@ -71,16 +70,12 @@ class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   new AssessmentCurrentMaximumWidget(
-                    new AssessmentCurrentMaximumViewModel(
-                      assessment: Assessment.lerp(widget.data.topic, animation.value),
-                      description: 'Topic',
-                    ),
+                    assessment: Assessment.lerp(widget.data.topic, animation.value),
+                    description: 'Topic',
                   ),
                   new AssessmentCurrentMaximumWidget(
-                    new AssessmentCurrentMaximumViewModel(
-                      assessment: Assessment.lerp(widget.data.quarter, animation.value),
-                      description: 'Quarter',
-                    ),
+                    assessment: Assessment.lerp(widget.data.quarter, animation.value),
+                    description: 'Quarter',
                   ),
                 ],
               ),
