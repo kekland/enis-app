@@ -46,7 +46,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
 class TextFieldRoundedEdges extends StatelessWidget {
   final String label;
-  TextFieldRoundedEdges({this.label});
+  final TextEditingController controller;
+  TextFieldRoundedEdges({
+    this.label,
+    this.controller,
+  });
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -56,6 +60,7 @@ class TextFieldRoundedEdges extends StatelessWidget {
         ),
       ),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0, bottom: 12.0),
           isDense: true,
@@ -79,15 +84,54 @@ class IMKOTermCalculatorPage extends StatefulWidget {
 class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
   Assessment formative = new Assessment(current: 10, maximum: 10);
   Assessment summative = new Assessment(current: 40, maximum: 40);
+  bool error = false;
+
+  TextEditingController currentFAController, maximumFAController, currentSAController, maximumSAController;
+
+  dataChanged() {
+    Assessment formativeTemp = new Assessment(current: 0, maximum: 0);
+    Assessment summativeTemp = new Assessment(current: 0, maximum: 0);
+
+    try {
+      formativeTemp.current = int.parse(currentFAController.text);
+      formativeTemp.maximum = int.parse(maximumFAController.text);
+      summativeTemp.current = int.parse(currentSAController.text);
+      summativeTemp.maximum = int.parse(maximumSAController.text);
+
+      if(formativeTemp.getPercentage() > 1.0 || summativeTemp.getPercentage() > 1.0) {
+        throw Exception('Formative or Summative current value is more than maximum');
+      }
+
+      setState(() {
+        formative = formativeTemp;
+        summative = summativeTemp;
+
+        error = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = true;
+      });
+    }
+  }
 
   @override
   initState() {
     super.initState();
     print(widget.routedData);
+    currentFAController = new TextEditingController(text: '0')..addListener(dataChanged);
+    maximumFAController = new TextEditingController(text: '40')..addListener(dataChanged);
+    currentSAController = new TextEditingController(text: '0')..addListener(dataChanged);
+    maximumSAController = new TextEditingController(text: '40')..addListener(dataChanged);
     if (widget.routedData.length != 0) {
       IMKOSubject subject = IMKOSubject.fromJson(json.decode(widget.routedData));
       formative = subject.formative;
       summative = subject.summative;
+
+      currentFAController.text = formative.current.toString();
+      maximumFAController.text = formative.maximum.toString();
+      currentSAController.text = summative.current.toString();
+      maximumSAController.text = summative.maximum.toString();
     }
   }
 
@@ -108,11 +152,17 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
               children: <Widget>[
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(label: 'Current FA'),
+                  child: TextFieldRoundedEdges(
+                    label: 'Current FA',
+                    controller: currentFAController,
+                  ),
                 ),
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(label: 'Maximum FA'),
+                  child: TextFieldRoundedEdges(
+                    label: 'Maximum FA',
+                    controller: maximumFAController,
+                  ),
                 ),
               ],
             ),
@@ -126,11 +176,17 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
               children: <Widget>[
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(label: 'Current SA'),
+                  child: TextFieldRoundedEdges(
+                    label: 'Current SA',
+                    controller: currentSAController,
+                  ),
                 ),
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(label: 'Maximum SA'),
+                  child: TextFieldRoundedEdges(
+                    label: 'Maximum SA',
+                    controller: maximumSAController,
+                  ),
                 ),
               ],
             ),
@@ -149,7 +205,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                     child: Center(
                       child: AssessmentCurrentMaximumWidget(AssessmentCurrentMaximumViewModel(
-                        assessment: Assessment(current: 59, maximum: 60),
+                        assessment: Assessment(current: (error)? 0 : Grade.calculateIMKOPoints(formative, summative), maximum: 60),
                         description: 'Total',
                       )),
                     ),
@@ -157,7 +213,7 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                 ),
                 Expanded(
                   child: Card(
-                    color: Colors.amber,
+                    color: (error) ? null : Grade.calculateGradeColor(Grade.calculateIMKOPoints(formative, summative) / 60.0, Diary.imko),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(100.0),
@@ -170,14 +226,18 @@ class IMKOTermCalculatorPageState extends State<IMKOTermCalculatorPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              'B',
+                              (error) ? '-' : Grade.calculateGrade(Grade.calculateIMKOPoints(formative, summative) / 60.0, Diary.imko),
                               style: Theme.of(context).textTheme.body1.copyWith(
                                     fontSize: 24.0,
                                     color: Colors.white,
                                   ),
                             ),
                             Text(
-                              '(4)',
+                              (error)
+                                  ? ''
+                                  : '(${Grade.toNumericalGrade(
+                                      Grade.calculateGrade(Grade.calculateIMKOPoints(formative, summative) / 60.0, Diary.imko),
+                                    )})',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                     fontSize: 24.0,
                                     color: Colors.white70,
