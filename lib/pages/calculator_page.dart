@@ -23,25 +23,13 @@ List<String> tabs = ['IMKO Term', 'JKO Term', 'IMKO Year', 'JKO Year'];
 class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 4,
-      initialIndex: widget.routedIndex,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Calculator'),
-          bottom: TabBar(
-            tabs: tabs.map((String tab) {
-              return Tab(text: tab);
-            }).toList(),
-          ),
-        ),
-        body: TabBarView(children: [
-          IMKOTermCalculatorWidget(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
-          JKOTermCalculatorWidget(routedData: (widget.routedIndex == 1) ? widget.routedData : ''),
-          Container(child: Center(child: Text('In development'))),
-          Container(child: Center(child: Text('In development'))),
-        ]),
-      ),
+    return TabBarView(
+      children: [
+        IMKOTermCalculatorWidget(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
+        JKOTermCalculatorWidget(routedData: (widget.routedIndex == 1) ? widget.routedData : ''),
+        Container(child: Center(child: Text('In development'))),
+        Container(child: Center(child: Text('In development'))),
+      ],
     );
   }
 }

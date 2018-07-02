@@ -1,4 +1,6 @@
+import 'package:enis_new/pages/calculator_page.dart';
 import 'package:enis_new/pages/grades_page.dart';
+import 'package:enis_new/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,17 +16,22 @@ var navBarIcons = [
 
 var pages = [
   GradesPage(),
-  Container(color: Colors.red),
-  Container(color: Colors.green),
+  CalculatorPage(),
+  SettingsPage(),
 ];
 
-var terms = ['1 term', '2 term', '3 term', '4 term'];
+var gradeTabs = ['1 term', '2 term', '3 term', '4 term'];
+var calculatorTabs = ['IMKO Term', 'JKO Term', 'IMKO Year', 'JKO Year'];
 var tabBar = [
   TabBar(
-      tabs: terms.map((var term) {
+      tabs: gradeTabs.map((var term) {
     return Tab(child: Text(term, style: TextStyle(color: Colors.black)));
   }).toList()),
-  null,
+  TabBar(
+    tabs: calculatorTabs.map((var term) {
+      return Tab(child: Text(term, style: TextStyle(color: Colors.black)));
+    }).toList(),
+  ),
   null,
 ];
 
