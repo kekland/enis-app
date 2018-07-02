@@ -6,6 +6,7 @@ import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/pages/calculator_page.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
+import 'package:enis_new/widgets/calculator/rounded_text_field.dart';
 import 'package:flutter/material.dart';
 
 class IMKOTermCalculatorWidget extends StatefulWidget {
@@ -64,15 +65,46 @@ class IMKOTermCalculatorWidgetState extends State<IMKOTermCalculatorWidget> {
       formative = subject.formative;
       summative = subject.summative;
 
-    currentFAController = new TextEditingController(text: formative.current.toString())..addListener(dataChanged);
-    maximumFAController = new TextEditingController(text: formative.maximum.toString())..addListener(dataChanged);
-    currentSAController = new TextEditingController(text: summative.current.toString())..addListener(dataChanged);
-    maximumSAController = new TextEditingController(text: summative.maximum.toString())..addListener(dataChanged);
+      currentFAController = new TextEditingController(text: formative.current.toString())..addListener(dataChanged);
+      maximumFAController = new TextEditingController(text: formative.maximum.toString())..addListener(dataChanged);
+      currentSAController = new TextEditingController(text: summative.current.toString())..addListener(dataChanged);
+      maximumSAController = new TextEditingController(text: summative.maximum.toString())..addListener(dataChanged);
     } else {
       currentFAController = new TextEditingController(text: '0')..addListener(dataChanged);
       maximumFAController = new TextEditingController(text: '40')..addListener(dataChanged);
       currentSAController = new TextEditingController(text: '0')..addListener(dataChanged);
       maximumSAController = new TextEditingController(text: '40')..addListener(dataChanged);
+    }
+
+    dataChanged();
+  }
+
+  onEditButtonPress(String type, int delta) {
+    switch (type) {
+      case 'formative_current':
+        try {
+          int value = int.parse(currentFAController.text);
+          currentFAController.text = (value + delta).toString();
+        } catch (e) {}
+        break;
+      case 'formative_maximum':
+        try {
+          int value = int.parse(maximumFAController.text);
+          maximumFAController.text = (value + delta).toString();
+        } catch (e) {}
+        break;
+      case 'summative_current':
+        try {
+          int value = int.parse(currentSAController.text);
+          currentSAController.text = (value + delta).toString();
+        } catch (e) {}
+        break;
+      case 'summative_maximum':
+        try {
+          int value = int.parse(maximumSAController.text);
+          maximumSAController.text = (value + delta).toString();
+        } catch (e) {}
+        break;
     }
 
     dataChanged();
@@ -95,16 +127,20 @@ class IMKOTermCalculatorWidgetState extends State<IMKOTermCalculatorWidget> {
               children: <Widget>[
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(
+                  child: RoundedTextField(
                     label: 'Current FA',
                     controller: currentFAController,
+                    onIncrementPressed: () => onEditButtonPress('formative_current', 1),
+                    onDecrementPressed: () => onEditButtonPress('formative_current', -1),
                   ),
                 ),
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(
+                  child: RoundedTextField(
                     label: 'Maximum FA',
                     controller: maximumFAController,
+                    onIncrementPressed: () => onEditButtonPress('formative_maximum', 1),
+                    onDecrementPressed: () => onEditButtonPress('formative_maximum', -1),
                   ),
                 ),
               ],
@@ -119,16 +155,20 @@ class IMKOTermCalculatorWidgetState extends State<IMKOTermCalculatorWidget> {
               children: <Widget>[
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(
+                  child: RoundedTextField(
                     label: 'Current SA',
                     controller: currentSAController,
+                    onIncrementPressed: () => onEditButtonPress('summative_current', 1),
+                    onDecrementPressed: () => onEditButtonPress('summative_current', -1),
                   ),
                 ),
                 Flexible(
                   flex: 1,
-                  child: TextFieldRoundedEdges(
+                  child: RoundedTextField(
                     label: 'Maximum SA',
                     controller: maximumSAController,
+                    onIncrementPressed: () => onEditButtonPress('summative_maximum', 1),
+                    onDecrementPressed: () => onEditButtonPress('summative_maximum', -1),
                   ),
                 ),
               ],

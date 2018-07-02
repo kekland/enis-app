@@ -1,5 +1,6 @@
 
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:enis_new/pages/login_page.dart';
 import 'package:enis_new/pages/main_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class MyAppState extends State<MyApp> {
       data: (brightness) => new ThemeData(
             brightness: brightness,
             primarySwatch: Colors.green,
+            accentColor: Colors.greenAccent,
           ),
       themedWidgetBuilder: (context, theme) {
         return new MaterialApp(
@@ -29,6 +31,7 @@ class MyAppState extends State<MyApp> {
           theme: theme,
           home: new MainPage(),
           routes: {
+            '/login': (BuildContext context) => new LoginPage(),
             '/main': (BuildContext context) => new MainPage(),
           },
         );

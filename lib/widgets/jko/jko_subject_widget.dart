@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class JKOSubjectWidget extends StatelessWidget {
   final JKOSubject subject;
   final bool tappable;
-  final Animation<double> animation;
+  final double animationValue;
   JKOSubjectWidget({
     this.subject,
     this.tappable = true,
-    this.animation = const AlwaysStoppedAnimation(1.0),
+    this.animationValue = 1.0,
   });
 
   onCardTap(BuildContext ctx) {
@@ -49,7 +49,7 @@ class JKOSubjectWidget extends StatelessWidget {
                   percentage: subject.calculateGradePercentage() * 100.0,
                   description: '%',
                 ),
-                animationValue: animation.value,
+                animationValue: animationValue,
               ),
               new Padding(
                 padding: EdgeInsets.only(left: 16.0),
@@ -59,7 +59,7 @@ class JKOSubjectWidget extends StatelessWidget {
                     gradeColor: subject.calculateGradeColor(),
                     percentage: 0.85,
                   ),
-                  animationValue: animation.value,
+                  animationValue: animationValue,
                 ),
               ),
             ],
@@ -72,7 +72,7 @@ class JKOSubjectWidget extends StatelessWidget {
       return new Hero(
         tag: 'jko.${subject.quarter}.${subject.name}.heroWidget',
         child: new Opacity(
-          opacity: animation.value,
+          opacity: animationValue,
           child: new Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             child: new InkWell(
@@ -86,7 +86,7 @@ class JKOSubjectWidget extends StatelessWidget {
       return new Hero(
         tag: 'jko.${subject.quarter}.${subject.name}.heroWidget',
         child: Opacity(
-          opacity: animation.value,
+          opacity: animationValue,
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             child: cardChild,

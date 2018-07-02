@@ -54,14 +54,6 @@ class JKOSubject implements Subject {
 
   List<JKOSubjectEvaluation> evaluations;
 
-  @override
-  Widget createWidget(Animation<double> animation) {
-    return JKOSubjectWidget(
-      animation: animation,
-      subject: this,
-    );
-  }
-
   JKOSubject();
   JKOSubject.createNew({
     this.id,

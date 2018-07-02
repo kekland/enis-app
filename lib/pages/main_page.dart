@@ -25,11 +25,11 @@ var calculatorTabs = ['IMKO Term', 'JKO Term', 'IMKO Year', 'JKO Year'];
 var tabBar = [
   TabBar(
       tabs: gradeTabs.map((var term) {
-    return Tab(child: Text(term, style: TextStyle(color: Colors.black)));
+    return Tab(child: Text(term));
   }).toList()),
   TabBar(
     tabs: calculatorTabs.map((var term) {
-      return Tab(child: Text(term, style: TextStyle(color: Colors.black)));
+      return Tab(child: Text(term));
     }).toList(),
   ),
   null,
@@ -44,14 +44,12 @@ class _MainPageState extends State<MainPage> {
       length: (tabBar[selectedPageIndex] != null) ? tabBar[selectedPageIndex].tabs.length : 0,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text('eNIS', style: Theme.of(context).textTheme.title.copyWith(fontFamily: 'Futura', color: Colors.black)),
+          title: Text('eNIS', style: Theme.of(context).textTheme.title.copyWith(fontFamily: 'Futura')),
           bottom: tabBar[selectedPageIndex],
         ),
         body: pages[selectedPageIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedPageIndex,
-          fixedColor: Colors.black,
           onTap: (pageIndex) => setState(() {
                 selectedPageIndex = pageIndex;
               }),

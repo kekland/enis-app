@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 class IMKOSubjectWidget extends StatelessWidget {
   final IMKOSubject subject;
   final bool tappable;
-  final Animation<double> animation;
+  final double animationValue;
 
   IMKOSubjectWidget({
     this.subject,
     this.tappable = true,
-    this.animation = const AlwaysStoppedAnimation(1.0),
+    this.animationValue = 1.0,
   });
 
   onCardTap(BuildContext ctx) {
@@ -46,14 +46,14 @@ class IMKOSubjectWidget extends StatelessWidget {
               new Padding(
                 padding: EdgeInsets.only(right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
-                  assessment: Assessment.lerp(subject.formative, animation.value),
+                  assessment: Assessment.lerp(subject.formative, animationValue),
                   description: 'FA',
                 ),
               ),
               new Padding(
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: new AssessmentCurrentMaximumWidget(
-                  assessment: Assessment.lerp(subject.summative, animation.value),
+                  assessment: Assessment.lerp(subject.summative, animationValue),
                   description: 'SA',
                 ),
               ),
@@ -65,7 +65,7 @@ class IMKOSubjectWidget extends StatelessWidget {
                     gradeColor: subject.calculateGradeColor(),
                     percentage: subject.calculateGradePercentage(),
                   ),
-                  animationValue: animation.value,
+                  animationValue: animationValue,
                 ),
               ),
             ],
@@ -78,7 +78,7 @@ class IMKOSubjectWidget extends StatelessWidget {
       return new Hero(
         tag: 'imko.${subject.quarter}.${subject.name}.heroWidget',
         child: new Opacity(
-          opacity: animation.value,
+          opacity: animationValue,
           child: new Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             margin: EdgeInsets.zero,
@@ -129,7 +129,7 @@ class IMKOSubjectWidget extends StatelessWidget {
       return new Hero(
         tag: 'imko.${subject.quarter}.${subject.name}.heroWidget',
         child: Opacity(
-          opacity: animation.value,
+          opacity: animationValue,
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
             margin: EdgeInsets.zero,

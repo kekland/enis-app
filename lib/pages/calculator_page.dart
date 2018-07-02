@@ -33,31 +33,3 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 }
-
-class TextFieldRoundedEdges extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  TextFieldRoundedEdges({
-    this.label,
-    this.controller,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(100.0),
-        ),
-      ),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0, bottom: 12.0),
-          isDense: true,
-          labelText: label,
-          border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-}

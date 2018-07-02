@@ -43,7 +43,9 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
     return new Scaffold(
       key: scaffoldKey,
       appBar: new AppBar(
-        title: Text(widget.subject.name),
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text(widget.subject.name, style: Theme.of(context).textTheme.title.copyWith(fontFamily: 'Futura', color: Colors.black)),
       ),
       body: new SingleChildScrollView(
         child: new Padding(

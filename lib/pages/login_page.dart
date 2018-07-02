@@ -167,6 +167,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               child: new Opacity(
                 opacity: animation.value,
                 child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
                   elevation: animation.value * 12.0,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -228,7 +231,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           color: Colors.green,
                           textColor: Colors.white,
                           shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0),
+                            borderRadius: new BorderRadius.circular(18.0),
                           ),
                         ),
                       ],

@@ -102,16 +102,6 @@ class IMKOSubject implements Subject {
     return subject;
   }
 
-  bool alreadyAnimated = false;
-  bool destroy = false;
-  @override
-  Widget createWidget(Animation<double> animation) {
-    return new IMKOSubjectWidget(
-      subject: this,
-      animation: animation,
-    );
-  }
-
   @override
   double calculateGradePercentage() {
     double percentage;
