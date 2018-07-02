@@ -1,6 +1,9 @@
 
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:enis_new/pages/main_page.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(new MyApp());
 
@@ -19,13 +22,15 @@ class MyAppState extends State<MyApp> {
       data: (brightness) => new ThemeData(
             brightness: brightness,
             primarySwatch: Colors.green,
-            buttonColor: Colors.lightBlueAccent,
-            bottomAppBarColor: Colors.white,
           ),
       themedWidgetBuilder: (context, theme) {
         return new MaterialApp(
           title: 'eNIS',
           theme: theme,
+          home: new MainPage(),
+          routes: {
+            '/main': (BuildContext context) => new MainPage(),
+          },
         );
       },
     );
