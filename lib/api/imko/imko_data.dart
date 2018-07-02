@@ -3,6 +3,7 @@ import 'package:enis_new/classes/assessment.dart';
 import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/goal_status.dart';
 import 'package:enis_new/classes/grade.dart';
+import 'package:enis_new/widgets/imko/imko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
 class IMKOGoalGroup {
@@ -105,12 +106,10 @@ class IMKOSubject implements Subject {
   bool destroy = false;
   @override
   Widget createWidget(Animation<double> animation) {
-    /*return new IMKOSubjectWidget(
-      viewModel: new IMKOSubjectViewModel(
-        subject: this,
-      ),
+    return new IMKOSubjectWidget(
+      subject: this,
       animation: animation,
-    );*/
+    );
   }
 
   @override

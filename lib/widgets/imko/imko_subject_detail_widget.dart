@@ -7,8 +7,8 @@ import 'package:enis_new/widgets/imko/imko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
 class IMKOSubjectDetailPage extends StatefulWidget {
-  final IMKOSubjectViewModel viewModel;
-  IMKOSubjectDetailPage({this.viewModel});
+  final IMKOSubject subject;
+  IMKOSubjectDetailPage({this.subject});
   @override
   _IMKOSubjectDetailPageState createState() => _IMKOSubjectDetailPageState();
 }
@@ -25,7 +25,7 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
 
   Future<Null> fetchGoals() async {
     try {
-      dynamic d = await IMKODiaryAPI.getGoals(widget.viewModel.subject.quarter, widget.viewModel.subject.id);
+      dynamic d = await IMKODiaryAPI.getGoals(widget.subject.quarter, widget.subject.id);
       setState(() {
         goals = d;
         expanded = new List();
@@ -43,7 +43,7 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
     return new Scaffold(
       key: scaffoldKey,
       appBar: new AppBar(
-        title: Text(widget.viewModel.subject.name),
+        title: Text(widget.subject.name),
       ),
       body: new SingleChildScrollView(
         child: new Padding(
@@ -53,7 +53,7 @@ class _IMKOSubjectDetailPageState extends State<IMKOSubjectDetailPage> {
               new Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: new IMKOSubjectWidget(
-                  viewModel: widget.viewModel,
+                  subject: widget.subject,
                   tappable: false,
                 ),
               ),

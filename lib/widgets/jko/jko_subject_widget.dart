@@ -6,22 +6,12 @@ import 'package:enis_new/widgets/grade_widget.dart';
 import 'package:enis_new/widgets/jko/jko_subject_detail_widget.dart';
 import 'package:flutter/material.dart';
 
-class JKOSubjectViewModel {
-  JKOSubject subject;
-
-  double getPercentageToDisplay() {
-    return subject.points * 100.0;
-  }
-
-  JKOSubjectViewModel({this.subject});
-}
-
 class JKOSubjectWidget extends StatelessWidget {
-  final JKOSubjectViewModel viewModel;
+  final JKOSubject subject;
   final bool tappable;
   final Animation<double> animation;
   JKOSubjectWidget({
-    this.viewModel,
+    this.subject,
     this.tappable = true,
     this.animation = const AlwaysStoppedAnimation(1.0),
   });
@@ -31,7 +21,7 @@ class JKOSubjectWidget extends StatelessWidget {
       new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new JKOSubjectDetailPage(
-            viewModel: viewModel,
+            subject: subject,
           );
         },
       ),
@@ -48,7 +38,7 @@ class JKOSubjectWidget extends StatelessWidget {
         children: [
           new Expanded(
             child: Text(
-              viewModel.subject.name,
+              subject.name,
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20.0, fontFamily: 'Futura', fontWeight: FontWeight.w400),
             ),
           ),
@@ -56,7 +46,7 @@ class JKOSubjectWidget extends StatelessWidget {
             children: <Widget>[
               new AsssessmentPercentWidget(
                 viewModel: new AssessmentPercentViewModel(
-                  percentage: viewModel.getPercentageToDisplay(),
+                  percentage: subject.calculateGradePercentage() * 100.0,
                   description: '%',
                 ),
                 animationValue: animation.value,
@@ -65,8 +55,8 @@ class JKOSubjectWidget extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16.0),
                 child: new GradeWidget(
                   viewModel: new GradeWidgetViewModel(
-                    grade: viewModel.subject.calculateGrade(),
-                    gradeColor: viewModel.subject.calculateGradeColor(),
+                    grade: subject.calculateGrade(),
+                    gradeColor: subject.calculateGradeColor(),
                     percentage: 0.85,
                   ),
                   animationValue: animation.value,
@@ -80,7 +70,7 @@ class JKOSubjectWidget extends StatelessWidget {
 
     if (tappable) {
       return new Hero(
-        tag: 'jko.${viewModel.subject.quarter}.${viewModel.subject.name}.heroWidget',
+        tag: 'jko.${subject.quarter}.${subject.name}.heroWidget',
         child: new Opacity(
           opacity: animation.value,
           child: new Card(
@@ -94,7 +84,7 @@ class JKOSubjectWidget extends StatelessWidget {
       );
     } else {
       return new Hero(
-        tag: 'jko.${viewModel.subject.quarter}.${viewModel.subject.name}.heroWidget',
+        tag: 'jko.${subject.quarter}.${subject.name}.heroWidget',
         child: Opacity(
           opacity: animation.value,
           child: Card(
