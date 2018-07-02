@@ -101,6 +101,16 @@ class JKOSubject implements Subject {
       return '-';
     } else {
       double percentage = calculateGradePercentage();
+      return Grade.calculateGrade(percentage, Diary.jko);
+    }
+  }
+
+  @override
+  String calculateGradeNumerical() {
+    if (points == 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
       return Grade.toNumericalGrade(Grade.calculateGrade(percentage, Diary.jko));
     }
   }

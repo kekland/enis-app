@@ -18,13 +18,13 @@ var items = [
   IMKOSubject.createNew(
       name: 'English', formative: Assessment(current: 10, maximum: 12), summative: Assessment(current: 20, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
-      name: 'English', formative: Assessment(current: 10, maximum: 12), summative: Assessment(current: 20, maximum: 24), quarter: 1, grade: '4'),
+      name: 'Russian Language', formative: Assessment(current: 3, maximum: 12), summative: Assessment(current: 15, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
-      name: 'English', formative: Assessment(current: 10, maximum: 12), summative: Assessment(current: 20, maximum: 24), quarter: 1, grade: '4'),
+      name: 'Kazakhstan In Modern World', formative: Assessment(current: 5, maximum: 12), summative: Assessment(current: 18, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
-      name: 'English', formative: Assessment(current: 10, maximum: 12), summative: Assessment(current: 20, maximum: 24), quarter: 1, grade: '4'),
+      name: 'Mathematics', formative: Assessment(current: 7, maximum: 12), summative: Assessment(current: 0, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
-      name: 'English', formative: Assessment(current: 10, maximum: 12), summative: Assessment(current: 20, maximum: 24), quarter: 1, grade: '4')
+      name: 'Physical Education', formative: Assessment(current: 1, maximum: 12), summative: Assessment(current: 17, maximum: 24), quarter: 1, grade: '4')
 ];
 var quarters = [1, 2, 3, 4];
 SubjectData data = new SubjectData();

@@ -7,5 +7,6 @@ abstract class Subject {
 
   double calculateGradePercentage();
   String calculateGrade();
+  String calculateGradeNumerical();
   Color calculateGradeColor();
 }

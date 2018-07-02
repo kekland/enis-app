@@ -126,8 +126,19 @@ class IMKOSubject implements Subject {
     return percentage;
   }
 
+
   @override
   String calculateGrade() {
+    if (summative.current == 0 && summative.maximum != 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
+      return Grade.calculateGrade(percentage, Diary.imko);
+    }
+  }
+
+  @override
+  String calculateGradeNumerical() {
     if (summative.current == 0 && summative.maximum != 0) {
       return '-';
     } else {
@@ -138,7 +149,7 @@ class IMKOSubject implements Subject {
 
   @override
   Color calculateGradeColor() {
-    String numericGrade = calculateGrade();
+    String numericGrade = calculateGradeNumerical();
     switch (numericGrade) {
       case '5':
         return Colors.green;
