@@ -6,6 +6,7 @@ import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/grade.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:enis_new/widgets/calculator/imko_term_calculator_widget.dart';
+import 'package:enis_new/widgets/calculator/jko_term_calculator_widget.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
         body: TabBarView(children: [
           IMKOTermCalculatorWidget(routedData: (widget.routedIndex == 0) ? widget.routedData : ''),
-          Container(child: Center(child: Text('In development'))),
+          JKOTermCalculatorWidget(routedData: (widget.routedIndex == 1) ? widget.routedData : ''),
           Container(child: Center(child: Text('In development'))),
           Container(child: Center(child: Text('In development'))),
         ]),

@@ -4,54 +4,22 @@ import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/assessment_number_widget.dart';
 import 'package:flutter/material.dart';
 
-class JKOEvaluationViewModel {
-  Assessment topicEvaluation;
-  Assessment quarterEvaluation;
-
-  String evaluationDescription;
-
-  JKOEvaluationViewModel({this.evaluationDescription, this.topicEvaluation, this.quarterEvaluation});
-}
-
-class JKOEvaluationWidget extends StatefulWidget {
+class JKOEvaluationWidget extends StatelessWidget {
   final JKOAssessment data;
+  final double animationValue;
 
-  JKOEvaluationWidget({this.data});
-  @override
-  _JKOEvaluationWidgetState createState() => _JKOEvaluationWidgetState();
-}
-
-class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
-
-  initState() {
-    super.initState();
-    if (Global.animate) {
-      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-        ..addListener(() {
-          setState(() {});
-        });
-
-      controller.forward();
-    } else {
-      animation = AlwaysStoppedAnimation(1.0);
-    }
-  }
-
-  @override
-  void dispose() {
-    if (controller != null) controller.dispose();
-    super.dispose();
-  }
+  JKOEvaluationWidget({this.data, this.animationValue = 1.0});
 
   @override
   Widget build(BuildContext context) {
     return new Opacity(
-      opacity: animation.value,
+      opacity: animationValue,
       child: new Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+        ),
         child: new Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -60,7 +28,7 @@ class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTi
               new Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Text(
-                  widget.data.description,
+                  data.description,
                   style: Theme.of(context).textTheme.body1.copyWith(
                         fontSize: 16.0,
                       ),
@@ -70,11 +38,11 @@ class _JKOEvaluationWidgetState extends State<JKOEvaluationWidget> with SingleTi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   new AssessmentCurrentMaximumWidget(
-                    assessment: Assessment.lerp(widget.data.topic, animation.value),
+                    assessment: Assessment.lerp(data.topic, animationValue),
                     description: 'Topic',
                   ),
                   new AssessmentCurrentMaximumWidget(
-                    assessment: Assessment.lerp(widget.data.quarter, animation.value),
+                    assessment: Assessment.lerp(data.quarter, animationValue),
                     description: 'Quarter',
                   ),
                 ],

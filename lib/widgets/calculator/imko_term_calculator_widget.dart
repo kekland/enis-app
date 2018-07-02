@@ -199,6 +199,4 @@ class IMKOTermCalculatorWidgetState extends State<IMKOTermCalculatorWidget> {
       ),
     );
   }
-
-  AssessmentCurrentMaximumViewModel({Assessment assessment, String description}) {}
 }

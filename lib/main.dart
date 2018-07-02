@@ -53,6 +53,7 @@ class MyAppState extends State<MyApp> {
             brightness: brightness,
             primarySwatch: Colors.green,
             buttonColor: Colors.lightBlueAccent,
+            bottomAppBarColor: Colors.white,
           ),
       themedWidgetBuilder: (context, theme) {
         return new MaterialApp(

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:enis_new/api/jko/jko_api.dart';
 import 'package:enis_new/api/jko/jko_data.dart';
+import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/jko/jko_evaluation_widget.dart';
 import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:flutter/material.dart';
-
 
 class JKOSubjectDetailPage extends StatefulWidget {
   final JKOSubjectViewModel viewModel;
@@ -15,19 +15,33 @@ class JKOSubjectDetailPage extends StatefulWidget {
   _JKOSubjectDetailPageState createState() => _JKOSubjectDetailPageState();
 }
 
-class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> {
+class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> with SingleTickerProviderStateMixin {
   List<JKOAssessment> evaluationModels;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
+  AnimationController controller;
+  Animation<double> animation;
 
   initState() {
     super.initState();
     fetchGoals();
+    if (Global.animate) {
+      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+        ..addListener(() {
+          setState(() {});
+        });
+    } else {
+      animation = AlwaysStoppedAnimation(1.0);
+    }
   }
 
   Future<Null> fetchGoals() async {
     try {
       evaluationModels = await JKODiaryAPI.getAssessments(widget.viewModel.subject);
-      setState(() {});
+      setState(() {
+        if (controller != null) controller.forward();
+      });
     } catch (e) {
       if (scaffoldKey.currentState != null) scaffoldKey.currentState.showSnackBar(new SnackBar(content: Text('Error occurred while fetching goals')));
     }
@@ -56,7 +70,10 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> {
                   ? new CircularProgressIndicator()
                   : new Column(
                       children: evaluationModels.map((JKOAssessment assessment) {
-                        return JKOEvaluationWidget(data: assessment);
+                        return JKOEvaluationWidget(
+                          data: assessment,
+                          animationValue: animation.value,
+                        );
                       }).toList(),
                     ),
             ],
