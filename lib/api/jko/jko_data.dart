@@ -2,7 +2,6 @@ import 'package:enis_new/api/subject.dart';
 import 'package:enis_new/classes/assessment.dart';
 import 'package:enis_new/classes/diary.dart';
 import 'package:enis_new/classes/grade.dart';
-import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -56,10 +55,10 @@ class JKOSubject implements Subject {
 
   @override
   Widget createWidget(Animation<double> animation) {
-    return JKOSubjectWidget(
+    /*return JKOSubjectWidget(
       animation: animation,
       viewModel: JKOSubjectViewModel(subject: this),
-    );
+    );*/
   }
 
   JKOSubject();
