@@ -20,7 +20,11 @@ var items = [
   IMKOSubject.createNew(
       name: 'Russian Language', formative: Assessment(current: 3, maximum: 12), summative: Assessment(current: 15, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
-      name: 'Kazakhstan In Modern World', formative: Assessment(current: 5, maximum: 12), summative: Assessment(current: 18, maximum: 24), quarter: 1, grade: '4'),
+      name: 'Kazakhstan In Modern World',
+      formative: Assessment(current: 5, maximum: 12),
+      summative: Assessment(current: 18, maximum: 24),
+      quarter: 1,
+      grade: '4'),
   IMKOSubject.createNew(
       name: 'Mathematics', formative: Assessment(current: 7, maximum: 12), summative: Assessment(current: 0, maximum: 24), quarter: 1, grade: '4'),
   IMKOSubject.createNew(
@@ -44,7 +48,20 @@ class TermPage extends StatefulWidget {
   _TermPageState createState() => _TermPageState();
 }
 
-class _TermPageState extends State<TermPage> {
+class _TermPageState extends State<TermPage> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animation;
+
+  @override
+  void initState() {
+    controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 1500));
+    animation = new CurvedAnimation(parent: controller, curve: Curves.easeOut);
+    controller
+      ..addListener(() => setState(() {}))
+      ..forward();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -52,6 +69,7 @@ class _TermPageState extends State<TermPage> {
       itemBuilder: (BuildContext context, int itemIndex) {
         return IMKOSubjectWidget(
           subject: items[itemIndex],
+          animationValue: animation.value,
         );
       },
     );
