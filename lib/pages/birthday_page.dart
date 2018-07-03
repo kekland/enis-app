@@ -3,7 +3,6 @@ import 'package:date_format/date_format.dart';
 import 'package:enis_new/api/account_api.dart';
 import 'package:enis_new/api/user_birthday_data.dart';
 import 'package:enis_new/classes/birthday_utils.dart';
-import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/birthday/user_birthday_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
@@ -29,18 +28,14 @@ class _BirthdayPageState extends State<BirthdayPage> with SingleTickerProviderSt
   Duration duration = Duration(milliseconds: 500);
   initState() {
     super.initState();
-    if (Global.animate) {
-      controller = new AnimationController(duration: duration, vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
-      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-        ..addListener(() {
-          if (mounted) {
-            setState(() {});
-          }
-        });
-    } else {
-      animation = AlwaysStoppedAnimation(1.0);
-    }
+    controller = new AnimationController(duration: duration, vsync: this);
+    final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+      ..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
   }
 
   @override

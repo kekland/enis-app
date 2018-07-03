@@ -54,14 +54,6 @@ class JKOSubject implements Subject {
 
   List<JKOSubjectEvaluation> evaluations;
 
-  @override
-  Widget createWidget(Animation<double> animation) {
-    return JKOSubjectWidget(
-      animation: animation,
-      viewModel: JKOSubjectViewModel(subject: this),
-    );
-  }
-
   JKOSubject();
   JKOSubject.createNew({
     this.id,
@@ -98,6 +90,16 @@ class JKOSubject implements Subject {
 
   @override
   String calculateGrade() {
+    if (points == 0) {
+      return '-';
+    } else {
+      double percentage = calculateGradePercentage();
+      return Grade.calculateGrade(percentage, Diary.jko);
+    }
+  }
+
+  @override
+  String calculateGradeNumerical() {
     if (points == 0) {
       return '-';
     } else {

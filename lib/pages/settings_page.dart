@@ -1,6 +1,4 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:enis_new/global.dart';
-import 'package:enis_new/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,15 +73,6 @@ class _SettingsPageState extends State<SettingsPage> {
     //Global.router.navigateTo(context, Routes.login);
   }
 
-  void animationSwitchTapped(bool state) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('animate', state);
-    Global.animate = state;
-    setState(() {
-      switchState = state;
-    });
-  }
-
   void darkSwitchTapped(bool state, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('dark', state);
@@ -98,120 +87,84 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
-      body: new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            new InkWell(
-              onTap: () => diarySelectionTapped(context),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Icon(Icons.book),
-                  ),
-                  new Column(
+    return new Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          new InkWell(
+            onTap: () => diarySelectionTapped(context),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Icon(Icons.book),
+                ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Select diary type',
+                      style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Icon(Icons.brightness_6),
+                ),
+                new Expanded(
+                  child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Select diary type',
+                        'Dark theme',
                         style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Icon(Icons.offline_bolt),
-                  ),
-                  new Expanded(
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Animations',
-                          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-                        ),
-                        Text(
-                          'Turn animations off if you are having performance issues',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Switch(
-                    value: switchState,
-                    onChanged: (bool a) => animationSwitchTapped(a),
-                  )
-                ],
-              ),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Icon(Icons.brightness_6),
-                  ),
-                  new Expanded(
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Dark theme',
-                          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
-                        ),
-                        Text(
-                          'Dark theme helps to reduce eye strain',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Switch(
-                    value: darkState,
-                    onChanged: (bool a) => darkSwitchTapped(a, context),
-                  )
-                ],
-              ),
-            ),
-            new InkWell(
-              onTap: () => logoutTapped(context),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Icon(Icons.account_box),
-                  ),
-                  new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
                       Text(
-                        'Log out',
-                        style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                        'Dark theme helps to reduce eye strain',
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ],
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                new Switch(
+                  value: darkState,
+                  onChanged: (bool a) => darkSwitchTapped(a, context),
+                )
+              ],
+            ),
+          ),
+          new InkWell(
+            onTap: () => logoutTapped(context),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Icon(Icons.account_box),
+                ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Log out',
+                      style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

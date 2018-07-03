@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:enis_new/api/jko/jko_api.dart';
 import 'package:enis_new/api/jko/jko_data.dart';
-import 'package:enis_new/global.dart';
 import 'package:enis_new/widgets/jko/jko_evaluation_widget.dart';
 import 'package:enis_new/widgets/jko/jko_subject_widget.dart';
 import 'package:flutter/material.dart';
 
 class JKOSubjectDetailPage extends StatefulWidget {
-  final JKOSubjectViewModel viewModel;
+  final JKOSubject subject;
 
-  JKOSubjectDetailPage({this.viewModel});
+  JKOSubjectDetailPage({this.subject});
   @override
   _JKOSubjectDetailPageState createState() => _JKOSubjectDetailPageState();
 }
@@ -24,21 +23,17 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> with Single
   initState() {
     super.initState();
     fetchGoals();
-    if (Global.animate) {
-      controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
-      final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
-      animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
-        ..addListener(() {
-          setState(() {});
-        });
-    } else {
-      animation = AlwaysStoppedAnimation(1.0);
-    }
+    controller = new AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+    final CurvedAnimation curve = new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    animation = new Tween(begin: 0.0, end: 1.0).animate(curve)
+      ..addListener(() {
+        setState(() {});
+      });
   }
 
   Future<Null> fetchGoals() async {
     try {
-      evaluationModels = await JKODiaryAPI.getAssessments(widget.viewModel.subject);
+      evaluationModels = await JKODiaryAPI.getAssessments(widget.subject);
       setState(() {
         if (controller != null) controller.forward();
       });
@@ -52,7 +47,9 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> with Single
     return new Scaffold(
       key: scaffoldKey,
       appBar: new AppBar(
-        title: Text(widget.viewModel.subject.name),
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text(widget.subject.name, style: Theme.of(context).textTheme.title.copyWith(fontFamily: 'Futura', color: Colors.black)),
       ),
       body: new SingleChildScrollView(
         child: new Padding(
@@ -62,7 +59,7 @@ class _JKOSubjectDetailPageState extends State<JKOSubjectDetailPage> with Single
               new Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: new JKOSubjectWidget(
-                  viewModel: widget.viewModel,
+                  subject: widget.subject,
                   tappable: false,
                 ),
               ),
